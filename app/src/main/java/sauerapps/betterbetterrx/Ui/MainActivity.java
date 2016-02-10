@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //
 //            }
 //        });
-        
+
         fabMargin = getResources().getDimensionPixelSize(R.dimen.fab_margin);
         toolbarHeight = Utils.getToolbarHeight(this);
 
