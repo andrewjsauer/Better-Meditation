@@ -10,7 +10,8 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false" />
+        android:clipToPadding="false"
+        />
 
     <LinearLayout
         android:id="@+id/fabhide_toolbar_container"
@@ -20,26 +21,25 @@
 
         <include layout="@layout/toolbar" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/shadow" />
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="4dp"-->
+            <!--android:background="@drawable/shadow" />-->
 
 
     </LinearLayout>
 
-    <!--<include layout="@layout/myfab" />-->
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
         android:layout_gravity="bottom|end"
         app:elevation="6dp"
         app:backgroundTint="@color/accent_500"
         app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_action_add"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_action_add" />
+        android:focusable="false"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab2"
