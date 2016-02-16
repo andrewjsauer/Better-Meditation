@@ -13,8 +13,12 @@ import sauerapps.betterbetterrx.R;
  */
 public class Utils {
 
-    private static final String PREFERENCES_FILE = "materialsample_settings";
+    private static final String PREFERENCES_FILE = "betterandbetter_settings";
 
+
+    public static String encodeEmail(String userEmail) {
+        return userEmail.replace(".", ",");
+    }
 
     public static int getToolbarHeight(Context context) {
         int height = (int) context.getResources().getDimension(R.dimen.abc_action_bar_default_height_material);

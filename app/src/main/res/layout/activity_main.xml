@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/content_frame"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              xmlns:app="http://schemas.android.com/apk/res-auto"
-             tools:context=".Ui.MainActivity">
+             tools:context=".MainActivity">
+
+    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            android:id="@+id/nav_drawer"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fitsSystemWindows="true">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
@@ -12,6 +20,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         />
+
 
     <LinearLayout
         android:id="@+id/fabhide_toolbar_container"
@@ -21,13 +30,20 @@
 
         <include layout="@layout/toolbar" />
 
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="4dp"-->
-            <!--android:background="@drawable/shadow" />-->
-
-
     </LinearLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/drawer_header"
+            app:menu="@menu/drawer" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -35,7 +51,7 @@
         android:layout_height="@dimen/fab_size"
         android:layout_gravity="bottom|end"
         app:elevation="6dp"
-        app:backgroundTint="@color/accent_500"
+        app:backgroundTint="@color/light_blue"
         app:pressedTranslationZ="12dp"
         android:src="@drawable/ic_action_add"
         android:layout_margin="@dimen/fab_margin"
@@ -62,7 +78,7 @@
         android:layout_marginRight="@dimen/fab_margin"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:backgroundTint="@color/light_blue"
+        app:backgroundTint="@color/red"
         app:pressedTranslationZ="12dp"
         android:src="@drawable/ic_insert_emoticon_white_18dp" />
 
