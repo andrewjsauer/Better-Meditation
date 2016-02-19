@@ -19,13 +19,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import sauerapps.betterbetterrx.Ui.login.CreateAccountActivity;
-import sauerapps.betterbetterrx.Ui.login.LoginActivity;
+import sauerapps.betterbetterrx.Ui.Ui.CreateAccountActivity;
+import sauerapps.betterbetterrx.Ui.Ui.LoginActivity;
 import sauerapps.betterbetterrx.utilities.Constants;
 
 
 public abstract class BaseActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
+
     protected String mProvider, mEncodedEmail;
     /* Client used to interact with Google APIs. */
     protected GoogleApiClient mGoogleApiClient;

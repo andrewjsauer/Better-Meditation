@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.Ui.login;
+package sauerapps.betterbetterrx.Ui.Ui;
 
 
 import sauerapps.betterbetterrx.BaseActivity;

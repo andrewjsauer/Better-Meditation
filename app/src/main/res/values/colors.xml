@@ -50,5 +50,8 @@
     <color name="orange">#FF9800</color>
     <color name="deep_orange">#FF5722</color>
 
+    <color name="apptheme_color">#33b5e5</color>
+
+
 
 </resources>
