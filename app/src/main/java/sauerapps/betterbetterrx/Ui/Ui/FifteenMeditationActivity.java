@@ -1,5 +1,6 @@
 package sauerapps.betterbetterrx.Ui.Ui;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,9 +8,15 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v4.media.MediaDescriptionCompat;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,15 +24,19 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
+
 import android.os.Handler;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.BaseActivity;
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.utilities.MusicPlayer;
 
 public class FifteenMeditationActivity extends BaseActivity {
+
+    //TODO media turning on after text message, not sure why, could be audio-focus
+    //TODO add notificationcompat controls mediasession
+    //TODO check out Podcast and Google Musicplayer for ways to incorporate media button controls / notificationcompat
 
     private static final String TAG = FifteenMeditationActivity.class.getSimpleName();
 
@@ -47,15 +58,24 @@ public class FifteenMeditationActivity extends BaseActivity {
             PAUSE_SERVICE_CMD = "sauerapps.betterbetterrx.pause";
             PLAY_SERVICE_CMD = "sauerapps.betterbetterrx.play";
         }
-    };
+    }
 
-    @Bind(R.id.toolbar) protected Toolbar mToolbar;
-    @Bind(R.id.seekBar) protected SeekBar mSeekBar;
-    @Bind(R.id.songDuration) protected TextView mDuration;
-    @Bind(R.id.media_play) protected ImageButton mPlayButton;
-    @Bind(R.id.media_pause) protected ImageButton mPauseButton;
-    @Bind(R.id.reset_recording) protected ImageButton mResetRecording;
-    @Bind(R.id.gratitude_button) protected ImageButton mGratitudeButton;
+    ;
+
+    @Bind(R.id.toolbar)
+    protected Toolbar mToolbar;
+    @Bind(R.id.seekBar)
+    protected SeekBar mSeekBar;
+    @Bind(R.id.songDuration)
+    protected TextView mDuration;
+    @Bind(R.id.media_play)
+    protected ImageButton mPlayButton;
+    @Bind(R.id.media_pause)
+    protected ImageButton mPauseButton;
+    @Bind(R.id.reset_recording)
+    protected ImageButton mResetRecording;
+    @Bind(R.id.gratitude_button)
+    protected ImageButton mGratitudeButton;
 
     private Handler durationHandler = new Handler();
     private double timeElapsed = 0, finalTime = 0;
@@ -65,7 +85,7 @@ public class FifteenMeditationActivity extends BaseActivity {
     private BroadcastReceiver mIntentReceiver;
     private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener;
     private boolean mReceiverRegistered = false;
-
+    private boolean mClicked = false;
 
 
     @Override
@@ -115,16 +135,41 @@ public class FifteenMeditationActivity extends BaseActivity {
                 }
             }
         };
+
+        registerReceiver(audioBecomingNoisy, new IntentFilter(
+                AudioManager.ACTION_AUDIO_BECOMING_NOISY));
+        registerReceiver(headsetDisconnected, new IntentFilter(
+                Intent.ACTION_HEADSET_PLUG));
+
     }
+
+//    @Override
+//    protected void onPause () {
+//        super.onPause();
+//        IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+//        registerReceiver(audioBecomingNoisy, filter);
+//    }
 
     @Override
-    protected void onPause () {
-        super.onPause();
-        IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-        registerReceiver(mNoisyReceiver, filter);
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mAudioFocusGranted && mAudioIsPlaying) {
+
+            mAudioIsPlaying = false;
+            // 2. Give up audio focus
+            abandonAudioFocus();
+        }
+        durationHandler.removeCallbacks(updateDuration);
+        mMediaPlayer.release();
+        mMediaPlayer = null;
+
+        unregisterReceiver(headsetDisconnected);
+        unregisterReceiver(audioBecomingNoisy);
+        unregisterReceiver(mIntentReceiver);
     }
 
-    public void initializeScreen(){
+    public void initializeScreen() {
         setSupportActionBar(mToolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -139,20 +184,13 @@ public class FifteenMeditationActivity extends BaseActivity {
     View.OnClickListener gratitudeButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             if (mAudioFocusGranted && mAudioIsPlaying) {
 
                 mAudioIsPlaying = false;
                 // 2. Give up audio focus
                 abandonAudioFocus();
             }
-            durationHandler.removeCallbacks(updateDuration);
-
-            mMediaPlayer.stop();
-            mMediaPlayer.release();
-            mMediaPlayer = null;
-
-            unregisterReceiver(mNoisyReceiver);
-            unregisterReceiver(mIntentReceiver);
 
             Intent intent = new Intent(FifteenMeditationActivity.this, GratitudeActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -191,8 +229,6 @@ public class FifteenMeditationActivity extends BaseActivity {
 
             durationHandler.removeCallbacks(updateDuration);
 
-            unregisterReceiver(mNoisyReceiver);
-
             mPauseButton.setVisibility(ImageView.GONE);
             mPlayButton.setVisibility(ImageView.VISIBLE);
         }
@@ -213,16 +249,13 @@ public class FifteenMeditationActivity extends BaseActivity {
             mSeekBar.setProgress((int) timeElapsed);
             durationHandler.postDelayed(updateDuration, 100);
 
-            IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-            registerReceiver(mNoisyReceiver, filter);
-
             mPlayButton.setVisibility(ImageView.GONE);
             mPauseButton.setVisibility(ImageView.VISIBLE);
         }
     }
 
 
-//  handler to change duration text
+    //  handler to change duration text
     private Runnable updateDuration = new Runnable() {
         public void run() {
             //get current position
@@ -244,7 +277,7 @@ public class FifteenMeditationActivity extends BaseActivity {
 
     private boolean requestAudioFocus() {
         if (!mAudioFocusGranted) {
-            AudioManager am = (AudioManager) this
+            AudioManager am = (AudioManager) FifteenMeditationActivity.this
                     .getSystemService(Context.AUDIO_SERVICE);
             // Request audio focus for play back
             int result = am.requestAudioFocus(mOnAudioFocusChangeListener,
@@ -299,17 +332,17 @@ public class FifteenMeditationActivity extends BaseActivity {
     }
 
     private void forceMusicStop() {
-        AudioManager am = (AudioManager) this
+        AudioManager am = (AudioManager) FifteenMeditationActivity.this
                 .getSystemService(Context.AUDIO_SERVICE);
         if (am.isMusicActive()) {
             Intent intentToStop = new Intent(SERVICE_CMD);
             intentToStop.putExtra(CMD_NAME, CMD_STOP);
-            this.sendBroadcast(intentToStop);
+            FifteenMeditationActivity.this.sendBroadcast(intentToStop);
         }
     }
 
     private void abandonAudioFocus() {
-        AudioManager am = (AudioManager) this
+        AudioManager am = (AudioManager) FifteenMeditationActivity.this
                 .getSystemService(Context.AUDIO_SERVICE);
         int result = am.abandonAudioFocus(mOnAudioFocusChangeListener);
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
@@ -322,7 +355,7 @@ public class FifteenMeditationActivity extends BaseActivity {
         mOnAudioFocusChangeListener = null;
     }
 
-    private BroadcastReceiver mNoisyReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver audioBecomingNoisy = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
@@ -330,5 +363,61 @@ public class FifteenMeditationActivity extends BaseActivity {
             }
         }
     };
+
+    private final BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
+        private static final String TAG = "headsetDisconnected";
+        private static final int UNPLUGGED = 0;
+        private static final int PLUGGED = 1;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
+                int state = intent.getIntExtra("state", -1);
+                if (state != -1) {
+                    Log.d(TAG, "Headset plug event. State is " + state);
+                    if (state == UNPLUGGED) {
+                        Log.d(TAG, "Headset was unplugged during playback.");
+                        pauseMeditationActions();
+                    } else if (state == PLUGGED) {
+                        Log.d(TAG, "Headset was plugged in during playback.");
+                        playMeditationActions();
+                    }
+                } else {
+                    Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
+                }
+            }
+        }
+    };
+
+
+//    public static NotificationCompat.Builder from(Context context, MediaSessionCompat mediaSession) {
+//        MediaControllerCompat controller = mediaSession.getController();
+//        MediaMetadataCompat mediaMetadata = controller.getMetadata();
+//        MediaDescriptionCompat description = mediaMetadata.getDescription();
+//
+//        NotificationCompat.Builder builder =
+//                new NotificationCompat.Builder(context);
+//
+//        builder
+//                .setContentTitle(description.getTitle())
+//                .setContentText(description.getSubtitle())
+//                .setSubText(description.getDescription())
+//                .setContentIntent(controller.getSessionActivity())
+//                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+//                .setDeleteIntent(getActionIntent(context, KeyEvent.KEYCODE_MEDIA_STOP));
+//
+//        return builder;
+//
+//
+//    }
+//
+//    public static PendingIntent getActionIntent(
+//            Context context, int mediaKeyEvent) {
+//        Intent intent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+//        intent.setPackage(context.getPackageName());
+//        intent.putExtra(Intent.EXTRA_KEY_EVENT,
+//                new KeyEvent(KeyEvent.ACTION_DOWN, mediaKeyEvent));
+//        return PendingIntent.getBroadcast(context, mediaKeyEvent, intent, 0);
+//    }
 
 }
