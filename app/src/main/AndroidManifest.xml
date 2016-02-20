@@ -3,10 +3,13 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!--for when user locks screen-->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- for when user locks screen -->
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+
+    <action android:name="android.intent.action.HEADSET_PLUG" />
 
     <application
         android:name=".BetterBetterApplication"
@@ -38,9 +41,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Ui.Ui.LoginActivity"/>
         </activity>
-        <activity android:name=".Ui.Ui.FifteenMeditationActivity"
+        <activity
+            android:name=".Ui.Ui.FifteenMeditationActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".Ui.Ui.GratitudeActivity"
+                  android:parentActivityName=".MainActivity"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 
