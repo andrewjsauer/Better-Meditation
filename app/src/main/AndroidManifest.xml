@@ -42,17 +42,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".features.authentication.login.LoginActivity"/>
         </activity>
-        <activity
-            android:name=".features.meditations.FifteenMeditationActivity"
-            android:parentActivityName=".features.newsfeed.MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".features.gratitudes.GratitudeActivity"
-            android:parentActivityName=".features.newsfeed.MainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
         <activity android:name=".features.meditation.MeditationActivity">
         </activity>
     </application>

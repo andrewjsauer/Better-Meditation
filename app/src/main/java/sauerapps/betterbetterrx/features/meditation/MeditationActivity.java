@@ -31,8 +31,6 @@ public class MeditationActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         initializeScreen();
-
-
     }
 
 

@@ -3,7 +3,7 @@ package sauerapps.betterbetterrx.features.authentication.createAccount;
 
 import sauerapps.betterbetterrx.features.authentication.login.LoginActivity;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.database.User;
+import sauerapps.betterbetterrx.features.authentication.User;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.utils.Constants;
 import sauerapps.betterbetterrx.utils.Utils;
