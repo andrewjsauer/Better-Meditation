@@ -1,6 +1,6 @@
-package sauerapps.betterbetterrx.Ui.Ui;
+package sauerapps.betterbetterrx.features.meditations;
 
-import android.app.PendingIntent;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,11 +8,6 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v4.media.MediaDescriptionCompat;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,14 +24,18 @@ import android.os.Handler;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sauerapps.betterbetterrx.BaseActivity;
+import sauerapps.betterbetterrx.features.gratitudes.GratitudeActivity;
+import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.R;
+import sauerapps.betterbetterrx.features.newsfeed.MainActivity;
 
 public class FifteenMeditationActivity extends BaseActivity {
 
-    //TODO media turning on after text message, not sure why, could be audio-focus
     //TODO add notificationcompat controls mediasession
     //TODO check out Podcast and Google Musicplayer for ways to incorporate media button controls / notificationcompat
+    //TODO audio turning on, or audio_focus is turning on after notification, why?
+    //TODO make last second of audio take you to gratitude section
+
 
     private static final String TAG = FifteenMeditationActivity.class.getSimpleName();
 
@@ -58,9 +57,7 @@ public class FifteenMeditationActivity extends BaseActivity {
             PAUSE_SERVICE_CMD = "sauerapps.betterbetterrx.pause";
             PLAY_SERVICE_CMD = "sauerapps.betterbetterrx.play";
         }
-    }
-
-    ;
+    };
 
     @Bind(R.id.toolbar)
     protected Toolbar mToolbar;
@@ -85,8 +82,6 @@ public class FifteenMeditationActivity extends BaseActivity {
     private BroadcastReceiver mIntentReceiver;
     private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener;
     private boolean mReceiverRegistered = false;
-    private boolean mClicked = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +97,19 @@ public class FifteenMeditationActivity extends BaseActivity {
         mResetRecording.setOnClickListener(resetMeditation);
         mGratitudeButton.setOnClickListener(gratitudeButton);
 
+
+        if (!mAudioFocusGranted && requestAudioFocus()) {
+            // 2. Kill off any other play back sources
+            forceMusicStop();
+            // 3. Register broadcast receiver for player intents
+            setupBroadcastReceiver();
+
+            IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
+            filter.addAction(Intent.ACTION_HEADSET_PLUG);
+            filter.setPriority(1000);
+            registerReceiver(mediaButtons, filter);
+        }
+
         mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
             @Override
             public void onAudioFocusChange(int focusChange) {
@@ -112,9 +120,11 @@ public class FifteenMeditationActivity extends BaseActivity {
                         break;
                     case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT:
                         Log.i(TAG, "AUDIOFOCUS_GAIN_TRANSIENT");
+                        playMeditationActions();
                         break;
                     case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK:
                         Log.i(TAG, "AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK");
+                        playMeditationActions();
                         break;
                     case AudioManager.AUDIOFOCUS_LOSS:
                         Log.e(TAG, "AUDIOFOCUS_LOSS");
@@ -140,30 +150,39 @@ public class FifteenMeditationActivity extends BaseActivity {
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(headsetDisconnected, new IntentFilter(
                 Intent.ACTION_HEADSET_PLUG));
+        registerReceiver(mediaButtons, new IntentFilter(
+                Intent.ACTION_MEDIA_BUTTON
+        ));
 
+//        Wondering which one works, this one above here, or this one below.
+
+//        IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
+//        filter.addAction(Intent.ACTION_HEADSET_PLUG);
+//        filter.setPriority(1000);
+//        registerReceiver(mediaButtons, filter);
+
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
-
-//    @Override
-//    protected void onPause () {
-//        super.onPause();
-//        IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-//        registerReceiver(audioBecomingNoisy, filter);
-//    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        if (mAudioFocusGranted && mAudioIsPlaying) {
+        destroy();
+    }
 
+    private void destroy() {
+        if (mAudioFocusGranted && mAudioIsPlaying) {
             mAudioIsPlaying = false;
             // 2. Give up audio focus
             abandonAudioFocus();
         }
+
         durationHandler.removeCallbacks(updateDuration);
         mMediaPlayer.release();
         mMediaPlayer = null;
 
+        unregisterReceiver(mediaButtons);
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(mIntentReceiver);
@@ -171,8 +190,8 @@ public class FifteenMeditationActivity extends BaseActivity {
 
     public void initializeScreen() {
         setSupportActionBar(mToolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         mMediaPlayer = MediaPlayer.create(this, R.raw.fifteen_minute_meditation);
 
         finalTime = mMediaPlayer.getDuration();
@@ -184,16 +203,7 @@ public class FifteenMeditationActivity extends BaseActivity {
     View.OnClickListener gratitudeButton = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            if (mAudioFocusGranted && mAudioIsPlaying) {
-
-                mAudioIsPlaying = false;
-                // 2. Give up audio focus
-                abandonAudioFocus();
-            }
-
             Intent intent = new Intent(FifteenMeditationActivity.this, GratitudeActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
 
             finish();
@@ -276,6 +286,7 @@ public class FifteenMeditationActivity extends BaseActivity {
 
 
     private boolean requestAudioFocus() {
+
         if (!mAudioFocusGranted) {
             AudioManager am = (AudioManager) FifteenMeditationActivity.this
                     .getSystemService(Context.AUDIO_SERVICE);
@@ -285,7 +296,6 @@ public class FifteenMeditationActivity extends BaseActivity {
                     AudioManager.STREAM_MUSIC,
                     // Request permanent focus.
                     AudioManager.AUDIOFOCUS_GAIN);
-
 
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 mAudioFocusGranted = true;
@@ -380,7 +390,6 @@ public class FifteenMeditationActivity extends BaseActivity {
                         pauseMeditationActions();
                     } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
-                        playMeditationActions();
                     }
                 } else {
                     Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
@@ -388,6 +397,46 @@ public class FifteenMeditationActivity extends BaseActivity {
             }
         }
     };
+
+    private final BroadcastReceiver mediaButtons = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_MEDIA_BUTTON.equals(intent.getAction())) {
+                KeyEvent event = (KeyEvent)intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+                if (KeyEvent.KEYCODE_MEDIA_PLAY == event.getKeyCode()) {
+                    pauseMeditationActions();
+                }
+//                if (!mAudioIsPlaying && KeyEvent.KEYCODE_MEDIA_PLAY == event.getKeyCode()) {
+//                    pauseMeditationActions();
+//                }
+            }
+        }
+    };
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("CDA", "onBackPressed Called");
+        destroy();
+        Intent setIntent = new Intent(FifteenMeditationActivity.this, MainActivity.class);
+        setIntent.addCategory(Intent.CATEGORY_HOME);
+        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(setIntent);
+    }
+
+
 
 
 //    public static NotificationCompat.Builder from(Context context, MediaSessionCompat mediaSession) {

@@ -2,21 +2,38 @@
 <resources>
 
 
+
+    <color name="primary_dark">#4B315A</color>
+    <color name="primary_light">#F0D7FF</color>
+    <color name="primay_darkest">#786C7F</color>
+    <color name="primary_light_dark">#6A457F</color>
+    <color name="primary">#4B315A</color>
+
+    <color name="fab_main">#169954</color>
+    <color name="fab_first_open">#5BCC90</color>
+    <color name="fab_second_open">#99FF8B</color>
+
+    <color name="background_meditation">#A4FFCF</color>
+    <color name="background_music_player">#A35BCC</color>
+
+    <color name="tabsScrollColor">#3398B1</color>
+
+
+
+
+
+
+
+
+    <color name="light_black">#747474</color>
+    <color name="black">#616161</color>
+    <color name="google">#C6412C</color>
     <color name="grey">#EDEEEF</color>
     <color name="dark_green">#388E3C</color>
 
     <color name="dark_grey">#AEAEAE</color>
 
     <color name="accent">#DF4A32</color>
-
-    <color name="primary">#83CF1C</color>
-    <color name="primary_dark">#5AB831</color>
-    <color name="primary_light">#DCEDC8</color>
-
-    <color name="light_black">#747474</color>
-    <color name="black">#616161</color>
-    <color name="google">#C6412C</color>
-
 
 
     <!--Indigo 500-->

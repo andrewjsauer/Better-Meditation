@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx;
+package sauerapps.betterbetterrx.features.newsfeed;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,15 +33,20 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sauerapps.betterbetterrx.Model.User;
-import sauerapps.betterbetterrx.Model.VersionModel;
-import sauerapps.betterbetterrx.Adapter.SimpleRecyclerAdapter;
-import sauerapps.betterbetterrx.Ui.Ui.FifteenMeditationActivity;
-import sauerapps.betterbetterrx.utilities.Constants;
-import sauerapps.betterbetterrx.utilities.MyRecyclerScroll;
-import sauerapps.betterbetterrx.utilities.Utils;
+import sauerapps.betterbetterrx.app.BaseActivity;
+import sauerapps.betterbetterrx.database.User;
+import sauerapps.betterbetterrx.R;
+import sauerapps.betterbetterrx.features.meditation.MeditationActivity;
+import sauerapps.betterbetterrx.features.meditations.FifteenMeditationActivity;
+import sauerapps.betterbetterrx.utils.Constants;
+import sauerapps.betterbetterrx.utils.MyRecyclerScroll;
+import sauerapps.betterbetterrx.utils.Utils;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity {
+
+    //TODO change all images to SVG
+    //TODO add "be the most important person for 15 - 30 min, and turn on Airplane Mode - calls, texts will interfere"
+
 
     private static final String PREFERENCES_FILE = "mymaterialapp_settings";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
@@ -51,18 +56,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ValueEventListener mUserRefListener;
     private Firebase mUserRef;
 
-
     @Bind(R.id.toolbar) protected Toolbar mToolbar;
     @Bind(R.id.fabhide_toolbar_container) protected LinearLayout mToolbarContainer;
     @Bind(R.id.nav_drawer) protected DrawerLayout mDrawerLayout;
     @Bind(R.id.nav_view) protected NavigationView mNavigationView;
     @Bind(R.id.content_frame) protected FrameLayout mContentFrame;
     @Bind(R.id.fab) protected FloatingActionButton mFloatingActionButton;
-    @Bind(R.id.fab1) protected FloatingActionButton mFloatingActionButton1;
-    @Bind(R.id.fab2) protected FloatingActionButton mFloatingActionButton2;
 
-    private Boolean mIsFabOpen = false;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
     private int mFabMargin;
     private int mToolbarHeight;
     private boolean mFadeToolbar = false;
@@ -82,22 +82,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
 
         initializeScreen(savedInstanceState);
-
-
     }
 
     private void initializeScreen(Bundle savedInstanceState) {
-        // mFloatingActionButton section
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
-        mFloatingActionButton.setOnClickListener(this);
-        mFloatingActionButton1.setOnClickListener(this);
-        mFloatingActionButton2.setOnClickListener(this);
-
         setSupportActionBar(mToolbar);
-
 
         // nav drawer
         mUserLearnedDrawer = Boolean.valueOf(readSharedSetting(this, PREF_USER_LEARNED_DRAWER, "false"));
@@ -112,7 +100,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-
                 // TODO add settings, reset password, people i love (hannah, all code i took), about the meditations
                 menuItem.setChecked(true);
                 switch (menuItem.getItemId()) {
@@ -132,6 +119,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
         // mFloatingActionButton and recycle section
+
+        mFloatingActionButton.setOnClickListener(intentMeditationSection);
 
         mFabMargin = getResources().getDimensionPixelSize(R.dimen.fab_margin);
         mToolbarHeight = Utils.getToolbarHeight(this);
@@ -171,7 +160,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mToolbarContainer.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
                 if (mFadeToolbar)
                     mToolbarContainer.animate().alpha(1).setInterpolator(new DecelerateInterpolator(1)).start();
-                    makeFabReappear();
+                    mFloatingActionButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
             }
 
             @Override
@@ -179,14 +168,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mToolbarContainer.animate().translationY(-mToolbarHeight).setInterpolator(new AccelerateInterpolator(2)).start();
                 if (mFadeToolbar)
                     mToolbarContainer.animate().alpha(0).setInterpolator(new AccelerateInterpolator(1)).start();
-                if (mIsFabOpen) {
-                    mFloatingActionButton.startAnimation(rotate_backward);
-                    mFloatingActionButton1.startAnimation(fab_close);
-                    mFloatingActionButton2.startAnimation(fab_close);
-                    mFloatingActionButton1.setClickable(false);
-                    mFloatingActionButton2.setClickable(false);
-                    mIsFabOpen = false;
-                }
+
                 makeFabDisappear();
             }
         });
@@ -202,7 +184,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (user != null) {
                     /* Assumes that the first word in the user's name is the user's first name. */
                     String firstName = user.getName().split("\\s+")[0];
-                    String title = firstName + ".. Looking good!";
+                    String title = firstName + ", welcome back.";
                     setTitle(title);
                 }
             }
@@ -216,53 +198,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-    private void makeFabReappear() {
-        mFloatingActionButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-    }
+    View.OnClickListener intentMeditationSection = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, MeditationActivity.class);
+            startActivity(intent);
+        }
+    };
 
     private void makeFabDisappear() {
         mFloatingActionButton.animate().translationY(mFloatingActionButton.getHeight() + mFabMargin).setInterpolator(new AccelerateInterpolator(2)).start();
     }
-
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.fab:
-                animateFAB();
-                break;
-            case R.id.fab1:
-                Intent intent = new Intent(MainActivity.this, FifteenMeditationActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.fab2:
-                // insert new activity
-                break;
-        }
-    }
-
-
-    public void animateFAB() {
-        if (mIsFabOpen) {
-            mFloatingActionButton.startAnimation(rotate_backward);
-            mFloatingActionButton1.startAnimation(fab_close);
-            mFloatingActionButton2.startAnimation(fab_close);
-            mFloatingActionButton1.setClickable(false);
-            mFloatingActionButton2.setClickable(false);
-            mIsFabOpen = false;
-            Log.d("Raj", "close");
-        } else {
-            mFloatingActionButton.startAnimation(rotate_forward);
-            mFloatingActionButton1.startAnimation(fab_open);
-            mFloatingActionButton2.startAnimation(fab_open);
-            mFloatingActionButton1.setClickable(true);
-            mFloatingActionButton2.setClickable(true);
-            mIsFabOpen = true;
-            Log.d("Raj", "open");
-        }
-    }
-
 
     private void setUpNavDrawer() {
         if (mToolbar != null) {

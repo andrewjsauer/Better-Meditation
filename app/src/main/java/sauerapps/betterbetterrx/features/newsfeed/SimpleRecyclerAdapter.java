@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.Adapter;
+package sauerapps.betterbetterrx.features.newsfeed;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.utilities;
+package sauerapps.betterbetterrx.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

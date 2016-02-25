@@ -8,25 +8,26 @@
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
-    <action android:name="android.intent.action.HEADSET_PLUG" />
+    <action android:name="android.intent.action.HEADSET_PLUG"/>
 
     <application
-        android:name=".BetterBetterApplication"
+        android:name=".app.BetterBetterApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".features.newsfeed.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".features.newsfeed.MainActivity"/>
         </activity>
-        <activity android:name=".Ui.Ui.LoginActivity">
+        <activity android:name=".features.authentication.login.LoginActivity">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -34,21 +35,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Ui.Ui.CreateAccountActivity"
+            android:name=".features.authentication.createAccount.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
-            android:parentActivityName=".Ui.Ui.LoginActivity">
+            android:parentActivityName=".features.authentication.login.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Ui.Ui.LoginActivity"/>
+                android:value=".features.authentication.login.LoginActivity"/>
         </activity>
         <activity
-            android:name=".Ui.Ui.FifteenMeditationActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".features.meditations.FifteenMeditationActivity"
+            android:parentActivityName=".features.newsfeed.MainActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Ui.Ui.GratitudeActivity"
-                  android:parentActivityName=".MainActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".features.gratitudes.GratitudeActivity"
+            android:parentActivityName=".features.newsfeed.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name=".features.meditation.MeditationActivity">
         </activity>
     </application>
 

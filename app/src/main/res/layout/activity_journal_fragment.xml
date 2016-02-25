@@ -9,16 +9,6 @@
     tools:context="sauerapps.betterbetterrx.features.gratitudes.GratitudeActivity"
     >
 
-
-    <LinearLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/toolbar"/>
-
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
@@ -47,7 +37,7 @@
                 android:id="@+id/secondGratefulLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="15dp">
 
                 <EditText
                     android:id="@+id/secondGratefulText"
@@ -61,7 +51,7 @@
                 android:id="@+id/thirdGratefulLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="15dp">
 
                 <EditText
                     android:id="@+id/thirdGratefulText"
@@ -75,7 +65,7 @@
                 android:id="@+id/fourthGratefulLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="15dp">
 
                 <EditText
                     android:id="@+id/fourthGratefulText"
@@ -90,7 +80,7 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="15dp">
 
                 <EditText
                     android:id="@+id/fifthGratefulText"
@@ -106,13 +96,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/input_field_height"
                 android:background="@color/primary_light_dark"
-                android:text="DONE"
+                android:text="SAVE"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="30dp"/>
 
         </LinearLayout>
-
-    </LinearLayout>
-
 
 </ScrollView>

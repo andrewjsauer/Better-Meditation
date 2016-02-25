@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.utilities;
+package sauerapps.betterbetterrx.utils;
 
 import sauerapps.betterbetterrx.BuildConfig;
 

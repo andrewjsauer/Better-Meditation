@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.Ui.Ui;
+package sauerapps.betterbetterrx.features.authentication.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -39,12 +39,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import sauerapps.betterbetterrx.BaseActivity;
-import sauerapps.betterbetterrx.MainActivity;
-import sauerapps.betterbetterrx.Model.User;
+import sauerapps.betterbetterrx.app.BaseActivity;
+import sauerapps.betterbetterrx.features.authentication.createAccount.CreateAccountActivity;
+import sauerapps.betterbetterrx.features.newsfeed.MainActivity;
+import sauerapps.betterbetterrx.database.User;
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.utilities.Constants;
-import sauerapps.betterbetterrx.utilities.Utils;
+import sauerapps.betterbetterrx.utils.Constants;
+import sauerapps.betterbetterrx.utils.Utils;
 
 /**
  * Represents Sign in screen and functionality of the app

@@ -1,11 +1,12 @@
-package sauerapps.betterbetterrx.Ui.Ui;
+package sauerapps.betterbetterrx.features.authentication.createAccount;
 
 
-import sauerapps.betterbetterrx.BaseActivity;
-import sauerapps.betterbetterrx.Model.User;
+import sauerapps.betterbetterrx.features.authentication.login.LoginActivity;
+import sauerapps.betterbetterrx.app.BaseActivity;
+import sauerapps.betterbetterrx.database.User;
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.utilities.Constants;
-import sauerapps.betterbetterrx.utilities.Utils;
+import sauerapps.betterbetterrx.utils.Constants;
+import sauerapps.betterbetterrx.utils.Utils;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

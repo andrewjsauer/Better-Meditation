@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.Model;
+package sauerapps.betterbetterrx.features.newsfeed;
 
 /**
  * Created by andrewsauer on 2/9/16.

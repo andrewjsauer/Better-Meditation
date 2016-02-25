@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.Model;
+package sauerapps.betterbetterrx.database;
 
 import java.util.HashMap;
 

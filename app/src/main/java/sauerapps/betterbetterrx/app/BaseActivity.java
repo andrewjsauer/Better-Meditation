@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx;
+package sauerapps.betterbetterrx.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,9 +19,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import sauerapps.betterbetterrx.Ui.Ui.CreateAccountActivity;
-import sauerapps.betterbetterrx.Ui.Ui.LoginActivity;
-import sauerapps.betterbetterrx.utilities.Constants;
+import sauerapps.betterbetterrx.R;
+import sauerapps.betterbetterrx.features.authentication.createAccount.CreateAccountActivity;
+import sauerapps.betterbetterrx.features.authentication.login.LoginActivity;
+import sauerapps.betterbetterrx.utils.Constants;
 
 
 public abstract class BaseActivity extends AppCompatActivity implements

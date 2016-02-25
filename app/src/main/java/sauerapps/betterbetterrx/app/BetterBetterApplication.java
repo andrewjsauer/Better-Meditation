@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx;
+package sauerapps.betterbetterrx.app;
 
 import com.firebase.client.Firebase;
 
