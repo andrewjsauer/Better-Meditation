@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar" />
+        <include layout="@layout/main_toolbar" />
 
     </LinearLayout>
 

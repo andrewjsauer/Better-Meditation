@@ -3,6 +3,16 @@
     <string name="menu_logout">Logout</string>
 
 
+
+    <!--Media-->
+    <string name="currently_playing_song">Song currently playing</string>
+    <string name="currently_playing_artist">Artist of currently playing song</string>
+    <string name="currently_playing_extra_info">Extra info for currently playing song</string>
+    <string name="play_item">Play item</string>
+    <string name="play_pause">play or pause</string>
+
+
+
     <string name="pager_title_shopping_lists">Shopping Lists</string>
     <string name="pager_title_meals">Meals</string>
     <string name="remove_item_option">Remove Item</string>

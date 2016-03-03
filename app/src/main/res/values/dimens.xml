@@ -28,5 +28,15 @@
 
     <dimen name="statusbar_size">24dp</dimen>
 
+    <dimen name="row_height">72dp</dimen>
+    <dimen name="image_padding">4dp</dimen>
+    <dimen name="image_size">48dp</dimen>
+    <dimen name="activity_vertical_inner_margin">56dp</dimen>
+
+
+    <!-- playback controls -->
+    <dimen name="playback_controls_albumart_horizontal_margin">8dp</dimen>
+    <dimen name="playback_controls_albumart_size">64dp</dimen>
+    <dimen name="playback_controls_padding">8dp</dimen>
 
 </resources>
