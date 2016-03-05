@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+
+    <include layout="@layout/main_toolbar"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+        >
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerviewRx"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            >
+        </android.support.v7.widget.RecyclerView>
+
+
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/journal_button"
+            android:layout_width="@dimen/fab_size"
+            android:layout_height="@dimen/fab_size"
+            app:elevation="6dp"
+            app:backgroundTint="@color/fab_main"
+            app:pressedTranslationZ="12dp"
+            android:src="@drawable/ic_border_color_24dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:tint="@android:color/white"
+            android:tintMode="src_in"
+            android:layout_margin="@dimen/fab_margin"
+            android:focusable="false"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>

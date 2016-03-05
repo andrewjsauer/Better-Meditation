@@ -42,7 +42,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".features.authentication.login.LoginActivity"/>
         </activity>
-        <activity android:name=".features.meditation.MeditationActivity">
+        <activity android:name=".features.meditation.audioSection.AudioActivity"
+            android:parentActivityName=".features.newsfeed.MainActivity">
         </activity>
     </application>
 

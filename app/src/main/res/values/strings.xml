@@ -3,14 +3,12 @@
     <string name="menu_logout">Logout</string>
 
 
-
     <!--Media-->
     <string name="currently_playing_song">Song currently playing</string>
     <string name="currently_playing_artist">Artist of currently playing song</string>
     <string name="currently_playing_extra_info">Extra info for currently playing song</string>
     <string name="play_item">Play item</string>
     <string name="play_pause">play or pause</string>
-
 
 
     <string name="pager_title_shopping_lists">Shopping Lists</string>
@@ -227,5 +225,9 @@
     <string name="stop_casting">Stop Casting</string>
     <string name="label_pause">Pause</string>
     <string name="label_play">Play</string>
+    <string name="track_image_description">Track image</string>
+    <string name="reset_button_description">Reset audio playing</string>
+    <string name="fast_forward_button_description">Fast forward audio playing</string>
+    <string name="track_time_description">Audio time shown</string>
 
 </resources>

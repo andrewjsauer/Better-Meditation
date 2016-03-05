@@ -39,4 +39,7 @@
     <dimen name="playback_controls_albumart_size">64dp</dimen>
     <dimen name="playback_controls_padding">8dp</dimen>
 
+    <!-- Screen margins -->
+    <dimen name="screen_padding_sides">16dp</dimen>
+
 </resources>

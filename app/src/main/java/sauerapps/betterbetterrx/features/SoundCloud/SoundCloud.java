@@ -1,16 +1,9 @@
-package sauerapps.betterbetterrx.features.SoundCloud;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+package sauerapps.betterbetterrx.features.soundcloud;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SoundCloud {
-//
-//    static Gson gson = new GsonBuilder()
-//            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-//            .create();
 
     private static final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Config.API_URL)

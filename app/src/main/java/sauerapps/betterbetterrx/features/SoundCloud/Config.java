@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.SoundCloud;
+package sauerapps.betterbetterrx.features.soundcloud;
 
 /**
  * Created by andrewsauer on 3/1/16.

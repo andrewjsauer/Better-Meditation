@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.SoundCloud;
+package sauerapps.betterbetterrx.features.soundcloud;
 
 import com.google.gson.annotations.SerializedName;
 
