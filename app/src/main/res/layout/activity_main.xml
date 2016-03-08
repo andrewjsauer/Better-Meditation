@@ -1,50 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:id="@+id/content_frame"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".features.newsfeed.MainActivity"
-             >
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/content_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".features.newsfeed.MainActivity"
+    >
 
 
-        <include layout="@layout/main_toolbar" />
-
-
-    <ImageButton
-        android:id="@+id/single_meditation"
-        style="@style/Widget.BetterBetter.Button.Login"
-        android:layout_width="200dp"
-        android:layout_height="@dimen/input_field_height"
-        android:background="@color/primary_light_dark"
-        android:src="@drawable/ic_person_24dp"
-        android:tint="@android:color/white"
-        android:tintMode="src_in"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/toolbar"/>
-
-    <ImageButton
-        android:id="@+id/group_meditation"
-        style="@style/Widget.BetterBetter.Button.Login"
-        android:layout_width="200dp"
-        android:layout_height="@dimen/input_field_height"
-        android:background="@color/primary_light_dark"
-        android:src="@drawable/ic_group_24dp"
-        android:tint="@android:color/white"
-        android:tintMode="src_in"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/single_meditation"
-        android:layout_marginBottom="10dp"/>
-
+        <include layout="@layout/main_toolbar"
+            android:id="@+id/toolbar_main_activity"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:layout_below="@+id/group_meditation"/>
+        android:layout_below="@+id/toolbar_main_activity"
+        />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/meditation_fab"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_gravity="bottom|end"
+        app:elevation="6dp"
+        app:backgroundTint="@color/light_blue"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_favorite_24dp"
+        android:tint="@android:color/white"
+        android:tintMode="src_in"
+        android:layout_margin="@dimen/fab_margin"
+        android:focusable="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/group_meditation_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="160dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:visibility="invisible"
+        app:backgroundTint="@color/purple"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_group_24dp"
+        android:tint="@android:color/white"
+        android:tintMode="src_in"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/single_meditation_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="90dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:backgroundTint="@color/red"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_person_24dp"
+        android:tint="@android:color/white"
+        android:tintMode="src_in"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
-

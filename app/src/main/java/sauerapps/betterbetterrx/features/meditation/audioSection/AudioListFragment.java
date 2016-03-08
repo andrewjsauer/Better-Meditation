@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +102,9 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
                     loadTracks(response.body());
                     Log.d(TAG, "Something worked");
                 } else {
+
                     int statusCode = response.code();
+                    Toast.makeText(getActivity(), "Error: " + statusCode, Toast.LENGTH_LONG).show();
                     Log.d(TAG, statusCode + "");
                 }
             }
@@ -109,6 +112,7 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
             @Override
             public void onFailure(Call<List<Track>> call, Throwable t) {
                 Log.d(TAG, "Error: " + t);
+                Toast.makeText(getActivity(), "Error: Check internet connectivity. " + t, Toast.LENGTH_LONG).show();
             }
         });
     }

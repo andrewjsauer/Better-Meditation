@@ -43,7 +43,8 @@
                 android:value=".features.authentication.login.LoginActivity"/>
         </activity>
         <activity android:name=".features.meditation.audioSection.AudioActivity"
-            android:parentActivityName=".features.newsfeed.MainActivity">
+            android:parentActivityName=".features.newsfeed.MainActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

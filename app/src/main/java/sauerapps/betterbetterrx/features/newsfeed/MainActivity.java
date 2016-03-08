@@ -2,11 +2,14 @@ package sauerapps.betterbetterrx.features.newsfeed;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -38,12 +41,12 @@ public class MainActivity extends BaseActivity {
 
     private SimpleRecyclerAdapter mSimpleRecyclerAdapter;
 
-    @Bind(R.id.toolbar)
+    protected Boolean isFabOpen = false;
+    protected FloatingActionButton mMeditationFab, mSingleMeditationFab, mGroupMeditationFab;
+    protected Animation fab_open, fab_close, rotate_forward, rotate_backward;
+
+    @Bind(R.id.toolbar_main_activity)
     protected Toolbar mToolbar;
-    @Bind(R.id.single_meditation)
-    protected ImageButton mSingleMeditation;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +60,36 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initializeScreen() {
-
         setSupportActionBar(mToolbar);
 
-        mSingleMeditation.setOnClickListener(new View.OnClickListener() {
+
+        // fab section
+        mMeditationFab = (FloatingActionButton) findViewById(R.id.meditation_fab);
+        mSingleMeditationFab = (FloatingActionButton) findViewById(R.id.single_meditation_fab);
+        mGroupMeditationFab = (FloatingActionButton) findViewById(R.id.group_meditation_fab);
+
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
+
+        mMeditationFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAnimateFAB();
+            }
+        });
+
+
+
+
+        mSingleMeditationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AudioActivity.class);
                 startActivity(intent);
             }
         });
-
 
         // example recycler view
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
@@ -89,7 +111,7 @@ public class MainActivity extends BaseActivity {
             recyclerView.setAdapter(mSimpleRecyclerAdapter);
         }
 
-
+        // getting first name for toolbar reference
         mUserRefListener = mUserRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -109,5 +131,23 @@ public class MainActivity extends BaseActivity {
                                 firebaseError.getMessage());
             }
         });
+    }
+
+    private void getAnimateFAB() {
+            if (isFabOpen) {
+                mMeditationFab.startAnimation(rotate_backward);
+                mSingleMeditationFab.startAnimation(fab_close);
+                mGroupMeditationFab.startAnimation(fab_close);
+                mSingleMeditationFab.setClickable(false);
+                mGroupMeditationFab.setClickable(false);
+                isFabOpen = false;
+            } else {
+                mMeditationFab.startAnimation(rotate_forward);
+                mSingleMeditationFab.startAnimation(fab_open);
+                mGroupMeditationFab.startAnimation(fab_open);
+                mSingleMeditationFab.setClickable(true);
+                mGroupMeditationFab.setClickable(true);
+                isFabOpen = true;
+            }
     }
 }

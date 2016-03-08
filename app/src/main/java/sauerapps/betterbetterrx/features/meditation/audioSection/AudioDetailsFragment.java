@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import icepick.Icepick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.features.soundcloud.Config;
 import sauerapps.betterbetterrx.features.soundcloud.Track;
@@ -111,6 +112,13 @@ public class AudioDetailsFragment extends Fragment {
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
+        if (!mAudioFocusGranted && requestAudioFocus()) {
+            // 2. Kill off any other play back sources
+            forceMusicStop();
+            // 3. Register broadcast receiver for player intents
+            setupBroadcastReceiver();
+        }
+
         try {
             mProgressBar.setVisibility(View.VISIBLE);
             mMediaPlayer.setDataSource(mTrack.getStreamURL() + "?client_id=" + Config.CLIENT_ID);
@@ -192,7 +200,6 @@ public class AudioDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         mTrackPosition = AudioListFragment.mTrackPosition;
 
         ImageView track_image = (ImageView) view.findViewById(R.id.track_image);
@@ -210,8 +217,11 @@ public class AudioDetailsFragment extends Fragment {
                 .error(R.drawable.ic_default_art)
                 .placeholder(R.drawable.ic_default_art)
                 .into(track_image);
+
         // TODO make exit fade work using trackNumber position, tried if() and switch statements, no prevail
 
+        getActivity().registerReceiver(headsetDisconnected, new IntentFilter(
+                Intent.ACTION_HEADSET_PLUG));
     }
 
 
@@ -257,8 +267,6 @@ public class AudioDetailsFragment extends Fragment {
 
         getActivity().registerReceiver(audioBecomingNoisy, new IntentFilter(
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
-        getActivity().registerReceiver(headsetDisconnected, new IntentFilter(
-                Intent.ACTION_HEADSET_PLUG));
 
         getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -298,7 +306,16 @@ public class AudioDetailsFragment extends Fragment {
             }
         };
 
+        durationHandler.postDelayed(updateDuration, 100);
+
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        durationHandler.removeCallbacks(updateDuration);
+    }
+
 
     private void play() {
         if (!mAudioIsPlaying) {
@@ -364,7 +381,7 @@ public class AudioDetailsFragment extends Fragment {
                     TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining)
                             - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining))));
 
-            //repeat yourself that again in 100 miliseconds
+            //repeat that again in 100 miliseconds
             durationHandler.postDelayed(this, 100);
         }
     };
