@@ -3,7 +3,6 @@ package sauerapps.betterbetterrx.features.meditation.audioSection;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,14 +25,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.meditation.audioSection.journal.JournalFragment;
 import sauerapps.betterbetterrx.features.soundcloud.SCService;
 import sauerapps.betterbetterrx.features.soundcloud.SoundCloud;
 import sauerapps.betterbetterrx.features.soundcloud.Track;
+import sauerapps.betterbetterrx.utils.Constants;
 
 public class AudioListFragment extends Fragment implements AudioClickListener {
 
     private static final String TAG = AudioListFragment.class.getSimpleName();
+
+    private String mEncodedEmail;
 
     public static Track mTrack;
     public static int mTrackPosition;
@@ -46,14 +47,34 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
     protected RecyclerView mRecyclerView;
     @Bind(R.id.toolbar)
     protected Toolbar mToolbar;
-    @Bind(R.id.journal_button)
-    protected FloatingActionButton mJournalButton;
+
+
+
+    public AudioListFragment() {
+        /* Required empty public constructor */
+    }
+
+    public static AudioListFragment newInstance(String encodedEmail) {
+        AudioListFragment fragment = new AudioListFragment();
+        Bundle args = new Bundle();
+        args.putString(Constants.KEY_ENCODED_EMAIL, encodedEmail);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
+        }
+    }
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.audio_list_fragment, container, false);
+        View v = inflater.inflate(R.layout.fragment_audio_list, container, false);
         ButterKnife.bind(this, v);
 
         BaseActivity activity = (BaseActivity) getActivity();
@@ -61,20 +82,6 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-        mJournalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JournalFragment journalFragment = new JournalFragment();
-
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, journalFragment, null)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
 
         return v;
     }
@@ -91,7 +98,6 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
         mAdapter = new TrackRxAdapter(mListItems, getContext(), this);
 
         mRecyclerView.setAdapter(mAdapter);
-
 
         SCService scService = SoundCloud.getService();
         Call<List<Track>> call = scService.getRecentTracks();
@@ -125,23 +131,21 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
 
     @Override
     public void onTrackClicked(TrackRxHolder holder, int position) {
-        int trackNumber = position;
-
         Track track = mListItems.get(position);
 
         mTrack = track;
         mTrackPosition = position;
 
-        AudioDetailsFragment trackDetails = AudioDetailsFragment.newInstance(trackNumber);
+        AudioDetailsFragment audioDetailsFragment = AudioDetailsFragment.newInstance(mEncodedEmail);
 
         // Note that we need the API version check here because the actual transition classes (e.g. Fade)
         // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment
         // ARE available in the support library (though they don't do anything on API < 21)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            trackDetails.setSharedElementEnterTransition(new AudioDetailsTransition());
-            trackDetails.setEnterTransition(new Fade());
+            audioDetailsFragment.setSharedElementEnterTransition(new AudioDetailsTransition());
+            audioDetailsFragment.setEnterTransition(new Fade());
             setExitTransition(new Fade());
-            trackDetails.setSharedElementReturnTransition(new AudioDetailsTransition());
+            audioDetailsFragment.setSharedElementReturnTransition(new AudioDetailsTransition());
         }
 
         getActivity().getSupportFragmentManager()
@@ -149,7 +153,7 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
                 .addSharedElement(holder.mTrackImageView, "imageView")
                 .addSharedElement(holder.mTitleDescription, "descriptionView")
                 .addSharedElement(holder.mTitleTextView, "titleView")
-                .replace(R.id.container, trackDetails)
+                .replace(R.id.container_audio, audioDetailsFragment)
                 .addToBackStack(null)
                 .commit();
     }

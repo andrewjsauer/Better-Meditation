@@ -1,5 +1,6 @@
 package sauerapps.betterbetterrx.features.meditation.audioSection;
 
+import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +9,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -29,14 +29,13 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import icepick.Icepick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.features.soundcloud.Config;
 import sauerapps.betterbetterrx.features.soundcloud.Track;
 
 public class AudioDetailsFragment extends Fragment {
 
-    private static final String ARG_TRACK_NUMBER = "argTrackNumber";
+    private static final String ARG_ENCODED_EMAIL = "argEncodedEmail";
     private static final String TAG = AudioDetailsFragment.class.getSimpleName();
 
     private static final String CMD_NAME = "command";
@@ -74,6 +73,8 @@ public class AudioDetailsFragment extends Fragment {
     private boolean mReceiverRegistered = false;
     private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener;
 
+    protected String mEncodedEmail;
+
     @Bind(R.id.play)
     protected ImageButton mPlay;
     @Bind(R.id.pause)
@@ -89,12 +90,9 @@ public class AudioDetailsFragment extends Fragment {
     @Bind(R.id.track_exit_button)
     protected ImageButton mExitButton;
 
-
-
-    public static AudioDetailsFragment newInstance(@IntRange(from = 1, to = 10) int trackNumber) {
+    public static AudioDetailsFragment newInstance(String encodedEmail) {
         Bundle args = new Bundle();
-        args.putInt(ARG_TRACK_NUMBER, trackNumber);
-
+        args.putString(ARG_ENCODED_EMAIL, encodedEmail);
         AudioDetailsFragment fragment = new AudioDetailsFragment();
         fragment.setArguments(args);
 
@@ -104,8 +102,10 @@ public class AudioDetailsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.audio_details_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_audio_details, container, false);
         ButterKnife.bind(this, view);
+
+        mEncodedEmail = getArguments().getString(ARG_ENCODED_EMAIL);
 
         mTrack = AudioListFragment.mTrack;
 
@@ -170,6 +170,14 @@ public class AudioDetailsFragment extends Fragment {
         mExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (timeElapsed >= 10000) {
+
+                    DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, timeElapsed);
+                    dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
+
+                }
+
                 if (mMediaPlayer != null) {
                     getActivity().getSupportFragmentManager().popBackStack();
 
@@ -200,14 +208,12 @@ public class AudioDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         mTrackPosition = AudioListFragment.mTrackPosition;
 
         ImageView track_image = (ImageView) view.findViewById(R.id.track_image);
         TextView title_text = (TextView) view.findViewById(R.id.track_title);
         TextView title_description = (TextView) view.findViewById(R.id.track_artist);
-
-        Bundle args = getArguments();
-        int trackNumber = args.containsKey(ARG_TRACK_NUMBER) ? args.getInt(ARG_TRACK_NUMBER) : 1;
 
         title_description.setText(mTrack.getDescription());
         title_text.setText(mTrack.getTitle());
@@ -236,6 +242,13 @@ public class AudioDetailsFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    if (timeElapsed >= 10000) {
+
+                        DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, timeElapsed);
+                        dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
+
+                    }
 
                     getActivity().getSupportFragmentManager().popBackStack();
 
@@ -360,7 +373,6 @@ public class AudioDetailsFragment extends Fragment {
         int currentPosition = mMediaPlayer.getCurrentPosition();
 
         if(currentPosition + seekForwardTime <= mMediaPlayer.getDuration()){
-
             mMediaPlayer.seekTo(currentPosition + seekForwardTime);
         }
         else {

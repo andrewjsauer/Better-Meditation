@@ -8,7 +8,6 @@
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
     <action android:name="android.intent.action.HEADSET_PLUG"/>
 
@@ -42,9 +41,44 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".features.authentication.login.LoginActivity"/>
         </activity>
-        <activity android:name=".features.meditation.audioSection.AudioActivity"
+        <activity
+            android:name=".features.meditation.audioSection.AudioActivity"
             android:parentActivityName=".features.newsfeed.MainActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".features.journal.JournalActivity">
+        </activity>
+
+        <activity
+            android:name=".features.journal.activeListDetails.JournalListDetailsActivity"
+            android:label="@string/title_activity_list_details"
+            android:parentActivityName=".features.newsfeed.MainActivity"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".features.newsfeed.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".features.SettingsActivity"
+            android:label="@string/action_settings" />
+        <activity
+            android:name=".features.sharing.ShareListActivity"
+            android:label="@string/title_activity_share_list"
+            android:parentActivityName=".features.journal.activeListDetails.JournalListDetailsActivity"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".features.journal.activeListDetails.JournalListDetailsActivity" />
+        </activity>
+
+        <activity
+            android:name=".features.sharing.AddFriendActivity"
+            android:label="@string/title_activity_add_friend"
+            android:parentActivityName=".features.sharing.ShareListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".features.sharing.ShareListActivity" />
         </activity>
     </application>
 

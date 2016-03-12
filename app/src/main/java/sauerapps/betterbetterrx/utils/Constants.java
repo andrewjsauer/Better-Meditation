@@ -12,25 +12,27 @@ public class Constants {
      * where user lists are stored (ie "userLists")
      */
     public static final String FIREBASE_LOCATION_USERS = "users";
-    public static final String FIREBASE_LOCATION_USER_LISTS = "userLists";
+    public static final String FIREBASE_LOCATION_JOURNAL_ENTERIES = "userJournalEnteries";
     public static final String FIREBASE_LOCATION_USER_FRIENDS = "userFriends";
-    public static final String FIREBASE_LOCATION_LISTS_SHARED_WITH = "sharedWith";
+    public static final String FIREBASE_LOCATION_JOURNAL_LISTS_SHARED_WITH = "sharedWith";
     public static final String FIREBASE_LOCATION_UID_MAPPINGS = "uidMappings";
     public static final String FIREBASE_LOCATION_OWNER_MAPPINGS = "ownerMappings";
+    public static final String FIREBASE_LOCATION_JOURNAL_ENTRY_ITEMS = "journalEntryItems";
+
+    public static final String FIREBASE_LOCATION_USER_AUDIO = "userAudio";
+
+
 
 
 
     /**
      * Constants for Firebase object properties
      */
-    public static final String FIREBASE_PROPERTY_BOUGHT = "bought";
     public static final String FIREBASE_PROPERTY_BOUGHT_BY = "boughtBy";
-    public static final String FIREBASE_PROPERTY_LIST_NAME = "listName";
     public static final String FIREBASE_PROPERTY_TIMESTAMP_LAST_CHANGED = "timestampLastChanged";
     public static final String FIREBASE_PROPERTY_TIMESTAMP = "timestamp";
-    public static final String FIREBASE_PROPERTY_ITEM_NAME = "itemName";
+    public static final String FIREBASE_PROPERTY_ITEM_ENTRY = "itemEntry";
     public static final String FIREBASE_PROPERTY_EMAIL = "email";
-    public static final String FIREBASE_PROPERTY_USERS_SHOPPING = "usersShopping";
     public static final String FIREBASE_PROPERTY_USER_HAS_LOGGED_IN_WITH_PASSWORD = "hasLoggedInWithPassword";
     public static final String FIREBASE_PROPERTY_TIMESTAMP_LAST_CHANGED_REVERSE = "timestampLastChangedReverse";
 
@@ -40,9 +42,15 @@ public class Constants {
      */
     public static final String FIREBASE_URL = BuildConfig.UNIQUE_FIREBASE_ROOT_URL;
     public static final String FIREBASE_URL_USERS = FIREBASE_URL + "/" + FIREBASE_LOCATION_USERS;
-    public static final String FIREBASE_URL_USER_LISTS = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_LISTS;
+    public static final String FIREBASE_URL_USER_LISTS = FIREBASE_URL + "/" + FIREBASE_LOCATION_JOURNAL_ENTERIES;
     public static final String FIREBASE_URL_USER_FRIENDS = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_FRIENDS;
-    public static final String FIREBASE_URL_LISTS_SHARED_WITH = FIREBASE_URL + "/" + FIREBASE_LOCATION_LISTS_SHARED_WITH;
+    public static final String FIREBASE_URL_LISTS_SHARED_WITH = FIREBASE_URL + "/" + FIREBASE_LOCATION_JOURNAL_LISTS_SHARED_WITH;
+
+    public static final String FIREBASE_URL_USER_AUDIO = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_AUDIO;
+
+    public static final String FIREBASE_URL_SHOPPING_LIST_ITEMS = FIREBASE_URL + "/" + FIREBASE_LOCATION_JOURNAL_ENTRY_ITEMS;
+
+
 
     /**
      * Constants for bundles, extras and shared preferences keys

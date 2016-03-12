@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.authentication;
+package sauerapps.betterbetterrx.model;
 
 import java.util.HashMap;
 

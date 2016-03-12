@@ -13,10 +13,12 @@ public class AudioActivity extends BaseActivity {
 
         setContentView(R.layout.activity_audio);
 
+        AudioListFragment audioListFragment = AudioListFragment.newInstance(mEncodedEmail);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, new AudioListFragment())
+                    .add(R.id.container_audio, audioListFragment)
                     .commit();
         }
     }
