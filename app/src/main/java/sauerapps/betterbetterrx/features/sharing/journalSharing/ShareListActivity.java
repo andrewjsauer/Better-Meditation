@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.sharing;
+package sauerapps.betterbetterrx.features.sharing.journalSharing;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -57,6 +57,7 @@ public class ShareListActivity extends BaseActivity {
          * Create Firebase references
          */
         Firebase currentUserFriendsRef = new Firebase(Constants.FIREBASE_URL_USER_FRIENDS).child(mEncodedEmail);
+
         mActiveListRef = new Firebase(Constants.FIREBASE_URL_USER_LISTS).child(mEncodedEmail).child(mListId);
         mSharedWithRef = new Firebase (Constants.FIREBASE_URL_LISTS_SHARED_WITH).child(mListId);
 
@@ -71,7 +72,7 @@ public class ShareListActivity extends BaseActivity {
                 JournalList journalList = dataSnapshot.getValue(JournalList.class);
 
                 /**
-                 * Saving the most recent version of current shopping list into mJournalList
+                 * Saving the most recent version of current list into mJournalList
                  * and pass it to setJournalList() if present
                  * finish() the activity otherwise
                  */

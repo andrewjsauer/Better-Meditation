@@ -3,14 +3,18 @@
                 xmlns:tool="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:layout_height="238dp"
+                android:background="@color/grey"
+                android:clickable="false"
+                android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="150dp"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:id="@+id/linearLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,17 +25,26 @@
             <ImageView
                 android:id="@+id/summary_total_time_icon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:src="@drawable/ic_access_time_24dp"
-                />
+                android:src="@drawable/ic_access_time_24dp"/>
 
             <ImageView
                 android:id="@+id/summary_total_sessions_icon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@drawable/ic_star_outline_24dp"/>
+
+            <ImageView
+                android:id="@+id/summary_journal_enteries"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/ic_favorite_outline_24dp"/>
 
         </LinearLayout>
 
@@ -48,9 +61,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:text="total meditation"
+                android:text="meditations"
                 android:textAlignment="center"
-                android:textSize="20sp"/>
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/summary_total_sessions_title"
@@ -58,9 +71,19 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:text="total sessions"
+                android:text="sessions"
                 android:textAlignment="center"
-                android:textSize="20sp"/>
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/summary_total_journal_enteries_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="8dp"
+                android:text="entries"
+                android:textAlignment="center"
+                android:textSize="15sp"/>
 
         </LinearLayout>
 
@@ -75,9 +98,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="30sp"
                 android:text="---"
+                android:textAlignment="center"
+                android:textSize="15sp"
                 tools:text="15:08"/>
 
             <TextView
@@ -85,13 +108,86 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="30sp"
                 android:text="---"
+                android:textAlignment="center"
+                android:textSize="15sp"
                 tools:text="2"/>
+
+            <TextView
+                android:id="@+id/summary_total_journal_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="---"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                tools:text="10"
+                />
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:padding="8dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/last_meditation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="your last meditation "
+            android:textSize="12sp"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentTop="false"/>
+
+        <TextView
+            android:id="@+id/last_meditation_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="22 Mar 2016 at 4:16 PM"
+            android:textSize="12dp"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentBottom="false"
+            android:layout_toRightOf="@+id/last_meditation_title"
+            android:layout_alignParentTop="false"
+            />
+
+        <TextView
+            android:id="@+id/last_meditation_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0:15"
+            android:textSize="28sp"
+            android:layout_alignParentBottom="true"
+            android:text="--:--"
+            android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:id="@+id/last_meditation_track_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="15 Min Meditation"
+            android:textSize="17sp"
+            android:layout_alignParentTop="false"
+            android:layout_above="@+id/last_meditation_track_description"
+            />
+
+        <TextView
+            android:id="@+id/last_meditation_track_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Brother Camillus, THS"
+            android:textSize="13sp"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
 
 </RelativeLayout>

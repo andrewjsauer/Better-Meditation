@@ -22,9 +22,6 @@ import sauerapps.betterbetterrx.utils.Utils;
  */
 public class AddListItemDialogFragment extends EditListDialogFragment {
 
-    /**
-     * Public static constructor that creates fragment and passes a bundle with data into it when adapter is created
-     */
     public static AddListItemDialogFragment newInstance(JournalList journalList, String listId,
                                                         String encodedEmail,
                                                         HashMap<String, User> sharedWithUsers) {
@@ -36,9 +33,6 @@ public class AddListItemDialogFragment extends EditListDialogFragment {
         return addListItemDialogFragment;
     }
 
-    /**
-     * Initialize instance variables with data from bundle
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,25 +40,17 @@ public class AddListItemDialogFragment extends EditListDialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        /** {@link EditListDialogFragment#createDialogHelper(int)} is a
-         * superclass method that creates the dialog
-         **/
         return super.createDialogHelper(R.string.positive_button_add_list_item);
     }
 
-    /**
-     * Adds new item to the current list
-     */
     @Override
     protected void doListEdit() {
         String mItemName = mEditTextForList.getText().toString();
-        /**
-         * Adds list item if the input name is not empty
-         */
+
         if (!mItemName.equals("")) {
 
             Firebase firebaseRef = new Firebase(Constants.FIREBASE_URL);
-            Firebase itemsRef = new Firebase(Constants.FIREBASE_URL_SHOPPING_LIST_ITEMS).child(mListId);
+            Firebase itemsRef = new Firebase(Constants.FIREBASE_URL_JOURNAL_LIST_ITEMS).child(mListId);
 
             /* Make a map for the item you are adding */
             HashMap<String, Object> updatedItemToAddMap = new HashMap<String, Object>();
@@ -97,9 +83,6 @@ public class AddListItemDialogFragment extends EditListDialogFragment {
                 }
             });
 
-            /**
-             * Close the dialog fragment when done
-             */
             AddListItemDialogFragment.this.getDialog().cancel();
         }
     }

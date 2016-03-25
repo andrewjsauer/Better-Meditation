@@ -67,6 +67,9 @@ public class AudioDetailsFragment extends Fragment {
     private double timeElapsed = 0;
     private int seekForwardTime = 5000; // 5000 milliseconds
 
+    private String mTrackTitle;
+    private String mTrackDescription;
+
     private boolean mAudioIsPlaying = false;
     private boolean mAudioFocusGranted = false;
     private BroadcastReceiver mIntentReceiver;
@@ -171,33 +174,8 @@ public class AudioDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (timeElapsed >= 10000) {
+                exitAudioDetails();
 
-                    DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, timeElapsed);
-                    dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
-
-                }
-
-                if (mMediaPlayer != null) {
-                    getActivity().getSupportFragmentManager().popBackStack();
-
-                    mMediaPlayer.stop();
-
-                    if (mAudioFocusGranted && mAudioIsPlaying) {
-                        mAudioIsPlaying = false;
-                        // 2. Give up audio focus
-                        abandonAudioFocus();
-                    }
-
-                    durationHandler.removeCallbacks(updateDuration);
-                    mMediaPlayer.release();
-                    mMediaPlayer = null;
-
-                    getActivity().unregisterReceiver(headsetDisconnected);
-                    getActivity().unregisterReceiver(audioBecomingNoisy);
-                    getActivity().unregisterReceiver(mIntentReceiver);
-
-                }
             }
         });
 
@@ -215,8 +193,11 @@ public class AudioDetailsFragment extends Fragment {
         TextView title_text = (TextView) view.findViewById(R.id.track_title);
         TextView title_description = (TextView) view.findViewById(R.id.track_artist);
 
-        title_description.setText(mTrack.getDescription());
-        title_text.setText(mTrack.getTitle());
+        mTrackDescription = mTrack.getDescription();
+        mTrackTitle = mTrack.getTitle();
+
+        title_description.setText(mTrackDescription);
+        title_text.setText(mTrackTitle);
 
         Picasso.with(getActivity())
                 .load(mTrack.getArtworkURL())
@@ -243,34 +224,8 @@ public class AudioDetailsFragment extends Fragment {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                    if (timeElapsed >= 10000) {
+                    exitAudioDetails();
 
-                        DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, timeElapsed);
-                        dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
-
-                    }
-
-                    getActivity().getSupportFragmentManager().popBackStack();
-
-                    if (mMediaPlayer != null) {
-
-                        mMediaPlayer.stop();
-
-                        if (mAudioFocusGranted && mAudioIsPlaying) {
-                            mAudioIsPlaying = false;
-                            // 2. Give up audio focus
-                            abandonAudioFocus();
-                        }
-
-                        durationHandler.removeCallbacks(updateDuration);
-                        mMediaPlayer.release();
-                        mMediaPlayer = null;
-
-                        getActivity().unregisterReceiver(headsetDisconnected);
-                        getActivity().unregisterReceiver(audioBecomingNoisy);
-                        getActivity().unregisterReceiver(mIntentReceiver);
-
-                    }
                     return true;
                 }
                 return false;
@@ -308,6 +263,7 @@ public class AudioDetailsFragment extends Fragment {
                         pause();
                         break;
                     case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                        pause();
                         Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
                         break;
                     case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
@@ -327,6 +283,39 @@ public class AudioDetailsFragment extends Fragment {
     public void onPause() {
         super.onPause();
         durationHandler.removeCallbacks(updateDuration);
+    }
+
+    private void exitAudioDetails() {
+        if (timeElapsed >= 10000) {
+
+            DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, timeElapsed,
+                    mTrackDescription, mTrackTitle);
+            dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
+
+        }
+
+        getActivity().getSupportFragmentManager().popBackStack();
+
+        if (mMediaPlayer != null) {
+
+
+            mMediaPlayer.stop();
+
+            if (mAudioFocusGranted && mAudioIsPlaying) {
+                mAudioIsPlaying = false;
+                // 2. Give up audio focus
+                abandonAudioFocus();
+            }
+
+            durationHandler.removeCallbacks(updateDuration);
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+
+            getActivity().unregisterReceiver(headsetDisconnected);
+            getActivity().unregisterReceiver(audioBecomingNoisy);
+            getActivity().unregisterReceiver(mIntentReceiver);
+
+        }
     }
 
 
@@ -388,7 +377,8 @@ public class AudioDetailsFragment extends Fragment {
 
             //set time remaining
             double timeRemaining = timeElapsed;
-            mTrackTime.setText(String.format("%02d:%02d",
+            mTrackTime.setText(String.format("%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours((long) timeRemaining),
                     TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining),
                     TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining)
                             - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining))));

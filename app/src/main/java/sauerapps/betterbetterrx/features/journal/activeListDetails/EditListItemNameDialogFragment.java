@@ -18,15 +18,9 @@ import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 import sauerapps.betterbetterrx.utils.Utils;
 
-/**
- * Lets user edit list item name for all copies of the current list
- */
 public class EditListItemNameDialogFragment extends EditListDialogFragment {
     String mItemName, mItemId;
 
-    /**
-     * Public static constructor that creates fragment and passes a bundle with data into it when adapter is created
-     */
     public static EditListItemNameDialogFragment newInstance(JournalList journalList, String itemName,
                                                              String itemId, String listId, String encodedEmail,
                                                              HashMap<String, User> sharedWithUsers) {
@@ -41,9 +35,6 @@ public class EditListItemNameDialogFragment extends EditListDialogFragment {
         return editListItemNameDialogFragment;
     }
 
-    /**
-     * Initialize instance variables with data from bundle
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,29 +46,17 @@ public class EditListItemNameDialogFragment extends EditListDialogFragment {
     @Override
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        /** {@link EditListDialogFragment#createDialogHelper(int)} is a
-         * superclass method that creates the dialog
-         */
+
         Dialog dialog = super.createDialogHelper(R.string.positive_button_edit_item);
-        /**
-         * {@link EditListDialogFragment#helpSetDefaultValueEditText(String)} is a superclass
-         * method that sets the default text of the TextView
-         */
+
         super.helpSetDefaultValueEditText(mItemName);
 
         return dialog;
     }
 
-    /**
-     * Change selected list item name to the editText input if it is not empty
-     */
     protected void doListEdit() {
         String nameInput = mEditTextForList.getText().toString();
 
-        /**
-         * Set input text to be the current list item name if it is not empty and is not the
-         * previous name.
-         */
         if (!nameInput.equals("") && !nameInput.equals(mItemName)) {
             Firebase firebaseRef = new Firebase(Constants.FIREBASE_URL);
 
@@ -101,8 +80,6 @@ public class EditListItemNameDialogFragment extends EditListDialogFragment {
                             mSharedWith, mOwner);
                 }
             });
-
-
         }
     }
 }

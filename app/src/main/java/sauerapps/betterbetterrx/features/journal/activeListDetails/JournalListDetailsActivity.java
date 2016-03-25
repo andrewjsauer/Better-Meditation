@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.sharing.ShareListActivity;
+import sauerapps.betterbetterrx.features.sharing.journalSharing.ShareListActivity;
 import sauerapps.betterbetterrx.model.JournalListItem;
 import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
@@ -57,8 +57,8 @@ public class JournalListDetailsActivity extends BaseActivity {
 
         mCurrentListRef = new Firebase(Constants.FIREBASE_URL_USER_LISTS).child(mEncodedEmail).child(mListId);
         mSharedWithRef = new Firebase (Constants.FIREBASE_URL_LISTS_SHARED_WITH).child(mListId);
-        mTotalEntriesRef = new Firebase(Constants.FIREBASE_URL_SHOPPING_LIST_ITEMS).child(mListId);
-        Firebase listItemsRef = new Firebase(Constants.FIREBASE_URL_SHOPPING_LIST_ITEMS).child(mListId);
+        mTotalEntriesRef = new Firebase(Constants.FIREBASE_URL_JOURNAL_LIST_ITEMS).child(mListId);
+        Firebase listItemsRef = new Firebase(Constants.FIREBASE_URL_JOURNAL_LIST_ITEMS).child(mListId);
 
         initializeScreen();
 
@@ -79,7 +79,6 @@ public class JournalListDetailsActivity extends BaseActivity {
 
                 mTotalEntries = Long.toString(totalEntries);
 
-                Log.d("TESTESTEST", mTotalEntries + "");
             }
 
             @Override
@@ -90,37 +89,19 @@ public class JournalListDetailsActivity extends BaseActivity {
             }
         });
 
-
-
-        /**
-         * Save the most recent version of current list into mJournalList instance
-         * variable an update the UI to match the current list.
-         */
         mCurrentListRefListener = mCurrentListRef.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                /**
-                 * Saving the most recent version of current list into mJournalList if present
-                 * finish() the activity if the list is null (list was removed or unshared by it's owner
-                 * while current user is in the list details activity)
-                 */
                 JournalList journalList = snapshot.getValue(JournalList.class);
 
                 if (journalList == null) {
                     finish();
-                    /**
-                     * Make sure to call return, otherwise the rest of the method will execute,
-                     * even after calling finish.
-                     */
                     return;
                 }
                 mJournalList = journalList;
-                /**
-                 * Pass the journal list to the adapter if it is not null.
-                 * We do this here because mJournalList is null when first created.
-                 */
+
                 mJournalListItemAdapter.setJournalList(mJournalList);
 
                 /* Calling invalidateOptionsMenu causes onCreateOptionsMenu to be called */

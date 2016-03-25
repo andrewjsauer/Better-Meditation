@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,6 +19,8 @@ import com.firebase.client.ValueEventListener;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.app.BaseActivity;
+//import sauerapps.betterbetterrx.features.sharing.audioSharing.ShareMainActivity;
+import sauerapps.betterbetterrx.features.sharing.audioSharing.ShareMainActivity;
 import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.features.journal.JournalActivity;
@@ -63,8 +67,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initializeScreen() {
-        setSupportActionBar(mToolbar);
 
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+        }
 
         // fab section
         mMeditationFab = (FloatingActionButton) findViewById(R.id.meditation_fab);
@@ -88,6 +94,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AudioActivity.class);
                 startActivity(intent);
+                closeMainFAB();
             }
         });
 
@@ -96,6 +103,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, JournalActivity.class);
                 startActivity(intent);
+                closeMainFAB();
             }
         });
 
@@ -107,8 +115,10 @@ public class MainActivity extends BaseActivity {
                 if (user != null) {
                     /* Assumes that the first word in the user's name is the user's first name. */
                     String firstName = user.getName().split("\\s+")[0];
-                    String title = firstName + ", welcome back.";
-                    setTitle(title);
+                    String title = firstName + "'s Dashboard";
+
+                    assert getSupportActionBar() != null;
+                    getSupportActionBar().setTitle(title);
                 }
             }
 
@@ -129,12 +139,7 @@ public class MainActivity extends BaseActivity {
 
     private void getAnimateFAB() {
             if (isFabOpen) {
-                mMeditationFab.startAnimation(rotate_backward);
-                mSingleMeditationFab.startAnimation(fab_close);
-                mJournalMeditationFab.startAnimation(fab_close);
-                mSingleMeditationFab.setClickable(false);
-                mJournalMeditationFab.setClickable(false);
-                isFabOpen = false;
+                closeMainFAB();
             } else {
                 mMeditationFab.startAnimation(rotate_forward);
                 mSingleMeditationFab.startAnimation(fab_open);
@@ -143,5 +148,40 @@ public class MainActivity extends BaseActivity {
                 mJournalMeditationFab.setClickable(true);
                 isFabOpen = true;
             }
+    }
+
+    private void closeMainFAB() {
+        mMeditationFab.startAnimation(rotate_backward);
+        mSingleMeditationFab.startAnimation(fab_close);
+        mJournalMeditationFab.startAnimation(fab_close);
+        mSingleMeditationFab.setClickable(false);
+        mJournalMeditationFab.setClickable(false);
+        isFabOpen = false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        /* Inflate the menu; this adds items to the action bar if it is present. */
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_share_list) {
+            Intent intent = new Intent(MainActivity.this, ShareMainActivity.class);
+            /* Starts an active showing the details for the selected list */
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_logout) {
+            logout();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

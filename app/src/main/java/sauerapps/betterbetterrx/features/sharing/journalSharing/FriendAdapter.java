@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.sharing;
+package sauerapps.betterbetterrx.features.sharing.journalSharing;
 
 import android.app.Activity;
 import android.util.Log;
@@ -54,14 +54,16 @@ public class FriendAdapter extends FirebaseListAdapter<User> {
      */
     @Override
     protected void populateView(View view, final User friend) {
+
         ((TextView) view.findViewById(R.id.user_name)).setText(friend.getName());
+
         final ImageButton buttonToggleShare = (ImageButton) view.findViewById(R.id.button_toggle_share);
 
         final Firebase sharedFriendInShoppingListRef = new Firebase(Constants.FIREBASE_URL_LISTS_SHARED_WITH)
                 .child(mListId).child(friend.getEmail());
 
         /**
-         * Gets the value of the friend from the ShoppingList's sharedWith list of users
+         * Gets the value of the friend from the AudioList's sharedWith list of users
          * and then allows the friend to be toggled as shared with or not.
          *
          * The friend in the snapshot (sharedFriendInShoppingList) will either be a User object
@@ -72,6 +74,7 @@ public class FriendAdapter extends FirebaseListAdapter<User> {
         ValueEventListener listener = sharedFriendInShoppingListRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+
                 final User sharedFriendInShoppingList = snapshot.getValue(User.class);
 
                 /**

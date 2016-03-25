@@ -29,18 +29,6 @@ abstract public class EditListDialogFragment extends DialogFragment {
     int mResource;
     HashMap mSharedWith;
 
-    /**
-     * Helper method that creates a basic bundle of all of the information needed to change
-     * values in a list.
-     *
-     * @param journalList The shopping list that the dialog is editing
-     * @param resource The xml layout file associated with the dialog
-     * @param listId The id of the shopping list the dialog is editing
-     * @param encodedEmail The encoded email of the current user
-     * @param sharedWithUsers The HashMap containing all users that the current list
-     *                        is shared with
-     * @return The bundle containing all the arguments.
-     */
     protected static Bundle newInstanceHelper(JournalList journalList, int resource, String listId,
                                               String encodedEmail, HashMap<String, User> sharedWithUsers) {
         Bundle bundle = new Bundle();
@@ -52,9 +40,6 @@ abstract public class EditListDialogFragment extends DialogFragment {
         return bundle;
     }
 
-    /**
-     * Initialize instance variables with data from bundle
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,10 +76,6 @@ abstract public class EditListDialogFragment extends DialogFragment {
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                     doListEdit();
-
-                    /**
-                     * Close the dialog fragment when done
-                     */
                     EditListDialogFragment.this.getDialog().cancel();
                 }
                 return true;
@@ -109,9 +90,6 @@ abstract public class EditListDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         doListEdit();
 
-                        /**
-                         * Close the dialog fragment
-                         */
                         EditListDialogFragment.this.getDialog().cancel();
                     }
                 })
@@ -119,9 +97,6 @@ abstract public class EditListDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
-                        /**
-                         * Close the dialog fragment
-                         */
                         EditListDialogFragment.this.getDialog().cancel();
                     }
                 });
@@ -129,20 +104,11 @@ abstract public class EditListDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    /**
-     * Set the EditText text to be the inputted text
-     * and put the pointer at the end of the input
-     *
-     * @param defaultText
-     */
     protected void helpSetDefaultValueEditText(String defaultText) {
         mEditTextForList.setText(defaultText);
         mEditTextForList.setSelection(defaultText.length());
     }
 
-    /**
-     * Method to be overriden with whatever edit is supposed to happen to the list
-     */
     protected abstract void doListEdit();
 
 

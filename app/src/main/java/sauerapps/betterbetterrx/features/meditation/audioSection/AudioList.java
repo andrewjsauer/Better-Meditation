@@ -9,71 +9,43 @@ import sauerapps.betterbetterrx.utils.Constants;
 
 public class AudioList {
 
-    private double currentAudioTime;
     private String owner;
-    private HashMap<String, Object> timestampLastChanged;
+    private double audioTime;
+    private String trackTitle;
+    private String trackDescription;
     private HashMap<String, Object> timestampCreated;
-    private HashMap<String, Object> timestampLastChangedReverse;
 
-    /**
-     * Required public constructor
-     */
     public AudioList() {
 
     }
 
-    public AudioList(double currentAudioTime, String owner, HashMap<String, Object> timestampCreated) {
-        this.currentAudioTime = currentAudioTime;
-        this.owner = owner;
-        this.timestampCreated = timestampCreated;
-        HashMap<String, Object> timestampNowObject = new HashMap<String, Object>();
-        timestampNowObject.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
-        this.timestampLastChanged = timestampNowObject;
-        this.timestampLastChangedReverse = null;
-    }
+    public AudioList(String owner, double audioTime, String trackTitle, String trackDescription,
+                     HashMap<String, Object> timestampCreated) {
 
-    public double getCurrentAudioTime() {
-        return currentAudioTime;
+        this.owner = owner;
+        this.audioTime = audioTime;
+        this.trackTitle = trackTitle;
+        this.trackDescription = trackDescription;
+        this.timestampCreated = timestampCreated;
     }
 
     public String getOwner() {
         return owner;
     }
 
-    public HashMap<String, Object> getTimestampLastChanged() {
-        return timestampLastChanged;
+    public double getAudioTime() {
+        return audioTime;
+    }
+
+    public String getTrackTitle() {
+        return trackTitle;
+    }
+
+    public String getTrackDescription() {
+        return trackDescription;
     }
 
     public HashMap<String, Object> getTimestampCreated() {
         return timestampCreated;
     }
-
-    public HashMap<String, Object> getTimestampLastChangedReverse() {
-        return timestampLastChangedReverse;
-    }
-
-    @JsonIgnore
-    public long getTimestampLastChangedLong() {
-
-        return (long) timestampLastChanged.get(Constants.FIREBASE_PROPERTY_TIMESTAMP);
-    }
-
-    @JsonIgnore
-    public long getTimestampCreatedLong() {
-        return (long) timestampLastChanged.get(Constants.FIREBASE_PROPERTY_TIMESTAMP);
-    }
-
-    @JsonIgnore
-    public long getTimestampLastChangedReverseLong() {
-
-        return (long) timestampLastChangedReverse.get(Constants.FIREBASE_PROPERTY_TIMESTAMP);
-    }
-
-    public void setTimestampLastChangedToNow() {
-        HashMap<String, Object> timestampNowObject = new HashMap<String, Object>();
-        timestampNowObject.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
-        this.timestampLastChanged = timestampNowObject;
-    }
-
-
 }

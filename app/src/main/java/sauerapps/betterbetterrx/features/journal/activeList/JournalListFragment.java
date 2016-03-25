@@ -26,9 +26,6 @@ import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.journal.activeListDetails.JournalListDetailsActivity;
 import sauerapps.betterbetterrx.utils.Constants;
 
-/**
- * Created by andrewsauer on 3/8/16.
- */
 public class JournalListFragment extends Fragment {
 
     private String mEncodedEmail;
@@ -50,9 +47,6 @@ public class JournalListFragment extends Fragment {
         return fragment;
     }
 
-    /**
-     * Initialize instance variables with data from bundle
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,19 +91,10 @@ public class JournalListFragment extends Fragment {
         Query orderedActiveUserListsRef;
         Firebase activeListsRef = new Firebase(Constants.FIREBASE_URL_USER_LISTS)
                 .child(mEncodedEmail);
-        /**
-         * Sort active lists by "date created"
-         * if it's been selected in the SettingsActivity
-         */
+
         if (sortOrder.equals(Constants.ORDER_BY_KEY)) {
             orderedActiveUserListsRef = activeListsRef.orderByKey();
         } else {
-
-            /**
-             * Sort active by lists by name or datelastChanged. Otherwise
-             * depending on what's been selected in SettingsActivity
-             */
-
             orderedActiveUserListsRef = activeListsRef.orderByChild(sortOrder);
         }
 
@@ -126,18 +111,12 @@ public class JournalListFragment extends Fragment {
         mListView.setAdapter(mJournalListAdapter);
     }
 
-    /**
-     * Cleanup the adapter when activity is paused.
-     */
     @Override
     public void onPause() {
         super.onPause();
         mJournalListAdapter.cleanup();
     }
 
-    /**
-     * Link list view from XML
-     */
     private void initializeScreen(View rootView) {
         mListView = (ListView) rootView.findViewById(R.id.list_view_active_lists);
 

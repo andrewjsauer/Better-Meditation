@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.sharing;
+package sauerapps.betterbetterrx.features.sharing.journalSharing;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -32,19 +32,10 @@ public class AddFriendActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
-        /**
-         * Create Firebase references
-         */
+
         mUsersRef = new Firebase(Constants.FIREBASE_URL_USERS);
 
-        /**
-         * Link layout elements from XML and setup the toolbar
-         */
         initializeScreen();
-
-        /**
-         * Set interactive bits, such as click events/adapters
-         */
 
         mEditTextAddFriendEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,9 +79,6 @@ public class AddFriendActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Link layout elements from XML and setup the toolbar
-     */
     public void initializeScreen() {
         mListViewAutocomplete = (ListView) findViewById(R.id.list_view_friends_autocomplete);
         mEditTextAddFriendEmail = (EditText) findViewById(R.id.edit_text_add_friend_email);

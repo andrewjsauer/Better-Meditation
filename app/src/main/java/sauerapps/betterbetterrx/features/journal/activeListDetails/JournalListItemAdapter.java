@@ -29,18 +29,12 @@ import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
 import sauerapps.betterbetterrx.utils.Constants;
 import sauerapps.betterbetterrx.utils.Utils;
 
-/**
- * Populates list_view_shopping_list_items inside ActiveListDetailsActivity
- */
 public class JournalListItemAdapter extends FirebaseListAdapter<JournalListItem> {
     private JournalList mJournalList;
     private String mListId;
     private String mEncodedEmail;
     private HashMap<String, User> mSharedWithUsers;
 
-    /**
-     * Public constructor that initializes private instance variables when adapter is created
-     */
     public JournalListItemAdapter(Activity activity, Class<JournalListItem> modelClass, int modelLayout,
                                   Query ref, String listId, String encodedEmail) {
         super(activity, modelClass, modelLayout, ref);
@@ -49,9 +43,6 @@ public class JournalListItemAdapter extends FirebaseListAdapter<JournalListItem>
         this.mEncodedEmail = encodedEmail;
     }
 
-    /**
-     * Public method that is used to pass journalList object when it is loaded in ValueEventListener
-     */
     public void setJournalList(JournalList journalList) {
         this.mJournalList = journalList;
         this.notifyDataSetChanged();
@@ -62,11 +53,6 @@ public class JournalListItemAdapter extends FirebaseListAdapter<JournalListItem>
         this.notifyDataSetChanged();
     }
 
-    /**
-     * Protected method that populates the view attached to the adapter (list_view_friends_autocomplete)
-     * with items inflated from single_active_list_item.xml
-     * populateView also handles data changes and updates the listView accordingly
-     */
     @Override
     protected void populateView(View view, final JournalListItem item, int position) {
 
@@ -78,9 +64,6 @@ public class JournalListItemAdapter extends FirebaseListAdapter<JournalListItem>
         /* Gets the id of the item to remove */
         final String itemToRemoveId = this.getRef(position).getKey();
 
-        /**
-         * Set the on click listener for "Remove list item" button
-         */
         buttonRemoveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,71 +115,5 @@ public class JournalListItemAdapter extends FirebaseListAdapter<JournalListItem>
                         mSharedWithUsers, mJournalList.getOwner());
             }
         });
-    }
-
-    private void setItemAppearanceBaseOnBoughtStatus(String owner, final TextView textViewBoughtByUser,
-                                                     TextView textViewBoughtBy, ImageButton buttonRemoveItem,
-                                                     TextView textViewItemName, JournalListItem item) {
-        /**
-         * If selected item is bought
-         * Set "Bought by" text to "You" if current user is owner of the list
-         * Set "Bought by" text to userName if current user is NOT owner of the list
-         * Set the remove item button invisible if current user is NOT list or item owner
-         */
-        if (item.isBought() && item.getBoughtBy() != null) {
-
-            textViewBoughtBy.setVisibility(View.VISIBLE);
-            textViewBoughtByUser.setVisibility(View.VISIBLE);
-            buttonRemoveItem.setVisibility(View.INVISIBLE);
-
-            /* Add a strike-through */
-            textViewItemName.setPaintFlags(textViewItemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-            if (item.getBoughtBy().equals(mEncodedEmail)) {
-                textViewBoughtByUser.setText(mActivity.getString(R.string.text_you));
-            } else {
-
-                Firebase boughtByUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(item.getBoughtBy());
-                /* Get the item's owner's name; use a SingleValueEvent listener for memory efficiency */
-                boughtByUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if (user != null) {
-                            textViewBoughtByUser.setText(user.getName());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                        Log.e(mActivity.getClass().getSimpleName(),
-                                mActivity.getString(R.string.log_error_the_read_failed) +
-                                        firebaseError.getMessage());
-                    }
-                });
-            }
-        } else {
-            /**
-             * If selected item is NOT bought
-             * Set "Bought by" text to be empty and invisible
-             * Set the remove item button visible if current user is owner of the list or selected item
-             */
-
-            /* Remove the strike-through */
-            textViewItemName.setPaintFlags(textViewItemName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-
-            textViewBoughtBy.setVisibility(View.INVISIBLE);
-            textViewBoughtByUser.setVisibility(View.INVISIBLE);
-            textViewBoughtByUser.setText("");
-            /**
-             * If you are the owner of the item or the owner of the list, then the remove icon
-             * is visible.
-             */
-            if (owner.equals(mEncodedEmail) || (mJournalList != null && mJournalList.getOwner().equals(mEncodedEmail))) {
-                buttonRemoveItem.setVisibility(View.VISIBLE);
-            } else {
-                buttonRemoveItem.setVisibility(View.INVISIBLE);
-            }
-        }
     }
 }

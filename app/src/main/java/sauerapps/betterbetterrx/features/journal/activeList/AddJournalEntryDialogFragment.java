@@ -102,13 +102,11 @@ public class AddJournalEntryDialogFragment extends DialogFragment {
     private void addJournalEntry() {
         String userEnteredEntryName = mEditTextListName.getText().toString();
 
-        /**
-         * If EditText input is not empty
-         */
         if (!userEnteredEntryName.equals("")) {
 
             Firebase userListsRef = new Firebase(Constants.FIREBASE_URL_USER_LISTS).
                     child(mEncodedEmail);
+
             final Firebase firebaseRef = new Firebase(Constants.FIREBASE_URL);
 
             Firebase newListRef = userListsRef.push();

@@ -20,6 +20,9 @@ public class Constants {
     public static final String FIREBASE_LOCATION_JOURNAL_ENTRY_ITEMS = "journalEntryItems";
 
     public static final String FIREBASE_LOCATION_USER_AUDIO = "userAudio";
+    public static final String FIREBASE_LOCATION_USER_AUDIO_DETAILS = "userAudioDetails";
+    public static final String FIREBASE_LOCATION_USER_AUDIO_DETAILS_LIST = "userAudioDetailsList";
+    public static final String FIREBASE_LOCATION_USER_AUDIO_DETAILS_SHARED_WITH = "audioSharedWith";
 
 
 
@@ -46,9 +49,15 @@ public class Constants {
     public static final String FIREBASE_URL_USER_FRIENDS = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_FRIENDS;
     public static final String FIREBASE_URL_LISTS_SHARED_WITH = FIREBASE_URL + "/" + FIREBASE_LOCATION_JOURNAL_LISTS_SHARED_WITH;
 
-    public static final String FIREBASE_URL_USER_AUDIO = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_AUDIO;
+    public static final String FIREBASE_URL_AUDIO_DETAILS_SHARED_WITH = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_AUDIO_DETAILS_SHARED_WITH;
 
-    public static final String FIREBASE_URL_SHOPPING_LIST_ITEMS = FIREBASE_URL + "/" + FIREBASE_LOCATION_JOURNAL_ENTRY_ITEMS;
+    public static final String FIREBASE_URL_USER_AUDIO = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_AUDIO;
+    public static final String FIREBASE_URL_USER_AUDIO_DETAILS = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_AUDIO_DETAILS;
+    public static final String FIREBASE_URL_USER_AUDIO_DETAILS_LIST = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_AUDIO_DETAILS_LIST;
+
+
+
+    public static final String FIREBASE_URL_JOURNAL_LIST_ITEMS = FIREBASE_URL + "/" + FIREBASE_LOCATION_JOURNAL_ENTRY_ITEMS;
 
 
 

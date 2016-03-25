@@ -18,9 +18,6 @@ import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 import sauerapps.betterbetterrx.utils.Utils;
 
-/**
- * Lets the user remove active shopping list
- */
 public class RemoveListDialogFragment extends DialogFragment {
     String mListId;
     String mListOwner;
@@ -28,9 +25,6 @@ public class RemoveListDialogFragment extends DialogFragment {
 
     final static String LOG_TAG = RemoveListDialogFragment.class.getSimpleName();
 
-    /**
-     * Public static constructor that creates fragment and passes a bundle with data into it when adapter is created
-     */
     public static RemoveListDialogFragment newInstance(JournalList journalList, String listId,
                                                        HashMap<String, User> sharedWithUsers) {
         RemoveListDialogFragment removeListDialogFragment = new RemoveListDialogFragment();
@@ -42,9 +36,6 @@ public class RemoveListDialogFragment extends DialogFragment {
         return removeListDialogFragment;
     }
 
-    /**
-     * Initialize instance variables with data from bundle
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +70,6 @@ public class RemoveListDialogFragment extends DialogFragment {
     private void removeList() {
         Firebase firebaseRef = new Firebase(Constants.FIREBASE_URL);
 
-        /**
-         * Create map and fill it in with deep path multi write operations list
-         */
         HashMap<String, Object> removeListData = new HashMap<String, Object>();
 
         /* Remove the ShoppingLists from both user lists and active lists */
