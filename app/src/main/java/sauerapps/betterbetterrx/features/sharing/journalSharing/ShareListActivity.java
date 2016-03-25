@@ -16,7 +16,8 @@ import java.util.HashMap;
 
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
+import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
+import sauerapps.betterbetterrx.features.sharing.AddFriendActivity;
 import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 

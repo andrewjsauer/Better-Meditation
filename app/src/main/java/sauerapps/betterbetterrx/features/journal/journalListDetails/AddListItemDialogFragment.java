@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.journal.activeListDetails;
+package sauerapps.betterbetterrx.features.journal.journalListDetails;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
+import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
 import sauerapps.betterbetterrx.model.JournalListItem;
 import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;

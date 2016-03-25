@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.journal.activeList;
+package sauerapps.betterbetterrx.features.journal.journalList;
 
 /**
  * Created by andrewsauer on 3/8/16.

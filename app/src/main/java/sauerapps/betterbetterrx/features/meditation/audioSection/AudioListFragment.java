@@ -35,6 +35,7 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
     private static final String TAG = AudioListFragment.class.getSimpleName();
 
     private String mEncodedEmail;
+    private String mUserName;
 
     public static Track mTrack;
     public static int mTrackPosition;
@@ -54,10 +55,11 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
         /* Required empty public constructor */
     }
 
-    public static AudioListFragment newInstance(String encodedEmail) {
+    public static AudioListFragment newInstance(String encodedEmail, String userName) {
         AudioListFragment fragment = new AudioListFragment();
         Bundle args = new Bundle();
         args.putString(Constants.KEY_ENCODED_EMAIL, encodedEmail);
+        args.putString(Constants.KEY_NAME, userName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,6 +69,7 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
+            mUserName = getArguments().getString(Constants.KEY_NAME);
         }
     }
 
@@ -136,7 +139,7 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
         mTrack = track;
         mTrackPosition = position;
 
-        AudioDetailsFragment audioDetailsFragment = AudioDetailsFragment.newInstance(mEncodedEmail);
+        AudioDetailsFragment audioDetailsFragment = AudioDetailsFragment.newInstance(mEncodedEmail, mUserName);
 
         // Note that we need the API version check here because the actual transition classes (e.g. Fade)
         // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment

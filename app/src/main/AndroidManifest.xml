@@ -50,7 +50,7 @@
         </activity>
 
         <activity
-            android:name=".features.journal.activeListDetails.JournalListDetailsActivity"
+            android:name=".features.journal.journalListDetails.JournalListDetailsActivity"
             android:label="@string/title_activity_list_details"
             android:parentActivityName=".features.newsfeed.MainActivity"
             android:windowSoftInputMode="adjustPan">
@@ -65,11 +65,11 @@
         <activity
             android:name=".features.sharing.journalSharing.ShareListActivity"
             android:label="@string/title_activity_share_list"
-            android:parentActivityName=".features.journal.activeListDetails.JournalListDetailsActivity"
+            android:parentActivityName=".features.journal.journalListDetails.JournalListDetailsActivity"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.journal.activeListDetails.JournalListDetailsActivity" />
+                android:value=".features.journal.journalListDetails.JournalListDetailsActivity" />
         </activity>
 
         <activity
@@ -83,7 +83,7 @@
         </activity>
 
         <activity
-            android:name=".features.sharing.journalSharing.AddFriendActivity"
+            android:name=".features.sharing.AddFriendActivity"
             android:label="@string/title_activity_add_friend"
             android:parentActivityName=".features.sharing.journalSharing.ShareListActivity">
             <meta-data

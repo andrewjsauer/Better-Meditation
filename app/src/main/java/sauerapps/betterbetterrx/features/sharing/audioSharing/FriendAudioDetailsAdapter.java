@@ -18,11 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
 import sauerapps.betterbetterrx.features.meditation.audioSection.AudioList;
 import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
-import sauerapps.betterbetterrx.utils.Utils;
 
 /**
  * Created by andrewsauer on 3/24/16.

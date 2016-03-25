@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.journal.activeListDetails;
+package sauerapps.betterbetterrx.features.journal.journalListDetails;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -24,7 +24,7 @@ import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.sharing.journalSharing.ShareListActivity;
 import sauerapps.betterbetterrx.model.JournalListItem;
 import sauerapps.betterbetterrx.model.User;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
+import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
 import sauerapps.betterbetterrx.utils.Constants;
 
 

@@ -32,10 +32,10 @@ import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.features.soundcloud.Config;
 import sauerapps.betterbetterrx.features.soundcloud.Track;
+import sauerapps.betterbetterrx.utils.Constants;
 
 public class AudioDetailsFragment extends Fragment {
 
-    private static final String ARG_ENCODED_EMAIL = "argEncodedEmail";
     private static final String TAG = AudioDetailsFragment.class.getSimpleName();
 
     private static final String CMD_NAME = "command";
@@ -76,7 +76,8 @@ public class AudioDetailsFragment extends Fragment {
     private boolean mReceiverRegistered = false;
     private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener;
 
-    protected String mEncodedEmail;
+    private String mEncodedEmail;
+    private String mUserName;
 
     @Bind(R.id.play)
     protected ImageButton mPlay;
@@ -93,9 +94,10 @@ public class AudioDetailsFragment extends Fragment {
     @Bind(R.id.track_exit_button)
     protected ImageButton mExitButton;
 
-    public static AudioDetailsFragment newInstance(String encodedEmail) {
+    public static AudioDetailsFragment newInstance(String encodedEmail, String userName) {
         Bundle args = new Bundle();
-        args.putString(ARG_ENCODED_EMAIL, encodedEmail);
+        args.putString(Constants.KEY_ENCODED_EMAIL, encodedEmail);
+        args.putString(Constants.KEY_NAME, userName);
         AudioDetailsFragment fragment = new AudioDetailsFragment();
         fragment.setArguments(args);
 
@@ -108,7 +110,8 @@ public class AudioDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_audio_details, container, false);
         ButterKnife.bind(this, view);
 
-        mEncodedEmail = getArguments().getString(ARG_ENCODED_EMAIL);
+        mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
+        mUserName = getArguments().getString(Constants.KEY_NAME);
 
         mTrack = AudioListFragment.mTrack;
 
@@ -288,7 +291,7 @@ public class AudioDetailsFragment extends Fragment {
     private void exitAudioDetails() {
         if (timeElapsed >= 10000) {
 
-            DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, timeElapsed,
+            DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, mUserName, timeElapsed,
                     mTrackDescription, mTrackTitle);
             dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
 

@@ -6,12 +6,16 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -23,6 +27,7 @@ import icepick.Icepick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.features.authentication.createAccount.CreateAccountActivity;
 import sauerapps.betterbetterrx.features.authentication.login.LoginActivity;
+import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 
 
@@ -35,6 +40,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected Firebase.AuthStateListener mAuthListener;
     protected Firebase mFirebaseRef;
 
+    private static final String LOG_TAG = BaseActivity.class.getSimpleName();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,20 +53,13 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 .requestEmail()
                 .build();
 
-        /**
-         * Build a GoogleApiClient with access to the Google Sign-In API and the
-         * options specified by gso.
-         */
-
         /* Setup the Google API object to allow Google+ logins */
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        /**
-         * Getting mProvider and mEncodedEmail from SharedPreferences
-         */
+
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(BaseActivity.this);
         /* Get mEncodedEmail and mProvider from SharedPreferences, use null as default value */
         mEncodedEmail = sp.getString(Constants.KEY_ENCODED_EMAIL, null);

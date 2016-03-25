@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.journal.activeList;
+package sauerapps.betterbetterrx.features.journal.journalList;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

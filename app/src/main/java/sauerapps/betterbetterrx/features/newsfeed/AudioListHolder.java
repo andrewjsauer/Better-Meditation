@@ -2,12 +2,27 @@ package sauerapps.betterbetterrx.features.newsfeed;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
-/**
- * Created by andrewsauer on 3/24/16.
- */
+import sauerapps.betterbetterrx.R;
+
 public class AudioListHolder extends RecyclerView.ViewHolder {
+
+    TextView userFriendName;
+    TextView userFriendDate;
+    TextView userFriendTrackTitle;
+    TextView userFriendTrackDesc;
+    TextView userFriendTrackTime;
+
+
     public AudioListHolder(View itemView) {
         super(itemView);
+
+        userFriendName = (TextView) itemView.findViewById(R.id.user_friend_name);
+        userFriendDate = (TextView) itemView.findViewById(R.id.user_friend_date);
+        userFriendTrackTitle = (TextView) itemView.findViewById(R.id.user_friend_track_title);
+        userFriendTrackDesc = (TextView) itemView.findViewById(R.id.user_friend_track_desc);
+        userFriendTrackTime = (TextView) itemView.findViewById(R.id.user_friend_time);
+
     }
 }

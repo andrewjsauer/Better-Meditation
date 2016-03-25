@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -15,40 +14,36 @@ import com.firebase.client.ServerValue;
 import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
 import sauerapps.betterbetterrx.utils.Constants;
-import sauerapps.betterbetterrx.utils.Utils;
 
-/**
- * Created by andrewsauer on 3/10/16.
- */
 public class SaveAudioTimeDialogFragment extends DialogFragment {
 
     private static final String TAG = SaveAudioTimeDialogFragment.class.getSimpleName();
-    private static final String ARG_ENCODED_EMAIL = "argEncodedEmail";
     private static final String ARG_CURRENT_AUDIO = "argCurrentAudio";
     private static final String ARG_TRACK_TITLE = "argTrackTitle";
     private static final String ARG_TRACK_DESCRIPTION = "argTrackDescription";
 
 
-    private Firebase userAudioRef, userAudioDetailsRef, userAudioDetailsListRef;
+    private Firebase userAudioRef, userAudioDetailsRef, userSharedWithList;
 
     protected String mEncodedEmail;
     protected double mCurrentTime;
     protected String mTrackTitle;
     protected String mTrackDescription;
 
+    protected String mUsersName;
+
     protected String mTime;
 
-    public static SaveAudioTimeDialogFragment newInstance(String encodedEmail, double currentAudioPosition,
+    public static SaveAudioTimeDialogFragment newInstance(String encodedEmail, String usersName, double currentAudioPosition,
                                                           String trackDescription, String trackTitle) {
         SaveAudioTimeDialogFragment saveAudioTimeDialogFragment = new SaveAudioTimeDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(ARG_ENCODED_EMAIL, encodedEmail);
+        bundle.putString(Constants.KEY_ENCODED_EMAIL, encodedEmail);
+        bundle.putString(Constants.KEY_NAME, usersName);
         bundle.putDouble(ARG_CURRENT_AUDIO, currentAudioPosition);
         bundle.putString(ARG_TRACK_DESCRIPTION, trackDescription);
         bundle.putString(ARG_TRACK_TITLE, trackTitle);
@@ -60,14 +55,16 @@ public class SaveAudioTimeDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mEncodedEmail = getArguments().getString(ARG_ENCODED_EMAIL);
+        mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
+        mUsersName = getArguments().getString(Constants.KEY_NAME);
         mCurrentTime = getArguments().getDouble(ARG_CURRENT_AUDIO);
         mTrackDescription = getArguments().getString(ARG_TRACK_DESCRIPTION);
         mTrackTitle = getArguments().getString(ARG_TRACK_TITLE);
 
         userAudioRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO).child(mEncodedEmail);
         userAudioDetailsRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS).child(mEncodedEmail);
-        userAudioDetailsListRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS_LIST).child(mEncodedEmail);
+        userSharedWithList = new Firebase(Constants.FIREBASE_URL_AUDIO_DETAILS_SHARED_WITH)
+                .child(mEncodedEmail).child(mEncodedEmail);
 
         double time = mCurrentTime;
 
@@ -128,15 +125,13 @@ public class SaveAudioTimeDialogFragment extends DialogFragment {
         HashMap<String, Object> timestampCreated = new HashMap<>();
         timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 
-        AudioList audioList = new AudioList(mEncodedEmail, mCurrentTime, mTrackTitle,
+        AudioList audioList = new AudioList(mEncodedEmail, mUsersName, mCurrentTime, mTrackTitle,
                 mTrackDescription, timestampCreated);
 
         userAudioDetailsRef.push().setValue(audioList);
 
-        userAudioDetailsListRef.setValue(audioList);
+        userSharedWithList.setValue(audioList);
 
         SaveAudioTimeDialogFragment.this.getDialog().cancel();
     }
-
-
 }

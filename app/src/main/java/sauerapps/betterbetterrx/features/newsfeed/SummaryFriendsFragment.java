@@ -11,6 +11,13 @@ import android.view.ViewGroup;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerViewAdapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+
 import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.features.meditation.audioSection.AudioList;
@@ -19,16 +26,22 @@ import sauerapps.betterbetterrx.utils.Constants;
 public class SummaryFriendsFragment extends Fragment {
 
     private String mEncodedEmail;
+    private String mUserEmailCheck;
+    private String mUsersName;
 
     private Firebase mRef;
-
 
     private RecyclerView mRecyclerView;
     private FirebaseRecyclerViewAdapter<AudioList, AudioListHolder> mRecycleViewAdapter;
 
+    private HashMap<String, Object> mFriendDate;
+    private double mFriendAudioTime;
+
+    private String mFriendDateFormmatted;
+    private String mFriendAudioTimeFormatted;
+
 
     public SummaryFriendsFragment() {
-        /* Required empty public constructor */
     }
 
     public static SummaryFriendsFragment newInstance(String encodedEmail) {
@@ -39,9 +52,6 @@ public class SummaryFriendsFragment extends Fragment {
         return fragment;
     }
 
-    /**
-     * Initialize instance variables with data from bundle
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +59,7 @@ public class SummaryFriendsFragment extends Fragment {
             mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
         }
 
-        mRef = new Firebase(Constants.FIREBASE_LOCATION_USER_AUDIO_DETAILS_SHARED_WITH).child(mEncodedEmail);
+        mRef = new Firebase(Constants.FIREBASE_URL_AUDIO_DETAILS_SHARED_WITH).child(mEncodedEmail);
 
     }
 
@@ -73,29 +83,60 @@ public class SummaryFriendsFragment extends Fragment {
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(manager);
 
-
         mRecycleViewAdapter = new FirebaseRecyclerViewAdapter<AudioList, AudioListHolder>(AudioList.class, R.layout.audio_list_item, AudioListHolder.class, mRef) {
             @Override
             protected void populateViewHolder(AudioListHolder viewHolder, AudioList model, int position) {
-                super.populateViewHolder(viewHolder, model, position);
+
+                mFriendDate = model.getTimestampCreated();
+                mFriendAudioTime = model.getAudioTime();
+                mUserEmailCheck = model.getOwner();
+                mUsersName = model.getUserName();
+
+                getLastMeditationTime();
+                getLastMinuteDate();
+                getUserName();
+
+                viewHolder.userFriendName.setText(mUsersName);
+                viewHolder.userFriendDate.setText(mFriendDateFormmatted);
+                viewHolder.userFriendTrackTime.setText(mFriendAudioTimeFormatted);
+                viewHolder.userFriendTrackTitle.setText(model.getTrackTitle());
+                viewHolder.userFriendTrackDesc.setText(model.getTrackDescription());
             }
         };
 
-
-//        mRecycleViewAdapter = new FirebaseRecyclerAdapter<AudioList, AudioListHolder>(AudioList.class, R.layout.message, AudioListHolder.class, mRef) {
-//            @Override
-//            public void populateViewHolder(AudioListHolder audioView, AudioList audioList, int position) {
-//                chatView.setName(chat.getName());
-//                chatView.setText(chat.getText());
-//
-//                if (getAuth() != null && chat.getUid().equals(getAuth().getUid())) {
-//                    chatView.setIsSender(true);
-//                } else {
-//                    chatView.setIsSender(false);
-//                }
-//            }
-//        };
-
         mRecyclerView.setAdapter(mRecycleViewAdapter);
+    }
+
+    private void getUserName() {
+        if (mUserEmailCheck.equals(mEncodedEmail)) {
+            mUsersName = "You";
+        } else {
+            mUsersName.equals(mUsersName);
+        }
+    }
+
+    private void getLastMinuteDate() {
+        Object userLastDate = mFriendDate.get(Constants.FIREBASE_PROPERTY_TIMESTAMP);
+
+        long dateTime = ((long)userLastDate);
+
+        Date date = new Date(dateTime);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd hh:mm a", Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("PST"));
+        mFriendDateFormmatted = sdf.format(date);
+
+    }
+
+    private void getLastMeditationTime() {
+        mFriendAudioTimeFormatted = (String.format("%01d:%02d",
+                TimeUnit.MILLISECONDS.toHours((long) mFriendAudioTime),
+                TimeUnit.MILLISECONDS.toMinutes((long) mFriendAudioTime)
+                        - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours((long) mFriendAudioTime))));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRecycleViewAdapter.cleanup();
     }
 }

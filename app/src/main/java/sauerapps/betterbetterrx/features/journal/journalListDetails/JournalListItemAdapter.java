@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.journal.activeListDetails;
+package sauerapps.betterbetterrx.features.journal.journalListDetails;
 
 /**
  * Created by andrewsauer on 3/9/16.
@@ -6,18 +6,14 @@ package sauerapps.betterbetterrx.features.journal.activeListDetails;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.graphics.Paint;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
 
 import java.util.HashMap;
@@ -25,7 +21,7 @@ import java.util.HashMap;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.model.JournalListItem;
 import sauerapps.betterbetterrx.model.User;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
+import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
 import sauerapps.betterbetterrx.utils.Constants;
 import sauerapps.betterbetterrx.utils.Utils;
 

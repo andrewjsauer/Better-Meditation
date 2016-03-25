@@ -3,13 +3,10 @@ package sauerapps.betterbetterrx.features.sharing.audioSharing;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
@@ -17,7 +14,7 @@ import java.util.HashMap;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.meditation.audioSection.AudioList;
-import sauerapps.betterbetterrx.features.sharing.journalSharing.AddFriendActivity;
+import sauerapps.betterbetterrx.features.sharing.AddFriendActivity;
 import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 

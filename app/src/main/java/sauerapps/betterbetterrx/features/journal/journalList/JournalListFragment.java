@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.journal.activeList;
+package sauerapps.betterbetterrx.features.journal.journalList;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,24 +6,20 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.journal.activeListDetails.JournalListDetailsActivity;
+import sauerapps.betterbetterrx.features.journal.journalListDetails.JournalListDetailsActivity;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class JournalListFragment extends Fragment {

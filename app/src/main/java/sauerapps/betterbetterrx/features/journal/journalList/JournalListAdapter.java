@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.journal.activeList;
+package sauerapps.betterbetterrx.features.journal.journalList;
 
 import android.app.Activity;
 import android.view.View;
@@ -7,10 +7,7 @@ import android.widget.TextView;
 import com.firebase.client.Query;
 import com.firebase.ui.FirebaseListAdapter;
 
-import org.w3c.dom.Text;
-
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.journal.activeListDetails.JournalListDetailsActivity;
 
 /**
  * Created by andrewsauer on 3/8/16.

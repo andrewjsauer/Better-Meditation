@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sauerapps.betterbetterrx.model.User;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
+import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
 
 /**
  * Created by andrewsauer on 2/9/16.

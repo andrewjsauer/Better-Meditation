@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.sharing.journalSharing;
+package sauerapps.betterbetterrx.features.sharing;
 
 /**
  * Created by andrewsauer on 3/9/16.

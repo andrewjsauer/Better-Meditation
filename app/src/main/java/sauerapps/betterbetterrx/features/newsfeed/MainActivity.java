@@ -33,11 +33,15 @@ public class MainActivity extends BaseActivity {
     //TODO add "be the most important person for 15 - 30 min, and turn on Airplane Mode - calls, texts will interfere"
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private Firebase mUserRef;
-    private ValueEventListener mUserRefListener;
+
     protected Boolean isFabOpen = false;
     protected FloatingActionButton mMeditationFab, mSingleMeditationFab, mJournalMeditationFab;
     protected Animation fab_open, fab_close, rotate_forward, rotate_backward;
+
+    private Firebase mUserRef;
+    private ValueEventListener mUserRefListener;
+
+    protected String mUsersName;
 
     @Bind(R.id.toolbar_main_activity)
     protected Toolbar mToolbar;
@@ -47,7 +51,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newsfeed_main);
         ButterKnife.bind(this);
-
 
         SummaryUserFragment summaryUserFragment = SummaryUserFragment.newInstance(mEncodedEmail);
 
@@ -60,8 +63,6 @@ public class MainActivity extends BaseActivity {
                     .add(R.id.summary_friends, summaryFriendsFragment)
                     .commit();
         }
-
-        mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
 
         initializeScreen();
     }
@@ -93,7 +94,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AudioActivity.class);
+                intent.putExtra(Constants.KEY_NAME, mUsersName);
                 startActivity(intent);
+
                 closeMainFAB();
             }
         });
@@ -103,9 +106,12 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, JournalActivity.class);
                 startActivity(intent);
+
                 closeMainFAB();
             }
         });
+
+        mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
 
         // getting first name for toolbar reference
         mUserRefListener = mUserRef.addValueEventListener(new ValueEventListener() {
@@ -114,8 +120,8 @@ public class MainActivity extends BaseActivity {
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
                     /* Assumes that the first word in the user's name is the user's first name. */
-                    String firstName = user.getName().split("\\s+")[0];
-                    String title = firstName + "'s Dashboard";
+                    mUsersName = user.getName().split("\\s+")[0];
+                    String title = mUsersName + "'s Dashboard";
 
                     assert getSupportActionBar() != null;
                     getSupportActionBar().setTitle(title);
@@ -129,6 +135,7 @@ public class MainActivity extends BaseActivity {
                                 firebaseError.getMessage());
             }
         });
+
     }
 
     @Override
@@ -138,16 +145,16 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getAnimateFAB() {
-            if (isFabOpen) {
-                closeMainFAB();
-            } else {
-                mMeditationFab.startAnimation(rotate_forward);
-                mSingleMeditationFab.startAnimation(fab_open);
-                mJournalMeditationFab.startAnimation(fab_open);
-                mSingleMeditationFab.setClickable(true);
-                mJournalMeditationFab.setClickable(true);
-                isFabOpen = true;
-            }
+        if (isFabOpen) {
+            closeMainFAB();
+        } else {
+            mMeditationFab.startAnimation(rotate_forward);
+            mSingleMeditationFab.startAnimation(fab_open);
+            mJournalMeditationFab.startAnimation(fab_open);
+            mSingleMeditationFab.setClickable(true);
+            mJournalMeditationFab.setClickable(true);
+            isFabOpen = true;
+        }
     }
 
     private void closeMainFAB() {

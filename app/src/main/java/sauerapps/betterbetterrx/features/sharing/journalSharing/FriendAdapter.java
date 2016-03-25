@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
+import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
 import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 import sauerapps.betterbetterrx.utils.Utils;
@@ -168,6 +168,7 @@ public class FriendAdapter extends FirebaseListAdapter<User> {
      * @return
      */
     private HashMap<String, Object> updateFriendInSharedWith(Boolean addFriend, User friendToAddOrRemove) {
+
         HashMap<String, Object> updatedUserData = new HashMap<String, Object>();
 
         /* The newSharedWith lists contains all users who need their last time changed updated */

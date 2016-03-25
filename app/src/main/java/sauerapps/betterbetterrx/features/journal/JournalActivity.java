@@ -7,26 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ServerValue;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.SettingsActivity;
-import sauerapps.betterbetterrx.features.journal.activeList.AddJournalEntryDialogFragment;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalList;
-import sauerapps.betterbetterrx.features.journal.activeList.JournalListFragment;
-import sauerapps.betterbetterrx.utils.Constants;
-import sauerapps.betterbetterrx.utils.Utils;
+import sauerapps.betterbetterrx.features.journal.journalList.AddJournalEntryDialogFragment;
+import sauerapps.betterbetterrx.features.journal.journalList.JournalListFragment;
 
 public class JournalActivity extends BaseActivity {
 
