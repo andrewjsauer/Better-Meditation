@@ -40,23 +40,10 @@ public class SummaryUserFragment extends Fragment {
     @Bind(R.id.summary_total_journal_text_view)
     protected TextView mTotalJournals;
 
-    @Bind(R.id.last_meditation_time)
-    protected TextView mLastMeditationTime;
-    @Bind(R.id.last_meditation_date)
-    protected TextView mLastMeditationDate;
-    @Bind(R.id.last_meditation_track_title)
-    protected TextView mLastMeditationTrackTitle;
-    @Bind(R.id.last_meditation_track_description)
-    protected TextView mLastMeditationTrackDesc;
-
-
     private String mEncodedEmail;
 
-    private double mAudioTime;
-    private HashMap<String, Object> mAudioDate;
-
-    private Firebase mUserAudioDetailsRef, mUserAudioTimeTotalRef, mUserEntriesTotalRef;
-    private ValueEventListener mUserAudioDetailsListener, mUserAudioTimeTotalListener, mUserEntriesTotalListener;
+    private Firebase mUserAudioTimeTotalRef, mUserEntriesTotalRef, mUserAudioDetailsRef;
+    private ValueEventListener mUserAudioTimeTotalListener, mUserEntriesTotalListener,  mUserAudioDetailsListener;
 
 
     public SummaryUserFragment() {
@@ -121,7 +108,6 @@ public class SummaryUserFragment extends Fragment {
             }
         });
 
-
         mUserAudioDetailsListener = mUserAudioDetailsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -132,22 +118,6 @@ public class SummaryUserFragment extends Fragment {
                     String sessionTotal = Long.toString(totalMeditations);
                     mTotalSessions.setText(sessionTotal);
 
-                    for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-
-                        AudioList audioList = postSnapshot.getValue(AudioList.class);
-
-                        mAudioDate = audioList.getTimestampCreated();
-                        mAudioTime = audioList.getAudioTime();
-
-                        mLastMeditationTrackDesc.setText(audioList.getTrackDescription());
-                        mLastMeditationTrackTitle.setText(audioList.getTrackTitle());
-
-                        getLastMeditationTime();
-
-                        getLastMinuteDate();
-
-
-                    }
                 }
             }
             @Override
@@ -175,27 +145,6 @@ public class SummaryUserFragment extends Fragment {
                                 firebaseError.getMessage());
             }
         });
-    }
-
-    private void getLastMinuteDate() {
-        Object userLastDate = mAudioDate.get(Constants.FIREBASE_PROPERTY_TIMESTAMP);
-
-        long dateTime = ((long)userLastDate);
-
-        Date date = new Date(dateTime);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd hh:mm a", Locale.ENGLISH);
-        sdf.setTimeZone(TimeZone.getTimeZone("PST"));
-        String formattedDate = sdf.format(date);
-
-        mLastMeditationDate.setText(formattedDate);
-
-    }
-
-    private void getLastMeditationTime() {
-        mLastMeditationTime.setText(String.format("%01d:%02d",
-                TimeUnit.MILLISECONDS.toHours((long) mAudioTime),
-                TimeUnit.MILLISECONDS.toMinutes((long) mAudioTime)
-                        - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours((long) mAudioTime))));
     }
 
     @Override

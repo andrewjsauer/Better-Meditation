@@ -12,7 +12,7 @@
     <FrameLayout
         android:id="@+id/summary_fragment"
         android:layout_width="match_parent"
-        android:layout_height="238dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_main_activity"
         android:layout_margin="8dp"/>
 
@@ -21,7 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/summary_fragment"
-        android:layout_margin="8dp"/>
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"/>
 
 
     <android.support.design.widget.FloatingActionButton

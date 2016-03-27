@@ -82,9 +82,11 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
 
         BaseActivity activity = (BaseActivity) getActivity();
 
-        activity.setSupportActionBar(mToolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (mToolbar != null) {
+            activity.setSupportActionBar(mToolbar);
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         return v;
     }
