@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.sharing.audioSharing;
+package sauerapps.betterbetterrx.features.newsfeed.sharing.audioSharing;
 
 import android.app.Activity;
 import android.util.Log;
@@ -18,8 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.meditation.audioSection.AudioList;
+import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.AudioList;
 import sauerapps.betterbetterrx.model.User;
+import sauerapps.betterbetterrx.utils.AudioListUtil;
 import sauerapps.betterbetterrx.utils.Constants;
 
 /**
@@ -27,13 +28,12 @@ import sauerapps.betterbetterrx.utils.Constants;
  */
 public class FriendAudioDetailsAdapter extends FirebaseListAdapter<User> {
 
-    private AudioList mAudioList;
     private static final String LOG_TAG = FriendAudioDetailsAdapter.class.getSimpleName();
-    private Firebase mFirebaseRef, mAudioDetailsListRef;
-    private HashMap<String, User> mSharedUsersList;
+    private AudioList mAudioList;
+    private Firebase mFirebaseRef;
+    private HashMap<String, User> mSharedWith;
     private HashMap <Firebase, ValueEventListener> mLocationListenerMap;
     private String mEncodedEmail;
-    private ValueEventListener mAudioDetailsListListener;
 
     public FriendAudioDetailsAdapter(Activity activity, Class<User> modelClass, int modelLayout,
                          Query ref, String encodedEmail) {
@@ -41,7 +41,7 @@ public class FriendAudioDetailsAdapter extends FirebaseListAdapter<User> {
 
         this.mActivity = activity;
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
-        mLocationListenerMap = new HashMap<Firebase, ValueEventListener>();
+        mLocationListenerMap = new HashMap<>();
         this.mEncodedEmail = encodedEmail;
 
     }
@@ -57,11 +57,12 @@ public class FriendAudioDetailsAdapter extends FirebaseListAdapter<User> {
                 .child(mEncodedEmail)
                 .child(friend.getEmail());
 
+
         ValueEventListener listener = sharedFriendAudioDetailsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                final AudioList sharedFriendAudioDetails = snapshot.getValue(AudioList.class);
+                final User sharedFriendAudioDetails = snapshot.getValue(User.class);
 
                 if (sharedFriendAudioDetails != null) {
 
@@ -74,10 +75,12 @@ public class FriendAudioDetailsAdapter extends FirebaseListAdapter<User> {
                             mFirebaseRef.updateChildren(updatedUserData, new Firebase.CompletionListener() {
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    Log.d(LOG_TAG, "green should show");
+                                    AudioListUtil.updateTimestampReversed(firebaseError, LOG_TAG, mEncodedEmail,
+                                            mSharedWith, mAudioList.getOwner());
 
                                 }
                             });
+                            Log.d(LOG_TAG, "Green thing");
                         }
                     });
                 } else {
@@ -92,9 +95,13 @@ public class FriendAudioDetailsAdapter extends FirebaseListAdapter<User> {
                             mFirebaseRef.updateChildren(updatedUserData, new Firebase.CompletionListener() {
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    Log.d(LOG_TAG, "add person should show");
+                                    AudioListUtil.updateTimestampReversed(firebaseError, LOG_TAG, mEncodedEmail,
+                                            mSharedWith, mAudioList.getOwner());
                                 }
                             });
+
+                            Log.d(LOG_TAG, "No green thing");
+
                         }
                     });
                 }
@@ -113,55 +120,52 @@ public class FriendAudioDetailsAdapter extends FirebaseListAdapter<User> {
 
     }
 
-    public void setSharedWithUsers(HashMap<String, User> sharedUsersList) {
-        this.mSharedUsersList = sharedUsersList;
+    public void setSharedWithUsers(HashMap<String, User> sharedWith) {
+        this.mSharedWith = sharedWith;
+        this.notifyDataSetChanged();
+    }
+
+    public void setAudioList(AudioList audioList) {
+        this.mAudioList = audioList;
         this.notifyDataSetChanged();
     }
 
     private HashMap<String, Object> updateFriendInSharedWith(Boolean addFriend, User friendToAddOrRemove) {
+
         HashMap<String, Object> updatedUserData = new HashMap<String, Object>();
 
-        /* The newSharedWith lists contains all users who need their last time changed updated */
-//        HashMap<String, User> newSharedWith = new HashMap<String, User>(mSharedUsersList);
+        HashMap<String, User> newSharedWith = new HashMap<String, User>(mSharedWith);
 
         if (addFriend) {
+            Log.d(LOG_TAG, "addFriend");
 
-            mAudioDetailsListRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS_LIST).child(friendToAddOrRemove.getEmail());
-
-            mAudioDetailsListRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    AudioList audioList = dataSnapshot.getValue(AudioList.class);
-
-                    if (audioList != null) {
-                        mAudioList = audioList;
-                    }
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    Log.e(LOG_TAG,
-                            mActivity.getString(R.string.log_error_the_read_failed) +
-                                    firebaseError.getMessage());
-                }
-            });
-
-            /* Make it a HashMap of the list and user */
-            final HashMap<String, Object> audioDetailsListFirebase = (HashMap<String, Object>)
+            mAudioList.setTimestampLastChangedToNow();
+            /* Make it a HashMap of the shopping list and user */
+            final HashMap<String, Object> audioListFireBase = (HashMap<String, Object>)
                     new ObjectMapper().convertValue(mAudioList, Map.class);
+
+            final HashMap<String, Object> friendForFirebase = (HashMap<String, Object>)
+                    new ObjectMapper().convertValue(friendToAddOrRemove, Map.class);
 
             /* Add the friend to the shared list */
             updatedUserData.put("/" + Constants.FIREBASE_LOCATION_USER_AUDIO_DETAILS_SHARED_WITH + "/" + mEncodedEmail +
-                    "/" + friendToAddOrRemove.getEmail(), audioDetailsListFirebase);
+                    "/" + friendToAddOrRemove.getEmail(), friendForFirebase);
+
+            /* Add that shopping list hashmap to the new user's active lists */
+            updatedUserData.put("/" + Constants.FIREBASE_LOCATION_USER_AUDIO_DETAILS_LIST + "/" + friendToAddOrRemove.getEmail()
+                    + "/" + mEncodedEmail, audioListFireBase);
 
         } else {
+
             /* Remove the friend from the shared list */
             updatedUserData.put("/" + Constants.FIREBASE_LOCATION_USER_AUDIO_DETAILS_SHARED_WITH + "/" + mEncodedEmail +
                     "/" + friendToAddOrRemove.getEmail(), null);
 
+            /* Remove the list from the shared friend */
+            updatedUserData.put("/" + Constants.FIREBASE_LOCATION_USER_AUDIO_DETAILS_LIST + "/" + friendToAddOrRemove.getEmail()
+                    + "/" + mEncodedEmail, null);
 
-//            newSharedWith.remove(friendToAddOrRemove.getEmail());
+            newSharedWith.remove(friendToAddOrRemove.getEmail());
 
         }
 
@@ -176,11 +180,5 @@ public class FriendAudioDetailsAdapter extends FirebaseListAdapter<User> {
         {
             listenerToClean.getKey().removeEventListener(listenerToClean.getValue());
         }
-
     }
-
-
-
-
-
 }

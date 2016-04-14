@@ -6,10 +6,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="10dp"
-    card_view:cardUseCompatPadding="true"
-    card_view:cardElevation="0dp"
     card_view:cardBackgroundColor="@android:color/white"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="0dp"
+    card_view:cardUseCompatPadding="true"
     >
 
     <RelativeLayout
@@ -35,7 +35,8 @@
             android:layout_alignParentBottom="false"
             android:layout_alignParentRight="true"
             android:textSize="30sp"
-            tools:text="0:15"/>
+            tools:text="0:15"
+            />
 
         <TextView
             android:id="@+id/user_friend_track_title"
@@ -64,7 +65,6 @@
             android:textSize="14sp"
             tools:text="Fri March 25 5:20 PM"
             />
-
 
     </RelativeLayout>
 

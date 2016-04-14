@@ -4,8 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <!-- for when user locks screen -->
-
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 
@@ -42,7 +40,7 @@
                 android:value=".features.authentication.login.LoginActivity"/>
         </activity>
         <activity
-            android:name=".features.meditation.audioSection.AudioActivity"
+            android:name=".features.meditation.audioSection.audioListDetails.AudioActivity"
             android:parentActivityName=".features.newsfeed.MainActivity"
             android:screenOrientation="portrait">
         </activity>
@@ -60,20 +58,11 @@
         </activity>
 
         <activity
-            android:name=".features.SettingsActivity"
+            android:name=".features.journal.SettingsActivity"
             android:label="@string/action_settings" />
-        <activity
-            android:name=".features.sharing.journalSharing.ShareListActivity"
-            android:label="@string/title_activity_share_list"
-            android:parentActivityName=".features.journal.journalListDetails.JournalListDetailsActivity"
-            android:windowSoftInputMode="adjustPan">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.journal.journalListDetails.JournalListDetailsActivity" />
-        </activity>
 
         <activity
-            android:name=".features.sharing.audioSharing.ShareMainActivity"
+            android:name=".features.newsfeed.sharing.audioSharing.ShareMainActivity"
             android:label="@string/title_activity_share_list"
             android:parentActivityName=".features.newsfeed.MainActivity"
             android:windowSoftInputMode="adjustPan">
@@ -83,12 +72,12 @@
         </activity>
 
         <activity
-            android:name=".features.sharing.AddFriendActivity"
+            android:name=".features.newsfeed.sharing.addingFriend.AddFriendActivity"
             android:label="@string/title_activity_add_friend"
-            android:parentActivityName=".features.sharing.journalSharing.ShareListActivity">
+            android:parentActivityName=".features.newsfeed.sharing.audioSharing.ShareMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.sharing.journalSharing.ShareListActivity" />
+                android:value=".features.newsfeed.sharing.audioSharing.ShareMainActivity"/>
         </activity>
     </application>
 

@@ -18,33 +18,28 @@ import com.firebase.client.ValueEventListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import sauerapps.betterbetterrx.app.BaseActivity;
-//import sauerapps.betterbetterrx.features.sharing.audioSharing.ShareMainActivity;
-import sauerapps.betterbetterrx.features.sharing.audioSharing.ShareMainActivity;
-import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.R;
+import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.journal.JournalActivity;
-import sauerapps.betterbetterrx.features.meditation.audioSection.AudioActivity;
+import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.AudioActivity;
+import sauerapps.betterbetterrx.features.newsfeed.sharing.audioSharing.ShareMainActivity;
+import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class MainActivity extends BaseActivity {
 
-    //TODO change all images to SVG
-    //TODO add "be the most important person for 15 - 30 min, and turn on Airplane Mode - calls, texts will interfere"
+    //TODO Share icon does not work without AudioDetails
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     protected Boolean isFabOpen = false;
     protected FloatingActionButton mMeditationFab, mSingleMeditationFab, mJournalMeditationFab;
     protected Animation fab_open, fab_close, rotate_forward, rotate_backward;
-
-    private Firebase mUserRef;
-    private ValueEventListener mUserRefListener;
-
     protected String mUsersName;
-
     @Bind(R.id.toolbar_main_activity)
     protected Toolbar mToolbar;
+    private Firebase mUserRef;
+    private ValueEventListener mUserRefListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +48,6 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         SummaryUserFragment summaryUserFragment = SummaryUserFragment.newInstance(mEncodedEmail);
-
         SummaryFriendsFragment summaryFriendsFragment = SummaryFriendsFragment.newInstance(mEncodedEmail);
 
         if (savedInstanceState == null) {
@@ -135,7 +129,6 @@ public class MainActivity extends BaseActivity {
                                 firebaseError.getMessage());
             }
         });
-
     }
 
     @Override
@@ -168,7 +161,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /* Inflate the menu; this adds items to the action bar if it is present. */
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -179,7 +171,6 @@ public class MainActivity extends BaseActivity {
 
         if (id == R.id.action_share_list) {
             Intent intent = new Intent(MainActivity.this, ShareMainActivity.class);
-            /* Starts an active showing the details for the selected list */
             startActivity(intent);
             return true;
         }

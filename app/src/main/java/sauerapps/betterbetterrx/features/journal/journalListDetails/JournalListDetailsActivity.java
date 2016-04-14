@@ -1,6 +1,5 @@
 package sauerapps.betterbetterrx.features.journal.journalListDetails;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,16 +20,16 @@ import java.util.HashMap;
 
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.sharing.journalSharing.ShareListActivity;
+import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
 import sauerapps.betterbetterrx.model.JournalListItem;
 import sauerapps.betterbetterrx.model.User;
-import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
 import sauerapps.betterbetterrx.utils.Constants;
 
 
 public class JournalListDetailsActivity extends BaseActivity {
 
     private static final String LOG_TAG = JournalListDetailsActivity.class.getSimpleName();
+    public String mTotalEntries;
     private Firebase mCurrentListRef, mSharedWithRef, mTotalEntriesRef;
     private JournalListItemAdapter mJournalListItemAdapter;
     private ListView mListView;
@@ -38,8 +37,6 @@ public class JournalListDetailsActivity extends BaseActivity {
     private JournalList mJournalList;
     private ValueEventListener mCurrentListRefListener, mSharedWithListener, mTotalEntriesListener;
     private HashMap<String, User> mSharedWithUsers;
-
-    public String mTotalEntries;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -68,8 +65,6 @@ public class JournalListDetailsActivity extends BaseActivity {
 
         /* Create JournalListItemAdapter and set to listView */
         mListView.setAdapter(mJournalListItemAdapter);
-
-        final Activity thisActivity = this;
 
         mTotalEntriesListener = mTotalEntriesRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -168,14 +163,6 @@ public class JournalListDetailsActivity extends BaseActivity {
             return true;
         }
 
-        if (id == R.id.action_share_list) {
-            Intent intent = new Intent(JournalListDetailsActivity.this, ShareListActivity.class);
-            intent.putExtra(Constants.KEY_LIST_ID, mListId);
-            /* Starts an active showing the details for the selected list */
-            startActivity(intent);
-            return true;
-        }
-
 //        if (id == R.id.action_archive) {
 //            archiveList();
 //            return true;
@@ -193,21 +180,14 @@ public class JournalListDetailsActivity extends BaseActivity {
         mTotalEntriesRef.removeEventListener(mTotalEntriesListener);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-
-
-
-    }
-
     private void initializeScreen() {
         mListView = (ListView) findViewById(R.id.list_view_journal_entries);
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+
         /* Common toolbar setup */
         setSupportActionBar(toolbar);
         /* Add back button to the action bar */
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -230,9 +210,6 @@ public class JournalListDetailsActivity extends BaseActivity {
 //    }
 //
 
-    /**
-     * Remove current shopping list and its items from all nodes
-     */
     public void removeList() {
         /* Create an instance of the dialog fragment and show it */
         DialogFragment dialog = RemoveListDialogFragment.newInstance(mJournalList, mListId,
@@ -240,9 +217,6 @@ public class JournalListDetailsActivity extends BaseActivity {
         dialog.show(getFragmentManager(), "RemoveListDialogFragment");
     }
 
-    /**
-     * Show the add list item dialog when user taps "Add list item" fab
-     */
     public void showAddListItemDialog(View view) {
         /* Create an instance of the dialog fragment and show it */
         DialogFragment dialog = AddListItemDialogFragment.newInstance(mJournalList, mListId,
@@ -250,12 +224,6 @@ public class JournalListDetailsActivity extends BaseActivity {
         dialog.show(getFragmentManager(), "AddListItemDialogFragment");
     }
 
-    /**
-     * Show the edit list item name dialog after longClick on the particular item
-     *
-     * @param itemName
-     * @param itemId
-     */
     public void showEditListItemNameDialog(String itemName, String itemId) {
         /* Create an instance of the dialog fragment and show it */
         DialogFragment dialog = EditListItemNameDialogFragment.newInstance(mJournalList, itemName,

@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.meditation.audioSection.AudioList;
+import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.AudioList;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class SummaryFriendsFragment extends Fragment {
@@ -31,13 +31,12 @@ public class SummaryFriendsFragment extends Fragment {
 
     private Firebase mRef;
 
-    private RecyclerView mRecyclerView;
     private FirebaseRecyclerViewAdapter<AudioList, AudioListHolder> mRecycleViewAdapter;
 
     private HashMap<String, Object> mFriendDate;
     private double mFriendAudioTime;
 
-    private String mFriendDateFormmatted;
+    private String mFriendDateFormatted;
     private String mFriendAudioTimeFormatted;
 
 
@@ -55,12 +54,12 @@ public class SummaryFriendsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
         }
 
-        mRef = new Firebase(Constants.FIREBASE_URL_AUDIO_DETAILS_SHARED_WITH).child(mEncodedEmail);
-
+        mRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS_LIST).child(mEncodedEmail);
     }
 
     @Override
@@ -74,37 +73,39 @@ public class SummaryFriendsFragment extends Fragment {
     }
 
     private void initializeScreen(View view) {
-
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.friends_audio_list);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.friends_audio_list);
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setReverseLayout(false);
 
-        mRecyclerView.setHasFixedSize(false);
-        mRecyclerView.setLayoutManager(manager);
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setLayoutManager(manager);
 
-        mRecycleViewAdapter = new FirebaseRecyclerViewAdapter<AudioList, AudioListHolder>(AudioList.class, R.layout.audio_list_item, AudioListHolder.class, mRef) {
+        mRecycleViewAdapter = new FirebaseRecyclerViewAdapter<AudioList,
+                AudioListHolder>(AudioList.class, R.layout.audio_list_item,
+                AudioListHolder.class, mRef) {
             @Override
             protected void populateViewHolder(AudioListHolder viewHolder, AudioList model, int position) {
+                if (model != null) {
+                    mFriendDate = model.getTimestampCreated();
+                    mFriendAudioTime = model.getAudioTime();
+                    mUserEmailCheck = model.getOwner();
+                    mUsersName = model.getUserName();
 
-                mFriendDate = model.getTimestampCreated();
-                mFriendAudioTime = model.getAudioTime();
-                mUserEmailCheck = model.getOwner();
-                mUsersName = model.getUserName();
+                    getLastMeditationTime();
+                    getLastMinuteDate();
+                    getUserName();
 
-                getLastMeditationTime();
-                getLastMinuteDate();
-                getUserName();
-
-                viewHolder.userFriendName.setText(mUsersName);
-                viewHolder.userFriendDate.setText(mFriendDateFormmatted);
-                viewHolder.userFriendTrackTime.setText(mFriendAudioTimeFormatted);
-                viewHolder.userFriendTrackTitle.setText(model.getTrackTitle());
-                viewHolder.userFriendTrackDesc.setText(model.getTrackDescription());
+                    viewHolder.userFriendName.setText(mUsersName);
+                    viewHolder.userFriendDate.setText(mFriendDateFormatted);
+                    viewHolder.userFriendTrackTime.setText(mFriendAudioTimeFormatted);
+                    viewHolder.userFriendTrackTitle.setText(model.getTrackTitle());
+                    viewHolder.userFriendTrackDesc.setText(model.getTrackDescription());
+                }
             }
         };
 
-        mRecyclerView.setAdapter(mRecycleViewAdapter);
+        recyclerView.setAdapter(mRecycleViewAdapter);
     }
 
     private void getUserName() {
@@ -123,12 +124,12 @@ public class SummaryFriendsFragment extends Fragment {
         Date date = new Date(dateTime);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd hh:mm a", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("PST"));
-        mFriendDateFormmatted = sdf.format(date);
+        mFriendDateFormatted = sdf.format(date);
 
     }
 
     private void getLastMeditationTime() {
-        mFriendAudioTimeFormatted = (String.format("%01d:%02d",
+        mFriendAudioTimeFormatted = (String.format(Locale.ENGLISH, "%01d:%02d",
                 TimeUnit.MILLISECONDS.toHours((long) mFriendAudioTime),
                 TimeUnit.MILLISECONDS.toMinutes((long) mFriendAudioTime)
                         - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours((long) mFriendAudioTime))));

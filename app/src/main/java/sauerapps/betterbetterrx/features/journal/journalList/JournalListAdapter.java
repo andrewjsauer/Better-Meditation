@@ -25,16 +25,8 @@ public class JournalListAdapter extends FirebaseListAdapter<JournalList> {
 
     @Override
     protected void populateView(View view, JournalList list) {
-
         TextView textViewListName = (TextView) view.findViewById(R.id.text_view_list_name);
-
-//        TextView textViewNumberofEntries = (TextView) view.findViewById(R.id.text_view_number_of_journal_items);
-
         textViewListName.setText(list.getEntryTitle());
-
-//        textViewNumberofEntries.setText(mTotalEntries);
-
         }
-
     }
 

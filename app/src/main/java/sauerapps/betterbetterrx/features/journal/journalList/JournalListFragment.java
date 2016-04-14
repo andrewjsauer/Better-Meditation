@@ -24,12 +24,11 @@ import sauerapps.betterbetterrx.utils.Constants;
 
 public class JournalListFragment extends Fragment {
 
+    @Bind(R.id.toolbar_journal)
+    protected Toolbar mToolbar;
     private String mEncodedEmail;
     private JournalListAdapter mJournalListAdapter;
     private ListView mListView;
-
-    @Bind(R.id.toolbar_journal)
-    protected Toolbar mToolbar;
 
     public JournalListFragment() {
         /* Required empty public constructor */
@@ -64,12 +63,8 @@ public class JournalListFragment extends Fragment {
                 JournalList selectedList = mJournalListAdapter.getItem(position);
                 if (selectedList != null) {
                     Intent intent = new Intent(getActivity(), JournalListDetailsActivity.class);
-                    /* Get the list ID using the adapter's get ref method to get the Firebase
-                     * ref and then grab the key.
-                     */
                     String listId = mJournalListAdapter.getRef(position).getKey();
                     intent.putExtra(Constants.KEY_LIST_ID, listId);
-                    /* Starts an active showing the details for the selected list */
                     startActivity(intent);
                 }
             }
@@ -81,7 +76,9 @@ public class JournalListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         String sortOrder = sharedPref.getString(Constants.KEY_PREF_SORT_ORDER_LISTS, Constants.ORDER_BY_KEY);
 
         Query orderedActiveUserListsRef;
@@ -119,9 +116,11 @@ public class JournalListFragment extends Fragment {
         BaseActivity activity = (BaseActivity) getActivity();
 
         activity.setSupportActionBar(mToolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-        activity.setTitle("Gratitude Journal");
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+            activity.setTitle("Gratitude Journal");
+        }
     }
 }
 

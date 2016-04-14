@@ -2,14 +2,13 @@
 <RelativeLayout android:id="@+id/rl_fragment_shopping_lists"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/grey"
-                tools:context=".ShoppingListsFragment">
+                android:background="@color/grey">
 
-    <include layout="@layout/main_toolbar"
-             android:id="@+id/toolbar_journal"/>
+    <include
+        android:id="@+id/toolbar_journal"
+        layout="@layout/main_toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,14 +21,14 @@
             android:id="@+id/list_view_active_lists"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:scrollbars="none"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:divider="@color/grey"
+            android:dividerHeight="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:dividerHeight="8dp"
-            android:divider="@color/grey"/>
+            android:scrollbars="none"/>
 
 
 
@@ -45,10 +44,10 @@
                                                         android:layout_margin="@dimen/fab_margin"
                                                         android:onClick="showAddNewJournalEntry"
                                                         android:src="@drawable/ic_action_add"
+                                                        app:backgroundTint="@color/light_blue"
                                                         app:borderWidth="0dp"
                                                         app:elevation="6dp"
                                                         app:pressedTranslationZ="12dp"
-                                                        app:rippleColor="@android:color/white"
-                                                        app:backgroundTint="@color/light_blue"/>
+                                                        app:rippleColor="@android:color/white"/>
 
 </RelativeLayout>

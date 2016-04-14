@@ -33,10 +33,9 @@ import sauerapps.betterbetterrx.utils.Utils;
  * Created by andrewsauer on 3/8/16.
  */
 public class AddJournalEntryDialogFragment extends DialogFragment {
+    protected String mCurrentDate;
     String mEncodedEmail;
     EditText mEditTextListName;
-
-    protected String mCurrentDate;
 
     public static AddJournalEntryDialogFragment newInstance(String encodedEmail) {
         AddJournalEntryDialogFragment addListDialogFragment = new AddJournalEntryDialogFragment();
@@ -66,9 +65,7 @@ public class AddJournalEntryDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomTheme_Dialog);
-        // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View rootView = inflater.inflate(R.layout.dialog_add_list, null);
         mEditTextListName = (EditText) rootView.findViewById(R.id.edit_text_list_name);
@@ -85,10 +82,7 @@ public class AddJournalEntryDialogFragment extends DialogFragment {
             }
         });
 
-        /* Inflate and set the layout for the dialog */
-        /* Pass null as the parent view because its going in the dialog layout*/
         builder.setView(rootView)
-                /* Add action buttons */
                 .setPositiveButton(R.string.positive_button_create, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -111,16 +105,10 @@ public class AddJournalEntryDialogFragment extends DialogFragment {
 
             Firebase newListRef = userListsRef.push();
 
-            /* Save listsRef.push() to maintain same random Id */
             final String listId = newListRef.getKey();
 
-            /* HashMap for data to update */
             HashMap<String, Object> updateJournalList = new HashMap<>();
 
-            /**
-             * Set raw version of date to the ServerValue.TIMESTAMP value and save into
-             * timestampCreatedMap
-             */
             HashMap<String, Object> timestampCreated = new HashMap<>();
             timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 

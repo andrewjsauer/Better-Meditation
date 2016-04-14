@@ -13,17 +13,12 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.meditation.audioSection.AudioList;
 import sauerapps.betterbetterrx.utils.Constants;
 
 /**
@@ -88,10 +83,9 @@ public class SummaryUserFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot.exists()) {
-
                     double totalTime = (Double) dataSnapshot.getValue();
 
-                    String time = String.format("%01d hr %02d min",
+                    String time = String.format(Locale.ENGLISH, "%01d hr %02d min",
                             TimeUnit.MILLISECONDS.toHours((long) totalTime),
                             TimeUnit.MILLISECONDS.toMinutes((long) totalTime)
                                     - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours((long) totalTime)));
@@ -111,7 +105,6 @@ public class SummaryUserFragment extends Fragment {
         mUserAudioDetailsListener = mUserAudioDetailsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 if (dataSnapshot.exists()) {
 
                     long totalMeditations = dataSnapshot.getChildrenCount();

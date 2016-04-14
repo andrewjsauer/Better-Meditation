@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.sharing;
+package sauerapps.betterbetterrx.features.newsfeed.sharing.addingFriend;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -24,8 +24,6 @@ public class AddFriendActivity extends BaseActivity {
     private String mInput;
     private ListView mListViewAutocomplete;
     private Firebase mUsersRef;
-
-
 
 
     @Override

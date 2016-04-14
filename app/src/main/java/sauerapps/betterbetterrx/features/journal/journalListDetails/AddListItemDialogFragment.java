@@ -52,7 +52,7 @@ public class AddListItemDialogFragment extends EditListDialogFragment {
             Firebase firebaseRef = new Firebase(Constants.FIREBASE_URL);
             Firebase itemsRef = new Firebase(Constants.FIREBASE_URL_JOURNAL_LIST_ITEMS).child(mListId);
 
-            /* Make a map for the item you are adding */
+            /* Make a map for the item we are adding */
             HashMap<String, Object> updatedItemToAddMap = new HashMap<String, Object>();
 
             /* Save push() to maintain same random Id */

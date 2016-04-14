@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.meditation.audioSection;
+package sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails;
 
 
 import android.support.v7.widget.CardView;

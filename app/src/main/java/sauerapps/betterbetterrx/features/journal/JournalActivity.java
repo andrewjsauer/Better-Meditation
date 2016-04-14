@@ -9,7 +9,6 @@ import android.view.View;
 
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.SettingsActivity;
 import sauerapps.betterbetterrx.features.journal.journalList.AddJournalEntryDialogFragment;
 import sauerapps.betterbetterrx.features.journal.journalList.JournalListFragment;
 
@@ -39,7 +38,6 @@ public class JournalActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /* Inflate the menu; this adds items to the action bar if it is present. */
         getMenuInflater().inflate(R.menu.menu_base, menu);
         MenuItem sort = menu.findItem(R.id.action_sort);
         sort.setVisible(true);

@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.meditation.audioSection;
+package sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -25,31 +31,28 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.soundcloud.SCService;
-import sauerapps.betterbetterrx.features.soundcloud.SoundCloud;
-import sauerapps.betterbetterrx.features.soundcloud.Track;
+import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.soundcloud.SCService;
+import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.soundcloud.SoundCloud;
+import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.soundcloud.Track;
+import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class AudioListFragment extends Fragment implements AudioClickListener {
 
     private static final String TAG = AudioListFragment.class.getSimpleName();
-
-    private String mEncodedEmail;
-    private String mUserName;
-
     public static Track mTrack;
     public static int mTrackPosition;
-
     protected TrackRxAdapter mAdapter;
     protected List<Track> mListItems;
-
-
     @Bind(R.id.recyclerviewRx)
     protected RecyclerView mRecyclerView;
     @Bind(R.id.toolbar)
     protected Toolbar mToolbar;
-
-
+    ValueEventListener mSharedWithListener;
+    HashMap<String, User> mSharedWith;
+    Firebase mSharedWithRef;
+    private String mEncodedEmail;
+    private String mUserName;
 
     public AudioListFragment() {
         /* Required empty public constructor */
@@ -71,6 +74,25 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
             mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
             mUserName = getArguments().getString(Constants.KEY_NAME);
         }
+
+        mSharedWithRef = new Firebase(Constants.FIREBASE_URL_AUDIO_DETAILS_SHARED_WITH).child(mEncodedEmail);
+        mSharedWithListener = mSharedWithRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mSharedWith = new HashMap<>();
+
+                for (DataSnapshot currentUser : dataSnapshot.getChildren()) {
+                    mSharedWith.put(currentUser.getKey(), currentUser.getValue(User.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(TAG,
+                        getString(R.string.log_error_the_read_failed) +
+                                firebaseError.getMessage());
+            }
+        });
     }
 
 
@@ -82,10 +104,12 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
 
         BaseActivity activity = (BaseActivity) getActivity();
 
-        if (mToolbar != null) {
-            activity.setSupportActionBar(mToolbar);
+        activity.setSupportActionBar(mToolbar);
+
+        if (activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+            activity.setTitle("Meditations");
         }
 
         return v;
@@ -141,7 +165,7 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
         mTrack = track;
         mTrackPosition = position;
 
-        AudioDetailsFragment audioDetailsFragment = AudioDetailsFragment.newInstance(mEncodedEmail, mUserName);
+        AudioDetailsFragment audioDetailsFragment = AudioDetailsFragment.newInstance(mEncodedEmail, mUserName, mSharedWith);
 
         // Note that we need the API version check here because the actual transition classes (e.g. Fade)
         // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment

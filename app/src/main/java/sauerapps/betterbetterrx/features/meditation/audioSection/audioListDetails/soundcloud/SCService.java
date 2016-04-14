@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.soundcloud;
+package sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.soundcloud;
 
 
 import java.util.List;

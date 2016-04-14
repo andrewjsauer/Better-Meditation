@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.meditation.audioSection;
+package sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails;
 
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
@@ -25,13 +25,16 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.soundcloud.Config;
-import sauerapps.betterbetterrx.features.soundcloud.Track;
+import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.soundcloud.Config;
+import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.soundcloud.Track;
+import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class AudioDetailsFragment extends Fragment {
@@ -48,37 +51,10 @@ public class AudioDetailsFragment extends Fragment {
     private static String SERVICE_CMD = "sauerapps.betterbetterrx";
     private static String PAUSE_SERVICE_CMD = "sauerapps.betterbetterrx.pause";
     private static String PLAY_SERVICE_CMD = "sauerapps.betterbetterrx.play";
-
-    // Honeycomb
-    {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            SERVICE_CMD = "sauerapps.betterbetterrx";
-            PAUSE_SERVICE_CMD = "sauerapps.betterbetterrx.pause";
-            PLAY_SERVICE_CMD = "sauerapps.betterbetterrx.play";
-        }
-    };
-
-    private Handler durationHandler = new Handler();
-
-
     protected Track mTrack;
+    ;
     protected int mTrackPosition;
     protected MediaPlayer mMediaPlayer;
-    private double timeElapsed = 0;
-    private int seekForwardTime = 5000; // 5000 milliseconds
-
-    private String mTrackTitle;
-    private String mTrackDescription;
-
-    private boolean mAudioIsPlaying = false;
-    private boolean mAudioFocusGranted = false;
-    private BroadcastReceiver mIntentReceiver;
-    private boolean mReceiverRegistered = false;
-    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener;
-
-    private String mEncodedEmail;
-    private String mUserName;
-
     @Bind(R.id.play)
     protected ImageButton mPlay;
     @Bind(R.id.pause)
@@ -93,11 +69,84 @@ public class AudioDetailsFragment extends Fragment {
     protected TextView mTrackTime;
     @Bind(R.id.track_exit_button)
     protected ImageButton mExitButton;
+    private Handler durationHandler = new Handler();
+    private double timeElapsed = 0;
+    private int seekForwardTime = 5000; // 5000 milliseconds
+    private String mTrackTitle;
+    private String mTrackDescription;
+    private boolean mAudioIsPlaying = false;
+    private boolean mAudioFocusGranted = false;
+    private BroadcastReceiver mIntentReceiver;
+    private boolean mReceiverRegistered = false;
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener;
+    private String mEncodedEmail;
+    private String mUserName;
+    private HashMap<String, User> mSharedWith;
+    //  handler to change duration text
+    private Runnable updateDuration = new Runnable() {
+        public void run() {
+            //get current position
+            timeElapsed = mMediaPlayer.getCurrentPosition();
 
-    public static AudioDetailsFragment newInstance(String encodedEmail, String userName) {
+            //set time remaining
+            double timeRemaining = timeElapsed;
+            mTrackTime.setText(String.format(Locale.ENGLISH, "%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours((long) timeRemaining),
+                    TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining),
+                    TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining)
+                            - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining))));
+
+            //repeat that again in 100 miliseconds
+            durationHandler.postDelayed(this, 100);
+        }
+    };
+    private final BroadcastReceiver audioBecomingNoisy = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
+                pause();
+            }
+        }
+    };
+    private final BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
+        private static final String TAG = "headsetDisconnected";
+        private static final int UNPLUGGED = 0;
+        private static final int PLUGGED = 1;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
+                int state = intent.getIntExtra("state", -1);
+                if (state != -1) {
+                    Log.d(TAG, "Headset plug event. State is " + state);
+                    if (state == UNPLUGGED) {
+                        Log.d(TAG, "Headset was unplugged during playback.");
+                        pause();
+                    } else if (state == PLUGGED) {
+                        Log.d(TAG, "Headset was plugged in during playback.");
+                    }
+                } else {
+                    Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
+                }
+            }
+        }
+    };
+
+    // Honeycomb
+    {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            SERVICE_CMD = "sauerapps.betterbetterrx";
+            PAUSE_SERVICE_CMD = "sauerapps.betterbetterrx.pause";
+            PLAY_SERVICE_CMD = "sauerapps.betterbetterrx.play";
+        }
+    }
+
+    public static AudioDetailsFragment newInstance(String encodedEmail, String userName,
+                                                   HashMap<String, User> sharedWith) {
         Bundle args = new Bundle();
         args.putString(Constants.KEY_ENCODED_EMAIL, encodedEmail);
         args.putString(Constants.KEY_NAME, userName);
+        args.putSerializable(Constants.KEY_SHARED_WITH_USERS, sharedWith);
         AudioDetailsFragment fragment = new AudioDetailsFragment();
         fragment.setArguments(args);
 
@@ -112,6 +161,7 @@ public class AudioDetailsFragment extends Fragment {
 
         mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
         mUserName = getArguments().getString(Constants.KEY_NAME);
+        mSharedWith = (HashMap) getArguments().getSerializable(Constants.KEY_SHARED_WITH_USERS);
 
         mTrack = AudioListFragment.mTrack;
 
@@ -176,12 +226,10 @@ public class AudioDetailsFragment extends Fragment {
         mExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 exitAudioDetails();
 
             }
         });
-
 
         return view;
     }
@@ -213,7 +261,6 @@ public class AudioDetailsFragment extends Fragment {
         getActivity().registerReceiver(headsetDisconnected, new IntentFilter(
                 Intent.ACTION_HEADSET_PLUG));
     }
-
 
     @Override
     public void onResume() {
@@ -292,7 +339,7 @@ public class AudioDetailsFragment extends Fragment {
         if (timeElapsed >= 10000) {
 
             DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, mUserName, timeElapsed,
-                    mTrackDescription, mTrackTitle);
+                    mTrackDescription, mTrackTitle, mSharedWith);
             dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
 
         }
@@ -300,7 +347,6 @@ public class AudioDetailsFragment extends Fragment {
         getActivity().getSupportFragmentManager().popBackStack();
 
         if (mMediaPlayer != null) {
-
 
             mMediaPlayer.stop();
 
@@ -320,7 +366,6 @@ public class AudioDetailsFragment extends Fragment {
 
         }
     }
-
 
     private void play() {
         if (!mAudioIsPlaying) {
@@ -372,25 +417,6 @@ public class AudioDetailsFragment extends Fragment {
         }
     }
 
-    //  handler to change duration text
-    private Runnable updateDuration = new Runnable() {
-        public void run() {
-            //get current position
-            timeElapsed = mMediaPlayer.getCurrentPosition();
-
-            //set time remaining
-            double timeRemaining = timeElapsed;
-            mTrackTime.setText(String.format("%02d:%02d:%02d",
-                    TimeUnit.MILLISECONDS.toHours((long) timeRemaining),
-                    TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining),
-                    TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining)
-                            - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining))));
-
-            //repeat that again in 100 miliseconds
-            durationHandler.postDelayed(this, 100);
-        }
-    };
-
     private void forceMusicStop() {
         AudioManager am = (AudioManager) getActivity()
                 .getSystemService(Context.AUDIO_SERVICE);
@@ -400,7 +426,6 @@ public class AudioDetailsFragment extends Fragment {
             getActivity().sendBroadcast(intentToStop);
         }
     }
-
 
     private boolean requestAudioFocus() {
         if (!mAudioFocusGranted) {
@@ -439,7 +464,6 @@ public class AudioDetailsFragment extends Fragment {
         mOnAudioFocusChangeListener = null;
     }
 
-
     private void setupBroadcastReceiver() {
         mIntentReceiver = new BroadcastReceiver() {
             @Override
@@ -472,38 +496,4 @@ public class AudioDetailsFragment extends Fragment {
             mReceiverRegistered = true;
         }
     }
-
-
-    private final BroadcastReceiver audioBecomingNoisy = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
-                pause();
-            }
-        }
-    };
-
-    private final BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
-        private static final String TAG = "headsetDisconnected";
-        private static final int UNPLUGGED = 0;
-        private static final int PLUGGED = 1;
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
-                int state = intent.getIntExtra("state", -1);
-                if (state != -1) {
-                    Log.d(TAG, "Headset plug event. State is " + state);
-                    if (state == UNPLUGGED) {
-                        Log.d(TAG, "Headset was unplugged during playback.");
-                        pause();
-                    } else if (state == PLUGGED) {
-                        Log.d(TAG, "Headset was plugged in during playback.");
-                    }
-                } else {
-                    Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
-                }
-            }
-        }
-    };
 }

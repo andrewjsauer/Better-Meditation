@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.meditation.audioSection;
+package sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
@@ -12,13 +12,13 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.soundcloud.Track;
+import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.soundcloud.Track;
 
 public class TrackRxAdapter extends RecyclerView.Adapter<TrackRxHolder> {
+    private static final String TAG = TrackRxAdapter.class.getSimpleName();
+    private final AudioClickListener mListener;
     private Context mContext;
     private List<Track> mTracks;
-    private final AudioClickListener mListener;
-    private static final String TAG = TrackRxAdapter.class.getSimpleName();
 
 
 

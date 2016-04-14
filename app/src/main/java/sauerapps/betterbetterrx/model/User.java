@@ -11,21 +11,9 @@ public class User {
     private HashMap<String, Object> timestampJoined;
     private boolean hasLoggedInWithPassword;
 
-
-    /**
-     * Required public constructor
-     */
     public User() {
     }
 
-    /**
-     * Use this constructor to create new User.
-     * Takes user name, email and timestampJoined as params
-     *
-     * @param name
-     * @param email
-     * @param timestampJoined
-     */
     public User(String name, String email, HashMap<String, Object> timestampJoined) {
         this.name = name;
         this.email = email;

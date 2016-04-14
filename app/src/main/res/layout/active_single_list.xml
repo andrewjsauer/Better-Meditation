@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FEFEFE"
     android:layout_margin="8dp"
+    android:background="#FEFEFE"
     app:cardCornerRadius="4dp">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,23 +29,10 @@
         style="@style/ListItemText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="22sp"
         tools:text="March 8, 2016 Entry"
         />
 
-
-    <TextView
-        android:id="@+id/text_view_number_of_journal_items"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/text_view_list_name"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="2dp"
-        android:text="0"
-        android:textColor="@color/light_black"
-        android:textSize="@dimen/list_created_by_text_size" />
 </RelativeLayout>
 
 </android.support.v7.widget.CardView>

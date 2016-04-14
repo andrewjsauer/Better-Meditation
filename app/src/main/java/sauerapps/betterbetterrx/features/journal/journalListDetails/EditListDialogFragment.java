@@ -50,9 +50,6 @@ abstract public class EditListDialogFragment extends DialogFragment {
         mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
     }
 
-    /**
-     * Open the keyboard automatically when the dialog fragment is opened
-     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -68,9 +65,6 @@ abstract public class EditListDialogFragment extends DialogFragment {
         View rootView = inflater.inflate(mResource, null);
         mEditTextForList = (EditText) rootView.findViewById(R.id.edit_text_list_dialog);
 
-        /**
-         * Call doListEdit() when user taps "Done" keyboard action
-         */
         mEditTextForList.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -110,6 +104,5 @@ abstract public class EditListDialogFragment extends DialogFragment {
     }
 
     protected abstract void doListEdit();
-
 
 }

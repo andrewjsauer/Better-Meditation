@@ -1,8 +1,4 @@
-package sauerapps.betterbetterrx.features.journal.journalList;
-
-/**
- * Created by andrewsauer on 3/8/16.
- */
+package sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.firebase.client.ServerValue;
@@ -11,20 +7,29 @@ import java.util.HashMap;
 
 import sauerapps.betterbetterrx.utils.Constants;
 
-public class JournalList {
-    private String entryTitle;
+public class AudioList {
+
     private String owner;
+    private String userName;
+    private double audioTime;
+    private String trackTitle;
+    private String trackDescription;
     private HashMap<String, Object> timestampLastChanged;
     private HashMap<String, Object> timestampCreated;
     private HashMap<String, Object> timestampLastChangedReverse;
 
-    public JournalList() {
+    public AudioList() {
 
     }
 
-    public JournalList(String entryTitle, String owner, HashMap<String, Object> timestampCreated) {
-        this.entryTitle = entryTitle;
+    public AudioList(String owner, String userName, double audioTime, String trackTitle, String trackDescription,
+                     HashMap<String, Object> timestampCreated) {
+
         this.owner = owner;
+        this.userName = userName;
+        this.audioTime = audioTime;
+        this.trackTitle = trackTitle;
+        this.trackDescription = trackDescription;
         this.timestampCreated = timestampCreated;
         HashMap<String, Object> timestampNowObject = new HashMap<String, Object>();
         timestampNowObject.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
@@ -32,24 +37,28 @@ public class JournalList {
         this.timestampLastChangedReverse = null;
     }
 
-    public String getEntryTitle() {
-        return entryTitle;
-    }
-
     public String getOwner() {
         return owner;
     }
 
-    public HashMap<String, Object> getTimestampLastChanged() {
-        return timestampLastChanged;
+    public String getUserName() {
+        return userName;
+    }
+
+    public double getAudioTime() {
+        return audioTime;
+    }
+
+    public String getTrackTitle() {
+        return trackTitle;
+    }
+
+    public String getTrackDescription() {
+        return trackDescription;
     }
 
     public HashMap<String, Object> getTimestampCreated() {
         return timestampCreated;
-    }
-
-    public HashMap<String, Object> getTimestampLastChangedReverse() {
-        return timestampLastChangedReverse;
     }
 
     @JsonIgnore
@@ -75,6 +84,12 @@ public class JournalList {
         this.timestampLastChanged = timestampNowObject;
     }
 
+    public HashMap<String, Object> getTimestampLastChanged() {
+        return timestampLastChanged;
+    }
 
+
+    public HashMap<String, Object> getTimestampLastChangedReverse() {
+        return timestampLastChangedReverse;
+    }
 }
-

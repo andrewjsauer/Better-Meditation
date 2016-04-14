@@ -55,11 +55,7 @@ public class Constants {
     public static final String FIREBASE_URL_USER_AUDIO_DETAILS = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_AUDIO_DETAILS;
     public static final String FIREBASE_URL_USER_AUDIO_DETAILS_LIST = FIREBASE_URL + "/" + FIREBASE_LOCATION_USER_AUDIO_DETAILS_LIST;
 
-
-
     public static final String FIREBASE_URL_JOURNAL_LIST_ITEMS = FIREBASE_URL + "/" + FIREBASE_LOCATION_JOURNAL_ENTRY_ITEMS;
-
-
 
     /**
      * Constants for bundles, extras and shared preferences keys

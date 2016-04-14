@@ -6,16 +6,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.firebase.client.AuthData;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -27,7 +23,6 @@ import icepick.Icepick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.features.authentication.createAccount.CreateAccountActivity;
 import sauerapps.betterbetterrx.features.authentication.login.LoginActivity;
-import sauerapps.betterbetterrx.model.User;
 import sauerapps.betterbetterrx.utils.Constants;
 
 
@@ -35,13 +30,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
     protected String mProvider, mEncodedEmail;
-    /* Client used to interact with Google APIs. */
     protected GoogleApiClient mGoogleApiClient;
     protected Firebase.AuthStateListener mAuthListener;
     protected Firebase mFirebaseRef;
-
-    private static final String LOG_TAG = BaseActivity.class.getSimpleName();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,21 +118,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     protected void initializeBackground(LinearLayout linearLayout) {
-
-        /**
-         * Set different background image for landscape and portrait layouts
-         */
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             linearLayout.setBackgroundResource(R.drawable.background_loginscreen_land);
         } else {
             linearLayout.setBackgroundResource(R.drawable.background_loginscreen);
         }
     }
-
-    /**
-     * Logs out the user from their current session and starts LoginActivity.
-     * Also disconnects the mGoogleApiClient if connected and provider is Google
-     */
     protected void logout() {
 
         /* Logout if mProvider is not null */

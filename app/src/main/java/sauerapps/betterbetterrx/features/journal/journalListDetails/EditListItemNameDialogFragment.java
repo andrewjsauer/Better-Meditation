@@ -60,7 +60,7 @@ public class EditListItemNameDialogFragment extends EditListDialogFragment {
         if (!nameInput.equals("") && !nameInput.equals(mItemName)) {
             Firebase firebaseRef = new Firebase(Constants.FIREBASE_URL);
 
-            /* Make a map for the item you are changing the name of */
+            /* Make a map for the item we are changing the name of */
             HashMap<String, Object> updatedDataItemToEditMap = new HashMap<String, Object>();
 
             /* Add the new name to the update map*/

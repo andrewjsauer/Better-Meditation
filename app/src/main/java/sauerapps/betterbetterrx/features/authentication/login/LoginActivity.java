@@ -39,20 +39,21 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.authentication.createAccount.CreateAccountActivity;
 import sauerapps.betterbetterrx.features.newsfeed.MainActivity;
 import sauerapps.betterbetterrx.model.User;
-import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.utils.Constants;
 import sauerapps.betterbetterrx.utils.Utils;
 
-/**
- * Represents Sign in screen and functionality of the app
- */
 public class LoginActivity extends BaseActivity {
 
+    /* Request code used to invoke sign in user interactions for Google+ */
+    public static final int RC_GOOGLE_LOGIN = 1;
     private static final String LOG_TAG = LoginActivity.class.getSimpleName();
+    /* A Google account object that is populated if the user signs in with Google */
+    GoogleSignInAccount mGoogleAccount;
     /* A dialog that is presented until the Firebase authentication finished. */
     private ProgressDialog mAuthProgressDialog;
     /* References to the Firebase */
@@ -60,18 +61,10 @@ public class LoginActivity extends BaseActivity {
     /* Listener for Firebase session changes */
     private Firebase.AuthStateListener mAuthStateListener;
     private EditText mEditTextEmailInput, mEditTextPasswordInput;
-
     private SharedPreferences mSharedPref;
     private SharedPreferences.Editor mSharedPrefEditor;
-    /**
-     * Variables related to Google Login
-     */
     /* A flag indicating that a PendingIntent is in progress and prevents us from starting further intents. */
     private boolean mGoogleIntentInProgress;
-    /* Request code used to invoke sign in user interactions for Google+ */
-    public static final int RC_GOOGLE_LOGIN = 1;
-    /* A Google account object that is populated if the user signs in with Google */
-    GoogleSignInAccount mGoogleAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,20 +73,10 @@ public class LoginActivity extends BaseActivity {
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mSharedPrefEditor = mSharedPref.edit();
 
-
-        /**
-         * Create Firebase references
-         */
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
 
-        /**
-         * Link layout elements from XML and setup progress dialog
-         */
         initializeScreen();
 
-        /**
-         * Call signInPassword() when user taps "Done" keyboard action
-         */
         mEditTextPasswordInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -110,20 +93,11 @@ public class LoginActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        /**
-         * This is the authentication listener that maintains the current user session
-         * and signs in automatically on application launch
-         */
         mAuthStateListener = new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
                 mAuthProgressDialog.dismiss();
 
-                /**
-                 * If there is a valid session to be restored, start MainActivity.
-                 * No need to pass data via SharedPreferences because app
-                 * already holds userName/provider data from the latest session
-                 */
                 if (authData != null) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -135,38 +109,22 @@ public class LoginActivity extends BaseActivity {
         /* Add auth listener to Firebase ref */
         mFirebaseRef.addAuthStateListener(mAuthStateListener);
 
-        /**
-         * Get the newly registered user email if present, use null as default value
-         */
         String signupEmail = mSharedPref.getString(Constants.KEY_SIGNUP_EMAIL, null);
 
-        /**
-         * Fill in the email editText and remove value from SharedPreferences if email is present
-         */
         if (signupEmail != null) {
             mEditTextEmailInput.setText(signupEmail);
 
-            /**
-             * Clear signupEmail sharedPreferences to make sure that they are used just once
-             */
+
+       /* Clear signupEmail sharedPreferences to make sure that they are used just once */
             mSharedPrefEditor.putString(Constants.KEY_SIGNUP_EMAIL, null).apply();
         }
     }
 
-    /**
-     * Cleans up listeners tied to the user's authentication state
-     */
     @Override
     public void onPause() {
         super.onPause();
         mFirebaseRef.removeAuthStateListener(mAuthStateListener);
     }
-
-    /**
-     * Override onCreateOptionsMenu to inflate nothing
-     *
-     * @param menu The menu with which nothing will happen
-     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -174,24 +132,15 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    /**
-     * Sign in with Password provider when user clicks sign in button
-     */
     public void onSignInPressed(View view) {
         signInPassword();
     }
 
-    /**
-     * Open CreateAccountActivity when user taps on "Sign up" TextView
-     */
     public void onSignUpPressed(View view) {
         Intent intent = new Intent(LoginActivity.this, CreateAccountActivity.class);
         startActivity(intent);
     }
 
-    /**
-     * Link layout elements from XML and setup the progress dialog
-     */
     public void initializeScreen() {
         mEditTextEmailInput = (EditText) findViewById(R.id.edit_text_email);
         mEditTextPasswordInput = (EditText) findViewById(R.id.edit_text_password);
@@ -206,16 +155,10 @@ public class LoginActivity extends BaseActivity {
         setupGoogleSignIn();
     }
 
-    /**
-     * Sign in with Password provider (used when user taps "Done" action on keyboard)
-     */
     public void signInPassword() {
         String email = mEditTextEmailInput.getText().toString();
         String password = mEditTextPasswordInput.getText().toString();
 
-        /**
-         * If email and password are not empty show progress dialog and try to authenticate
-         */
         if (email.equals("")) {
             mEditTextEmailInput.setError(getString(R.string.error_cannot_be_empty));
             return;
@@ -229,99 +172,12 @@ public class LoginActivity extends BaseActivity {
         mFirebaseRef.authWithPassword(email, password, new MyAuthResultHandler(Constants.PASSWORD_PROVIDER));
     }
 
-    /**
-     * Handle user authentication that was initiated with mFirebaseRef.authWithPassword
-     * or mFirebaseRef.authWithOAuthToken
-     */
-    private class MyAuthResultHandler implements Firebase.AuthResultHandler {
-
-        private final String provider;
-
-        public MyAuthResultHandler(String provider) {
-            this.provider = provider;
-        }
-
-        /**
-         * On successful authentication call setAuthenticatedUser if it was not already
-         * called in
-         */
-        @Override
-        public void onAuthenticated(AuthData authData) {
-            mAuthProgressDialog.dismiss();
-            Log.i(LOG_TAG, provider + " " + getString(R.string.log_message_auth_successful));
-
-            if (authData != null) {
-                /**
-                 * If user has logged in with Google provider
-                 */
-                if (authData.getProvider().equals(Constants.PASSWORD_PROVIDER)) {
-                    setAuthenticatedUserPasswordProvider(authData);
-                } else
-                /**
-                 * If user has logged in with Password provider
-                 */
-                    if (authData.getProvider().equals(Constants.GOOGLE_PROVIDER)) {
-                        setAuthenticatedUserGoogle(authData);
-                    } else {
-                        Log.e(LOG_TAG, getString(R.string.log_error_invalid_provider) + authData.getProvider());
-                    }
-
-                /* Save provider name and encodedEmail for later use and start MainActivity */
-                mSharedPrefEditor.putString(Constants.KEY_PROVIDER, authData.getProvider()).apply();
-                mSharedPrefEditor.putString(Constants.KEY_ENCODED_EMAIL, mEncodedEmail).apply();
-
-                /* Go to main activity */
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            }
-        }
-        @Override
-        public void onAuthenticationError(FirebaseError firebaseError) {
-            mAuthProgressDialog.dismiss();
-
-            /**
-             * Use utility method to check the network connection state
-             * Show "No network connection" if there is no connection
-             * Show Firebase specific error message otherwise
-             */
-            switch (firebaseError.getCode()) {
-                case FirebaseError.INVALID_EMAIL:
-                case FirebaseError.USER_DOES_NOT_EXIST:
-                    mEditTextEmailInput.setError(getString(R.string.error_message_email_issue));
-                    break;
-                case FirebaseError.INVALID_PASSWORD:
-                    mEditTextPasswordInput.setError(firebaseError.getMessage());
-                    break;
-                case FirebaseError.NETWORK_ERROR:
-                    showErrorToast(getString(R.string.error_message_failed_sign_in_no_network));
-                    break;
-                default:
-                    showErrorToast(firebaseError.toString());
-            }
-        }
-    }
-
-    /**
-     * Helper method that makes sure a user is created if the user
-     * logs in with Firebase's email/password provider.
-     *
-     * @param authData AuthData object returned from onAuthenticated
-     */
     private void setAuthenticatedUserPasswordProvider(AuthData authData) {
         final String unprocessedEmail = authData.getProviderData().get(Constants.FIREBASE_PROPERTY_EMAIL).toString().toLowerCase();
-        /**
-         * Encode user email replacing "." with ","
-         * to be able to use it as a Firebase db key
-         */
         mEncodedEmail = Utils.encodeEmail(unprocessedEmail);
 
         final Firebase userRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
 
-        /**
-         * Check if current user has logged in at least once
-         */
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -329,17 +185,8 @@ public class LoginActivity extends BaseActivity {
 
                 if (user != null) {
 
-                    /**
-                     * If recently registered user has hasLoggedInWithPassword = "false"
-                     * (never logged in using password provider)
-                     */
                     if (!user.isHasLoggedInWithPassword()) {
 
-                        /**
-                         * Change password if user that just signed in signed up recently
-                         * to make sure that user will be able to use temporary password
-                         * from the email more than 24 hours
-                         */
                         mFirebaseRef.changePassword(unprocessedEmail, mEditTextPasswordInput.getText().toString(), mEditTextPasswordInput.getText().toString(), new Firebase.ResultHandler() {
                             @Override
                             public void onSuccess() {
@@ -367,34 +214,17 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    /**
-     * Helper method that makes sure a user is created if the user
-     * logs in with Firebase's Google login provider.
-     *
-     * @param authData AuthData object returned from onAuthenticated
-     */
     private void setAuthenticatedUserGoogle(final AuthData authData) {
-        /**
-         * If google api client is connected, get the lowerCase user email
-         * and save in sharedPreferences
-         */
+
         String unprocessedEmail;
         if (mGoogleApiClient.isConnected()) {
             unprocessedEmail = mGoogleAccount.getEmail().toLowerCase();
             mSharedPrefEditor.putString(Constants.KEY_GOOGLE_EMAIL, unprocessedEmail).apply();
         } else {
 
-            /**
-             * Otherwise get email from sharedPreferences, use null as default value
-             * (this mean that user resumes his session)
-             */
             unprocessedEmail = mSharedPref.getString(Constants.KEY_GOOGLE_EMAIL, null);
         }
 
-        /**
-         * Encode user email replacing "." with "," to be able to use it
-         * as a Firebase db key
-         */
         mEncodedEmail = Utils.encodeEmail(unprocessedEmail);
 
         /* Get username from authData */
@@ -432,29 +262,16 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    /**
-     * Show error toast to users
-     */
     private void showErrorToast(String message) {
         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
-
-    /**
-     * Signs you into ShoppingList++ using the Google Login Provider
-     * @param token A Google OAuth access token returned from Google
-     */
     private void loginWithGoogle(String token) {
         mFirebaseRef.authWithOAuthToken(Constants.GOOGLE_PROVIDER, token, new MyAuthResultHandler(Constants.GOOGLE_PROVIDER));
     }
 
     /**
      * GOOGLE SIGN IN CODE
-     *
-     * This code is mostly boiler plate from
-     * https://developers.google.com/identity/sign-in/android/start-integrating
-     * and
-     * https://github.com/googlesamples/google-services/blob/master/android/signin/app/src/main/java/com/google/samples/quickstart/signin/SignInActivity.java
      *
      * The big picture steps are:
      * 1. User clicks the sign in with Google button
@@ -481,9 +298,6 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    /**
-     * Sign in with Google plus when user clicks "Sign in with Google" textView (button)
-     */
     public void onSignInGooglePressed(View view) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_GOOGLE_LOGIN);
@@ -493,19 +307,10 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        /**
-         * An unresolvable error has occurred and Google APIs (including Sign-In) will not
-         * be available.
-         */
         mAuthProgressDialog.dismiss();
         showErrorToast(result.toString());
     }
 
-
-    /**
-     * This callback is triggered when any startActivityForResult finishes. The requestCode maps to
-     * the value passed into startActivityForResult.
-     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -535,9 +340,6 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Gets the GoogleAuthToken and logs in.
-     */
     private void getGoogleOAuthTokenAndLogin() {
         /* Get OAuth token in Background */
         AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
@@ -586,5 +388,65 @@ public class LoginActivity extends BaseActivity {
         };
 
         task.execute();
+    }
+
+    private class MyAuthResultHandler implements Firebase.AuthResultHandler {
+
+        private final String provider;
+
+        public MyAuthResultHandler(String provider) {
+            this.provider = provider;
+        }
+
+        @Override
+        public void onAuthenticated(AuthData authData) {
+            mAuthProgressDialog.dismiss();
+            Log.i(LOG_TAG, provider + " " + getString(R.string.log_message_auth_successful));
+
+            if (authData != null) {
+
+                /* If user has logged in with Google provider */
+                if (authData.getProvider().equals(Constants.PASSWORD_PROVIDER)) {
+                    setAuthenticatedUserPasswordProvider(authData);
+                } else
+
+                /* If user has logged in with Password provider */
+                    if (authData.getProvider().equals(Constants.GOOGLE_PROVIDER)) {
+                        setAuthenticatedUserGoogle(authData);
+                    } else {
+                        Log.e(LOG_TAG, getString(R.string.log_error_invalid_provider) + authData.getProvider());
+                    }
+
+                /* Save provider name and encodedEmail for later use and start MainActivity */
+                mSharedPrefEditor.putString(Constants.KEY_PROVIDER, authData.getProvider()).apply();
+                mSharedPrefEditor.putString(Constants.KEY_ENCODED_EMAIL, mEncodedEmail).apply();
+
+                /* Go to main activity */
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        }
+
+        @Override
+        public void onAuthenticationError(FirebaseError firebaseError) {
+            mAuthProgressDialog.dismiss();
+
+            switch (firebaseError.getCode()) {
+                case FirebaseError.INVALID_EMAIL:
+                case FirebaseError.USER_DOES_NOT_EXIST:
+                    mEditTextEmailInput.setError(getString(R.string.error_message_email_issue));
+                    break;
+                case FirebaseError.INVALID_PASSWORD:
+                    mEditTextPasswordInput.setError(firebaseError.getMessage());
+                    break;
+                case FirebaseError.NETWORK_ERROR:
+                    showErrorToast(getString(R.string.error_message_failed_sign_in_no_network));
+                    break;
+                default:
+                    showErrorToast(firebaseError.toString());
+            }
+        }
     }
 }

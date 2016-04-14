@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features;
+package sauerapps.betterbetterrx.features.journal;
 
 /**
  * Created by andrewsauer on 3/8/16.
@@ -15,9 +15,6 @@ import android.preference.PreferenceManager;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.utils.Constants;
 
-/**
- * SettingsActivity represents preference screen and functionality
- */
 public class SettingsActivity extends PreferenceActivity {
 
     @Override
@@ -30,9 +27,6 @@ public class SettingsActivity extends PreferenceActivity {
                 .commit();
     }
 
-    /**
-     * This fragment shows the preferences for the first header.
-     */
     public static class SortPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -40,18 +34,9 @@ public class SettingsActivity extends PreferenceActivity {
             /* Load the preferences from an XML resource */
             addPreferencesFromResource(R.xml.preference_screen);
 
-            /**
-             * Bind preference summary to value for lists and meals sorting list preferences
-             */
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_name_sort_order_lists)));
         }
 
-        /**
-         * When preference is changed, save it's new value to default shared preferences
-         *
-         * @param preference
-         * @param newValue
-         */
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             setPreferenceSummary(preference, newValue);
@@ -71,12 +56,6 @@ public class SettingsActivity extends PreferenceActivity {
                             .getString(preference.getKey(), ""));
         }
 
-        /**
-         * Sets preference summary to appropriate value
-         *
-         * @param preference
-         * @param value
-         */
         private void setPreferenceSummary(Preference preference, Object value) {
             String stringValue = value.toString();
 
