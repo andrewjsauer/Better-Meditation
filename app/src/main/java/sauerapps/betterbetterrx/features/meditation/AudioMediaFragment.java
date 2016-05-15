@@ -159,6 +159,8 @@ public class AudioMediaFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mEventBus.register(this);
+
         ImageView track_image = (ImageView) view.findViewById(R.id.track_image);
         TextView title_text = (TextView) view.findViewById(R.id.track_title);
         TextView title_description = (TextView) view.findViewById(R.id.track_description);
@@ -183,8 +185,6 @@ public class AudioMediaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        mEventBus.register(this);
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();

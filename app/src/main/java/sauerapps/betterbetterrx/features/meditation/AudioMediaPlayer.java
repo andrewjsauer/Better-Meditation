@@ -79,7 +79,7 @@ public class AudioMediaPlayer {
                 switch (focusChange) {
                     case AudioManager.AUDIOFOCUS_GAIN:
                         Log.i(TAG, "AUDIOFOCUS_GAIN");
-//                        play();
+                        play();
                         break;
                     case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT:
                         Log.i(TAG, "AUDIOFOCUS_GAIN_TRANSIENT");
@@ -90,7 +90,7 @@ public class AudioMediaPlayer {
                         break;
                     case AudioManager.AUDIOFOCUS_LOSS:
                         Log.e(TAG, "AUDIOFOCUS_LOSS");
-                        pause();
+                        exitAudio();
                         break;
                     case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                         Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
