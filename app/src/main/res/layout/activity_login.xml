@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/input_field_height"
             android:layout_marginBottom="@dimen/lv_header_text_size"
-            android:background="@color/primary_700"
+            android:background="@color/bt_accent"
             android:onClick="onSignInPressed"
             android:text="@string/button_signin_with_password"
             android:textColor="@android:color/white" />

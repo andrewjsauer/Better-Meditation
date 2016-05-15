@@ -12,7 +12,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.HashMap;
 
 import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
-import sauerapps.betterbetterrx.model.User;
+import sauerapps.betterbetterrx.app.User;
 
 /**
  * Created by andrewsauer on 2/9/16.

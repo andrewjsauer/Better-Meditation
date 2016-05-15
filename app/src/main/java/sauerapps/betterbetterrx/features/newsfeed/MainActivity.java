@@ -15,15 +15,21 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.journal.JournalActivity;
-import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.AudioActivity;
+import sauerapps.betterbetterrx.features.meditation.AudioActivity;
 import sauerapps.betterbetterrx.features.newsfeed.sharing.audioSharing.ShareMainActivity;
-import sauerapps.betterbetterrx.model.User;
+import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class MainActivity extends BaseActivity {
@@ -32,12 +38,14 @@ public class MainActivity extends BaseActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    @Bind(R.id.toolbar_main_activity)
+    protected Toolbar mToolbar;
+
     protected Boolean isFabOpen = false;
     protected FloatingActionButton mMeditationFab, mSingleMeditationFab, mJournalMeditationFab;
     protected Animation fab_open, fab_close, rotate_forward, rotate_backward;
     protected String mUsersName;
-    @Bind(R.id.toolbar_main_activity)
-    protected Toolbar mToolbar;
+
     private Firebase mUserRef;
     private ValueEventListener mUserRefListener;
 
@@ -45,6 +53,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newsfeed_main);
+
         ButterKnife.bind(this);
 
         SummaryUserFragment summaryUserFragment = SummaryUserFragment.newInstance(mEncodedEmail);
@@ -113,7 +122,6 @@ public class MainActivity extends BaseActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
-                    /* Assumes that the first word in the user's name is the user's first name. */
                     mUsersName = user.getName().split("\\s+")[0];
                     String title = mUsersName + "'s Dashboard";
 
@@ -129,6 +137,39 @@ public class MainActivity extends BaseActivity {
                                 firebaseError.getMessage());
             }
         });
+
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .build();
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Meditations");
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("About");
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withName("Change Password");
+        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withName("Sign out");
+
+        Drawer result = new DrawerBuilder()
+                .withAccountHeader(headerResult)
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new DividerDrawerItem(),
+                        item3,
+                        new DividerDrawerItem(),
+                        item4,
+                        new DividerDrawerItem()
+                )
+                .withSelectedItem(-1)
+//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+//                    @Override
+//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+//
+//                    }
+//                })
+                .build();
+
     }
 
     @Override

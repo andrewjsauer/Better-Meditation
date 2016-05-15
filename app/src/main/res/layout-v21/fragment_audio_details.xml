@@ -12,46 +12,52 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="?android:selectableItemBackgroundBorderless"
+        android:background="@color/primary_dark"
         android:padding="16dp"
         android:src="@drawable/ic_clear_24dp"
-        android:tint="@android:color/white"
-        android:tintMode="src_in"/>
+        android:tint="@android:color/white"/>
 
-
-    <TextView
-        android:id="@+id/track_artist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="100dp"
-        android:textColor="@android:color/white"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:transitionName="descriptionView"
-        tools:text="Brother Camilus, THS, PhD"/>
 
     <TextView
         android:id="@+id/track_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/track_artist"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="80dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:transitionName="titleView"
+        tools:text="15 Minute Meditation"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/track_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/track_title"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
         android:textColor="@android:color/white"
-        android:textSize="15sp"
-        android:transitionName="titleView"
-        tools:text="15 Minute Meditation"/>
+        android:textSize="14sp"
+        android:transitionName="descriptionView"
+        tools:text="This is a test, a test, a test, a test."
+        android:textAlignment="center"/>
 
 
     <ImageView
         android:id="@+id/track_image"
         android:layout_width="160dp"
         android:layout_height="160dp"
-        android:layout_below="@+id/track_title"
+        android:layout_below="@+id/track_description"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:contentDescription="@string/track_image_description"
         android:scaleType="centerCrop"
         android:transitionName="imageView"/>
@@ -61,9 +67,9 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:progressDrawable="@drawable/circular_progress_bar"
-        android:layout_centerInParent="true"/>
+        android:progressDrawable="@drawable/circular_progress_bar"/>
 
     <TextView
         android:id="@+id/track_time"
@@ -76,8 +82,6 @@
         android:textColor="@android:color/white"
         android:textSize="15sp"
         tools:text="16:02"/>
-
-
 
 
     <LinearLayout
@@ -132,7 +136,6 @@
                 android:tint="@android:color/white"
                 android:tintMode="src_in"
                 android:visibility="invisible"/>
-
 
 
         </FrameLayout>

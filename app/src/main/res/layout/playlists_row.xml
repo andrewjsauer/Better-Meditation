@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/cv_playlist"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardUseCompatPadding="true"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        >
+
+        <ImageView
+            android:id="@+id/playlist_image"
+            android:layout_width="@dimen/playback_controls_albumart_size"
+            android:layout_height="@dimen/playback_controls_albumart_size"
+            android:scaleType="centerCrop"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignTop="@+id/playlist_title"
+            android:layout_centerHorizontal="true"/>
+
+
+        <TextView
+            android:id="@+id/playlist_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/playlist_image"
+            android:textSize="18sp"
+            tools:text="TITLE TITLE TITLE"
+            />
+
+
+        <TextView
+            android:id="@+id/playlist_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/playlist_title"
+            android:layout_toRightOf="@+id/playlist_image"
+            tools:text="DESCRIPTION DESCRIPTION DESCRIPTION"
+            android:textIsSelectable="false"
+            android:textSize="14sp"
+            android:paddingTop="2dp"/>
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

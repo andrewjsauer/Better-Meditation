@@ -19,8 +19,8 @@ import com.firebase.ui.FirebaseListAdapter;
 import java.util.HashMap;
 
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.model.JournalListItem;
-import sauerapps.betterbetterrx.model.User;
+import sauerapps.betterbetterrx.features.journal.JournalListItem;
+import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.features.journal.journalList.JournalList;
 import sauerapps.betterbetterrx.utils.Constants;
 import sauerapps.betterbetterrx.utils.Utils;
