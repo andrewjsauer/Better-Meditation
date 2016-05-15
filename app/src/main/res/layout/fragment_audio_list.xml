@@ -23,7 +23,6 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:visibility="invisible"
-            android:progressDrawable="@drawable/circular_progress_bar"
             android:layout_gravity="center"/>
 
 
