@@ -93,17 +93,20 @@ public class AudioMediaFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
+
                 if (state != -1) {
                     Log.d(TAG, "Headset plug event. State is " + state);
+
                     if (state == UNPLUGGED) {
                         Log.d(TAG, "Headset was unplugged during playback.");
-                        mMusicPlayer.pause();
+//                        setPauseButton();
                     } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
                     }
                 } else {
                     Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
                 }
+
             }
         }
     };
@@ -291,7 +294,6 @@ public class AudioMediaFragment extends Fragment {
         }
 
         getActivity().unregisterReceiver(headsetDisconnected);
-
 
         if (timeElapsed >= 10000) {
 

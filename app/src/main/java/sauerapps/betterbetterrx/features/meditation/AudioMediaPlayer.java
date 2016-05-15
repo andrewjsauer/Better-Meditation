@@ -7,16 +7,13 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
-import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
 
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
-import sauerapps.betterbetterrx.app.module.Default;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Config;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 
@@ -153,6 +150,7 @@ public class AudioMediaPlayer {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
@@ -193,6 +191,11 @@ public class AudioMediaPlayer {
                 // 2. Give up audio focus
                 abandonAudioFocus();
             }
+
+            if (mReceiverRegistered) {
+                mContext.unregisterReceiver(mIntentReceiver);
+                mReceiverRegistered = false;
+            }
         }
     }
 
@@ -230,7 +233,6 @@ public class AudioMediaPlayer {
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 mAudioFocusGranted = true;
             } else {
-                // FAILED
                 Log.e(TAG,
                         ">>>>>>>>>>>>> FAILED TO GET AUDIO FOCUS <<<<<<<<<<<<<<<<<<<<<<<<");
             }
