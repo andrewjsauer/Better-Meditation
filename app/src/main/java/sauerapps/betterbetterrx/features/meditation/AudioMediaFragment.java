@@ -6,8 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -25,6 +23,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.User;
+import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 import sauerapps.betterbetterrx.utils.Constants;
 
@@ -61,6 +63,7 @@ public class AudioMediaFragment extends Fragment {
     private String mUserName;
     private HashMap<String, User> mSharedWith;
 
+    EventBus mEventBus = EventBus.getDefault();
 
     private Runnable updateDuration = new Runnable() {
         public void run() {
@@ -149,8 +152,6 @@ public class AudioMediaFragment extends Fragment {
         mMusicPlayer.setAudioIsPlaying();
         setPlayButton();
 
-        mMusicPlayer.setOnCompletionListener();
-
         return view;
     }
 
@@ -183,6 +184,8 @@ public class AudioMediaFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        mEventBus.register(this);
+
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -199,9 +202,8 @@ public class AudioMediaFragment extends Fragment {
             }
         });
 
-        durationHandler.postDelayed(updateDuration, 100);
-
         if (mMusicPlayer.mAudioIsPlaying) {
+            durationHandler.postDelayed(updateDuration, 100);
         }
     }
 
@@ -210,23 +212,30 @@ public class AudioMediaFragment extends Fragment {
         super.onPause();
 
         durationHandler.removeCallbacks(updateDuration);
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (mEventBus.isRegistered(this)) {
+            mEventBus.unregister(this);
+        }
     }
 
     @OnClick (R.id.play)
     public void setPlay() {
 
+        setPlayButton();
+
         mMusicPlayer.play();
 
-        setPlayButton();
     }
 
     private void setPlayButton() {
 
         if (mMusicPlayer.mIsLoadingAudioStream) {
             mProgressBar.setVisibility(View.VISIBLE);
-        } else {
-            mProgressBar.setVisibility(View.GONE);
         }
 
         durationHandler.postDelayed(updateDuration, 100);
@@ -260,17 +269,16 @@ public class AudioMediaFragment extends Fragment {
         exitAudioDetails();
     }
 
+    @Subscribe
+    public void onEvent(EventAudioSyncFinish eventAudioSyncFinish) {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
     private void exitAudioDetails() {
 
         mMusicPlayer.exitAudio();
 
-        if (timeElapsed >= 10000) {
-
-            DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, mUserName, timeElapsed,
-                    mTrackDescription, mTrackTitle, mSharedWith);
-            dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
-
-        }
+        durationHandler.removeCallbacks(updateDuration);
 
         int backStackCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
 
@@ -283,5 +291,14 @@ public class AudioMediaFragment extends Fragment {
         }
 
         getActivity().unregisterReceiver(headsetDisconnected);
+
+
+        if (timeElapsed >= 10000) {
+
+            DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, mUserName, timeElapsed,
+                    mTrackDescription, mTrackTitle, mSharedWith);
+            dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
+
+        }
     }
 }

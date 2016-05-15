@@ -5,7 +5,7 @@ import com.firebase.client.Firebase;
 /**
  * Includes one-time initialization of Firebase related code
  */
-public class FirebaseApplication extends android.app.Application {
+public class Application extends android.app.Application {
 
     @Override
     public void onCreate() {

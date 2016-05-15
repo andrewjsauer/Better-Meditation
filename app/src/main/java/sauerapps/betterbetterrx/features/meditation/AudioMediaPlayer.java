@@ -9,8 +9,14 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
+import javax.inject.Inject;
+
+import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
+import sauerapps.betterbetterrx.app.module.Default;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Config;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 
@@ -108,6 +114,7 @@ public class AudioMediaPlayer {
     public void play() {
 
         if (!mAudioIsPlaying) {
+
             if (!mAudioFocusGranted && requestAudioFocus()) {
                 // 2. Kill off any other play back sources
                 forceMusicStop();
@@ -149,7 +156,11 @@ public class AudioMediaPlayer {
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
+
                     mPlayer.start();
+
+                    EventBus.getDefault().post(new EventAudioSyncFinish());
+
                     mIsLoadingAudioStream = false;
                     mAudioIsPlaying = true;
                 }
@@ -199,16 +210,6 @@ public class AudioMediaPlayer {
         else {
             mPlayer.seekTo(mPlayer.getDuration());
         }
-    }
-
-    public void setOnCompletionListener() {
-
-        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                pause();
-            }
-        });
     }
 
     public double getCurrentAudioTime() {
