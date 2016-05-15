@@ -22,7 +22,7 @@
             android:id="@+id/user_friend_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:text="Andrew"/>
@@ -31,19 +31,26 @@
             android:id="@+id/user_friend_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/user_friend_track_desc"
             android:layout_alignParentBottom="false"
             android:layout_alignParentRight="true"
             android:textSize="30sp"
             tools:text="0:15"
-            />
+            android:layout_alignBottom="@+id/layout_track_info"
+            android:paddingLeft="4dp"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_track_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_friend_name"
+            android:layout_toLeftOf="@+id/user_friend_time"
+            android:layout_alignParentLeft="true">
 
         <TextView
             android:id="@+id/user_friend_track_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
-            android:layout_below="@+id/user_friend_name"
             android:textSize="16sp"
             tools:text="15 Minute Meditation"/>
 
@@ -52,9 +59,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_friend_track_title"
-            android:paddingTop="2dp"
-            android:textSize="14sp"
-            tools:text="Brother Camillus, THS"/>
+            android:paddingTop="1dp"
+            android:textSize="12sp"
+            tools:text="20 min meditation on the poor with Pamela Thomas."
+            android:layout_alignParentLeft="true"
+            />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/user_friend_date"

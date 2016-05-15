@@ -21,8 +21,8 @@ import com.google.android.gms.common.api.Status;
 
 import icepick.Icepick;
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.authentication.createAccount.CreateAccountActivity;
-import sauerapps.betterbetterrx.features.authentication.login.LoginActivity;
+import sauerapps.betterbetterrx.app.authentication.createAccount.CreateAccountActivity;
+import sauerapps.betterbetterrx.app.authentication.login.LoginActivity;
 import sauerapps.betterbetterrx.utils.Constants;
 
 

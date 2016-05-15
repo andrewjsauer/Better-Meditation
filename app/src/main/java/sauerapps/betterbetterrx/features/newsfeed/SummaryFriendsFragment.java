@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.AudioList;
+import sauerapps.betterbetterrx.features.meditation.AudioList;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class SummaryFriendsFragment extends Fragment {
