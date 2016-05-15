@@ -59,6 +59,8 @@ public class AudioMediaFragment extends Fragment {
     private String mTrackTitle;
     private String mTrackDescription;
 
+    private boolean mHeadsetConnected = false;
+
     private String mEncodedEmail;
     private String mUserName;
     private HashMap<String, User> mSharedWith;
@@ -85,28 +87,23 @@ public class AudioMediaFragment extends Fragment {
     };
 
     private final BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
+
         private static final String TAG = "headsetDisconnected";
-        private static final int UNPLUGGED = 0;
-        private static final int PLUGGED = 1;
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
-                int state = intent.getIntExtra("state", -1);
 
-                if (state != -1) {
-                    Log.d(TAG, "Headset plug event. State is " + state);
-
-                    if (state == UNPLUGGED) {
+            if (intent.hasExtra("state")){
+                if (mHeadsetConnected && intent.getIntExtra("state", 0) == 0){
+                    mHeadsetConnected = false;
+                    if (mMusicPlayer.mAudioIsPlaying){
+                        setPauseButton();
                         Log.d(TAG, "Headset was unplugged during playback.");
-//                        setPauseButton();
-                    } else if (state == PLUGGED) {
-                        Log.d(TAG, "Headset was plugged in during playback.");
-                    }
-                } else {
-                    Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
-                }
 
+                    }
+                } else if (!mHeadsetConnected && intent.getIntExtra("state", 0) == 1){
+                    mHeadsetConnected = true;
+                }
             }
         }
     };
@@ -179,14 +176,13 @@ public class AudioMediaFragment extends Fragment {
                 .error(R.drawable.ic_default_art)
                 .placeholder(R.drawable.ic_default_art)
                 .into(track_image);
-
-        getActivity().registerReceiver(headsetDisconnected, new IntentFilter(
-                Intent.ACTION_HEADSET_PLUG));
-
     }
 
     @Override
     public void onResume() {
+        getActivity().registerReceiver(headsetDisconnected, new IntentFilter(
+                Intent.ACTION_HEADSET_PLUG));
+
         super.onResume();
 
         getView().setFocusableInTouchMode(true);
@@ -232,7 +228,6 @@ public class AudioMediaFragment extends Fragment {
         setPlayButton();
 
         mMusicPlayer.play();
-
     }
 
     private void setPlayButton() {

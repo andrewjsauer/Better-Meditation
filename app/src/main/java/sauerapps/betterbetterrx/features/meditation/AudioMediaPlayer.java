@@ -120,7 +120,6 @@ public class AudioMediaPlayer {
             }
             mPlayer.start();
             mAudioIsPlaying = true;
-
         }
     }
 
