@@ -9,8 +9,8 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
 
-import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.AudioList;
-import sauerapps.betterbetterrx.model.User;
+import sauerapps.betterbetterrx.features.meditation.AudioList;
+import sauerapps.betterbetterrx.app.User;
 
 /**
  * Created by andrewsauer on 3/24/16.

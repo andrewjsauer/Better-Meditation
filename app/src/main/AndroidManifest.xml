@@ -3,14 +3,13 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 
     <action android:name="android.intent.action.HEADSET_PLUG"/>
 
     <application
-        android:name=".app.BetterBetterApplication"
+        android:name=".app.FirebaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,7 +23,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".features.newsfeed.MainActivity"/>
         </activity>
-        <activity android:name=".features.authentication.login.LoginActivity">
+        <activity android:name=".app.authentication.login.LoginActivity">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -32,15 +31,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".features.authentication.createAccount.CreateAccountActivity"
+            android:name=".app.authentication.createAccount.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
-            android:parentActivityName=".features.authentication.login.LoginActivity">
+            android:parentActivityName=".app.authentication.login.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.authentication.login.LoginActivity"/>
+                android:value=".app.authentication.login.LoginActivity"/>
         </activity>
         <activity
-            android:name=".features.meditation.audioSection.audioListDetails.AudioActivity"
+            android:name=".features.meditation.AudioActivity"
             android:parentActivityName=".features.newsfeed.MainActivity"
             android:screenOrientation="portrait">
         </activity>

@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.features.meditation.audioSection.audioListDetails.AudioList;
-import sauerapps.betterbetterrx.model.User;
+import sauerapps.betterbetterrx.features.meditation.AudioList;
+import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.utils.AudioListUtil;
 import sauerapps.betterbetterrx.utils.Constants;
 
