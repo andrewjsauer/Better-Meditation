@@ -37,7 +37,6 @@
     <string-array name="pref_sortType_values_lists">
         <item>@string/sort_by_publish_time_value</item>
         <item>@string/sort_by_list_name_value</item>
-        <item>@string/sort_by_owner_value</item>
         <item>@string/sort_by_most_recently_changed_value</item>
 
     </string-array>
