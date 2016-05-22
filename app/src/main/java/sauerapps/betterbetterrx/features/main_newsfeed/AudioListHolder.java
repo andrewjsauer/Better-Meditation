@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.newsfeed;
+package sauerapps.betterbetterrx.features.main_newsfeed;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

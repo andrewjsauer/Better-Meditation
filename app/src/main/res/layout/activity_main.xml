@@ -5,7 +5,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".features.newsfeed.MainActivity"
+                tools:context=".features.main_newsfeed.MainActivity"
     >
 
 
@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/summary_fragment"
-        class="sauerapps.betterbetterrx.features.newsfeed.SummaryUserFragment"
+        class="sauerapps.betterbetterrx.features.main_newsfeed.SummaryUserFragment"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_below="@+id/toolbar_main_activity"/>

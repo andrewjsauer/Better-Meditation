@@ -43,7 +43,7 @@ import java.util.Map;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.app.authentication.createAccount.CreateAccountActivity;
-import sauerapps.betterbetterrx.features.newsfeed.MainActivity;
+import sauerapps.betterbetterrx.features.main_newsfeed.MainActivity;
 import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.utils.Constants;
 import sauerapps.betterbetterrx.utils.Utils;

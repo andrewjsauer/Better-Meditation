@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.newsfeed;
+package sauerapps.betterbetterrx.features.main_newsfeed;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

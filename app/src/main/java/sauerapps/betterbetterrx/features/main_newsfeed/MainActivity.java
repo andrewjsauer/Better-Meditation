@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.newsfeed;
+package sauerapps.betterbetterrx.features.main_newsfeed;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,12 +15,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,7 +22,7 @@ import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.journal.JournalActivity;
 import sauerapps.betterbetterrx.features.meditation.AudioActivity;
-import sauerapps.betterbetterrx.features.newsfeed.sharing.audioSharing.ShareMainActivity;
+import sauerapps.betterbetterrx.features.main_newsfeed.sharing.audioSharing.ShareMainActivity;
 import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.utils.Constants;
 
@@ -137,39 +131,6 @@ public class MainActivity extends BaseActivity {
                                 firebaseError.getMessage());
             }
         });
-
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .build();
-
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Meditations");
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("About");
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withName("Change Password");
-        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withName("Sign out");
-
-        Drawer result = new DrawerBuilder()
-                .withAccountHeader(headerResult)
-                .withActivity(this)
-                .withToolbar(mToolbar)
-                .addDrawerItems(
-                        item1,
-                        new DividerDrawerItem(),
-                        item2,
-                        new DividerDrawerItem(),
-                        item3,
-                        new DividerDrawerItem(),
-                        item4,
-                        new DividerDrawerItem()
-                )
-                .withSelectedItem(-1)
-//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-//                    @Override
-//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//
-//                    }
-//                })
-                .build();
-
     }
 
     @Override

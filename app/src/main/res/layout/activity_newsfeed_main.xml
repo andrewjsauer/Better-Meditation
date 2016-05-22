@@ -36,7 +36,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:focusable="false"
         android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="@color/light_blue"
+        app:backgroundTint="@color/fab_main"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"/>
 
@@ -54,7 +54,7 @@
         android:tint="@android:color/white"
         android:tintMode="src_in"
         android:visibility="invisible"
-        app:backgroundTint="@color/purple"
+        app:backgroundTint="@color/fab_first_open"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"/>
 
@@ -71,7 +71,7 @@
         android:tint="@android:color/white"
         android:tintMode="src_in"
         android:visibility="invisible"
-        app:backgroundTint="@color/red"
+        app:backgroundTint="@color/fab_second_open"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"/>
 

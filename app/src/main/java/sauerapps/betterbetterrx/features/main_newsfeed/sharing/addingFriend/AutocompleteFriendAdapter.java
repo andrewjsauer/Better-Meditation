@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.newsfeed.sharing.addingFriend;
+package sauerapps.betterbetterrx.features.main_newsfeed.sharing.addingFriend;
 
 /**
  * Created by andrewsauer on 3/9/16.

@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.newsfeed.sharing.audioSharing;
+package sauerapps.betterbetterrx.features.main_newsfeed.sharing.audioSharing;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.meditation.AudioList;
-import sauerapps.betterbetterrx.features.newsfeed.sharing.addingFriend.AddFriendActivity;
+import sauerapps.betterbetterrx.features.main_newsfeed.sharing.addingFriend.AddFriendActivity;
 import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.utils.Constants;
 

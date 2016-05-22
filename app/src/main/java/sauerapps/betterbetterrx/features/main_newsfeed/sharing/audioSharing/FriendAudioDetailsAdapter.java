@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.newsfeed.sharing.audioSharing;
+package sauerapps.betterbetterrx.features.main_newsfeed.sharing.audioSharing;
 
 import android.app.Activity;
 import android.util.Log;

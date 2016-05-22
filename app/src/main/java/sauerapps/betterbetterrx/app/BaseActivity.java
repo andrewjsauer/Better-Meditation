@@ -120,9 +120,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     protected void initializeBackground(LinearLayout linearLayout) {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            linearLayout.setBackgroundResource(R.color.md_white_1000);
+            linearLayout.setBackgroundResource(R.color.background_while);
         } else {
-            linearLayout.setBackgroundResource(R.color.md_white_1000);
+            linearLayout.setBackgroundResource(R.color.background_while);
         }
     }
     protected void logout() {

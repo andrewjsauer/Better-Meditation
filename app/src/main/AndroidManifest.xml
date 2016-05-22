@@ -16,12 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
         <activity
-            android:name=".features.newsfeed.MainActivity"
+            android:name=".features.main_newsfeed.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.newsfeed.MainActivity"/>
+                android:value=".features.main_newsfeed.MainActivity"/>
         </activity>
         <activity android:name=".app.authentication.login.LoginActivity">
             <intent-filter android:label="@string/app_name">
@@ -40,7 +40,7 @@
         </activity>
         <activity
             android:name=".features.meditation.AudioActivity"
-            android:parentActivityName=".features.newsfeed.MainActivity"
+            android:parentActivityName=".features.main_newsfeed.MainActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".features.journal.JournalActivity">
@@ -49,11 +49,11 @@
         <activity
             android:name=".features.journal.journalListDetails.JournalListDetailsActivity"
             android:label="@string/title_activity_list_details"
-            android:parentActivityName=".features.newsfeed.MainActivity"
+            android:parentActivityName=".features.main_newsfeed.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.newsfeed.MainActivity" />
+                android:value=".features.main_newsfeed.MainActivity" />
         </activity>
 
         <activity
@@ -61,22 +61,22 @@
             android:label="@string/action_settings" />
 
         <activity
-            android:name=".features.newsfeed.sharing.audioSharing.ShareMainActivity"
+            android:name=".features.main_newsfeed.sharing.audioSharing.ShareMainActivity"
             android:label="@string/title_activity_share_list"
-            android:parentActivityName=".features.newsfeed.MainActivity"
+            android:parentActivityName=".features.main_newsfeed.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.newsfeed.MainActivity" />
+                android:value=".features.main_newsfeed.MainActivity" />
         </activity>
 
         <activity
-            android:name=".features.newsfeed.sharing.addingFriend.AddFriendActivity"
+            android:name=".features.main_newsfeed.sharing.addingFriend.AddFriendActivity"
             android:label="@string/title_activity_add_friend"
-            android:parentActivityName=".features.newsfeed.sharing.audioSharing.ShareMainActivity">
+            android:parentActivityName=".features.main_newsfeed.sharing.audioSharing.ShareMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.newsfeed.sharing.audioSharing.ShareMainActivity"/>
+                android:value=".features.main_newsfeed.sharing.audioSharing.ShareMainActivity"/>
         </activity>
     </application>
 

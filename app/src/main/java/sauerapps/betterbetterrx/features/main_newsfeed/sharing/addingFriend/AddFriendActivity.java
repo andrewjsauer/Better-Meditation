@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.newsfeed.sharing.addingFriend;
+package sauerapps.betterbetterrx.features.main_newsfeed.sharing.addingFriend;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
