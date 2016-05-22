@@ -130,9 +130,9 @@
     <string name="button_sign_in">Sign In</string>
     <string name="button_signin_with_google">SIGN IN WITH GOOGLE</string>
     <string name="button_signin_with_password">SIGN IN</string>
-    <string name="hint_enter_email">Enter your email</string>
-    <string name="hint_enter_username">Enter your name</string>
-    <string name="hint_enter_password">Enter password</string>
+    <string name="hint_enter_email">Email</string>
+    <string name="hint_enter_username">Name</string>
+    <string name="hint_enter_password">Password</string>
     <string name="image_view_logo_image">Logo Image</string>
 
 

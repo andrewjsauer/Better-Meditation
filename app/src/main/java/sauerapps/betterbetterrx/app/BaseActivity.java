@@ -118,11 +118,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    protected void initializeBackground(RelativeLayout relativeLayout) {
+    protected void initializeBackground(LinearLayout linearLayout) {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            relativeLayout.setBackgroundResource(R.color.md_white_1000);
+            linearLayout.setBackgroundResource(R.color.md_white_1000);
         } else {
-            relativeLayout.setBackgroundResource(R.color.md_white_1000);
+            linearLayout.setBackgroundResource(R.color.md_white_1000);
         }
     }
     protected void logout() {

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="8dp"
         android:drawableRight="@drawable/abc_spinner_mtrl_am_alpha"
-        android:fontFamily="sans-serif"
+        android:fontFamily=""
         android:paddingLeft="16dp"
         android:paddingRight="4dp"
         android:textColor="#ffffffff"
