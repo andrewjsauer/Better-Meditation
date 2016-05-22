@@ -16,11 +16,48 @@
         android:layout_below="@+id/toolbar_main_activity"
         android:layout_margin="8dp"/>
 
+    <LinearLayout
+        android:id="@+id/main_button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/summary_fragment"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <Button
+            android:id="@+id/meditation_button"
+            style="@style/Widget.BetterBetter.Button.Login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button"
+            android:drawableLeft="@drawable/ic_queue_music_24dp"
+            android:drawableStart="@drawable/ic_queue_music_24dp"
+            android:text="meditate"
+            android:textColor="@android:color/black"/>
+
+        <Button
+            android:id="@+id/journal_button"
+            style="@style/Widget.BetterBetter.Button.Login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button"
+            android:drawableLeft="@drawable/ic_border_color_24dp"
+            android:drawableStart="@drawable/ic_border_color_24dp"
+            android:text="journal"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/summary_friends"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/summary_fragment"
+        android:layout_below="@+id/main_button_layout"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"/>
