@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#4B315A</color>
-    <color name="colorPrimaryDark">#786C7F</color>
-    <color name="colorAccent">#fff</color>
+    // new colors
+    <color name="primary_button_color">#38457E</color>
+    <color name="colorPrimary">#686680</color>
+    <color name="text_color">#333</color>
 
-    <color name="primary_dark">#4B315A</color>
-    <color name="primary_light">#F0D7FF</color>
-    <color name="primay_darkest">#786C7F</color>
-    <color name="primary_light_dark">#6A457F</color>
-    <color name="primary">#4B315A</color>
+    <color name="primary_dark">#686680</color>
+    <color name="primary_light">#6059B3</color>
+    <color name="primay_darkest">#1C1A34</color>
+    <color name="primary_light_dark">#1C1A34</color>
+    <color name="primary">#373367</color>
+
+
+    // end new colors
+
 
     <color name="fab_main">#169954</color>
     <color name="fab_first_open">#5BCC90</color>

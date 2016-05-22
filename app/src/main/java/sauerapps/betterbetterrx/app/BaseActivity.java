@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -119,9 +120,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     protected void initializeBackground(LinearLayout linearLayout) {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            linearLayout.setBackgroundResource(R.drawable.background_loginscreen_land);
+            linearLayout.setBackgroundResource(R.color.md_white_1000);
         } else {
-            linearLayout.setBackgroundResource(R.drawable.background_loginscreen);
+            linearLayout.setBackgroundResource(R.color.md_white_1000);
         }
     }
     protected void logout() {

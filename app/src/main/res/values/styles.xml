@@ -10,6 +10,7 @@
         <item name="windowActionBarOverlay">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/bg_light</item>
+        <item name="android:textColorHint">@color/primay_darkest</item>
     </style>
 
     <style name="MyAppDialog" parent="Theme.AppCompat.Light.Dialog">
@@ -44,7 +45,8 @@
     </style>
 
     <style name="HintText">
-        <item name="android:textSize">0dp</item>
+        <item name="android:textSize">2dp</item>
+        <item name="android:textColorHint">@color/primay_darkest</item>
     </style>
 
     <style name="LoginCreateTextButton">
@@ -65,8 +67,8 @@
     </style>
 
     <style name="EditTextLayout" parent="TextAppearance.AppCompat">
-        <item name="android:textColorHint">@color/primay_darkest</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textColorHint">@color/text_color</item>
+        <item name="android:textSize">16sp</item>
     <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
         <item name="colorAccent">@color/primay_darkest</item>
         <item name="colorControlNormal">@color/primay_darkest</item>

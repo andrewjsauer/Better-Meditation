@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,9 +84,9 @@ public class CreateAccountActivity extends BaseActivity {
     public void initializeScreen() {
         mEditTextUsernameCreate = (EditText) findViewById(R.id.edit_text_username_create);
         mEditTextEmailCreate = (EditText) findViewById(R.id.edit_text_email_create);
-        LinearLayout linearLayoutCreateAccountActivity = (LinearLayout) findViewById(R.id.linear_layout_create_account_activity);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_layout_create_account_activity);
 
-        initializeBackground(linearLayoutCreateAccountActivity);
+        initializeBackground(linearLayout);
 
         /* Setup the progress dialog that is displayed later when authenticating with Firebase */
         mAuthProgressDialog = new ProgressDialog(this);

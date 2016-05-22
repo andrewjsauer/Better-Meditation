@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -87,6 +88,8 @@ public class LoginActivity extends BaseActivity {
                 return true;
             }
         });
+
+        // TODO: error with tapping on an enter from the keyboard when login and password are empty
     }
 
     @Override
@@ -144,8 +147,8 @@ public class LoginActivity extends BaseActivity {
     public void initializeScreen() {
         mEditTextEmailInput = (EditText) findViewById(R.id.edit_text_email);
         mEditTextPasswordInput = (EditText) findViewById(R.id.edit_text_password);
-        LinearLayout linearLayoutLoginActivity = (LinearLayout) findViewById(R.id.linear_layout_login_activity);
-        initializeBackground(linearLayoutLoginActivity);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.relative_layout_login_activity);
+        initializeBackground(linearLayout);
         /* Setup the progress dialog that is displayed later when authenticating with Firebase */
         mAuthProgressDialog = new ProgressDialog(this);
         mAuthProgressDialog.setTitle(getString(R.string.progress_dialog_loading));
@@ -159,12 +162,12 @@ public class LoginActivity extends BaseActivity {
         String email = mEditTextEmailInput.getText().toString();
         String password = mEditTextPasswordInput.getText().toString();
 
-        if (email.equals("")) {
+        if (TextUtils.isEmpty(email)) {
             mEditTextEmailInput.setError(getString(R.string.error_cannot_be_empty));
             return;
         }
 
-        if (password.equals("")) {
+        if (TextUtils.isEmpty(password)) {
             mEditTextPasswordInput.setError(getString(R.string.error_cannot_be_empty));
             return;
         }
