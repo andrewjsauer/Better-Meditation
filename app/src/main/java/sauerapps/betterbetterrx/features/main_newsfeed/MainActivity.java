@@ -18,6 +18,7 @@ import com.firebase.client.ValueEventListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.journal.JournalActivity;
@@ -35,9 +36,6 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.toolbar_main_activity)
     protected Toolbar mToolbar;
 
-    protected Boolean isFabOpen = false;
-    protected FloatingActionButton mMeditationFab, mSingleMeditationFab, mJournalMeditationFab;
-    protected Animation fab_open, fab_close, rotate_forward, rotate_backward;
     protected String mUsersName;
 
     private Firebase mUserRef;
@@ -70,44 +68,6 @@ public class MainActivity extends BaseActivity {
             setSupportActionBar(mToolbar);
         }
 
-        // fab section
-        mMeditationFab = (FloatingActionButton) findViewById(R.id.meditation_fab);
-        mSingleMeditationFab = (FloatingActionButton) findViewById(R.id.single_meditation_fab);
-        mJournalMeditationFab = (FloatingActionButton) findViewById(R.id.journal_fab);
-
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
-
-        mMeditationFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAnimateFAB();
-            }
-        });
-
-        mSingleMeditationFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AudioActivity.class);
-                intent.putExtra(Constants.KEY_NAME, mUsersName);
-                startActivity(intent);
-
-                closeMainFAB();
-            }
-        });
-
-        mJournalMeditationFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, JournalActivity.class);
-                startActivity(intent);
-
-                closeMainFAB();
-            }
-        });
-
         mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
 
         // getting first name for toolbar reference
@@ -133,32 +93,22 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    @OnClick (R.id.meditation_button)
+    protected void onClickMeditation() {
+        Intent intent = new Intent(MainActivity.this, AudioActivity.class);
+        intent.putExtra(Constants.KEY_NAME, mUsersName);
+        startActivity(intent);
+    }
+
+    @OnClick (R.id.journal_button)
+    protected void onClickJournal() {
+        Intent intent = new Intent(MainActivity.this, JournalActivity.class);
+        startActivity(intent);
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
         mUserRef.removeEventListener(mUserRefListener);
-    }
-
-    private void getAnimateFAB() {
-        if (isFabOpen) {
-            closeMainFAB();
-        } else {
-            mMeditationFab.startAnimation(rotate_forward);
-            mSingleMeditationFab.startAnimation(fab_open);
-            mJournalMeditationFab.startAnimation(fab_open);
-            mSingleMeditationFab.setClickable(true);
-            mJournalMeditationFab.setClickable(true);
-            isFabOpen = true;
-        }
-    }
-
-    private void closeMainFAB() {
-        mMeditationFab.startAnimation(rotate_backward);
-        mSingleMeditationFab.startAnimation(fab_close);
-        mJournalMeditationFab.startAnimation(fab_close);
-        mSingleMeditationFab.setClickable(false);
-        mJournalMeditationFab.setClickable(false);
-        isFabOpen = false;
     }
 
     @Override

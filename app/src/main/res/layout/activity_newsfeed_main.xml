@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/grey">
@@ -9,47 +8,110 @@
         android:id="@+id/toolbar_main_activity"
         layout="@layout/main_toolbar"/>
 
+    <LinearLayout
+        android:id="@+id/current_user_recent_activity_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_main_activity"
+        android:paddingTop="4dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_user_recent_activity"
+            />
+
+        <TextView
+            android:id="@+id/text_current_user_recent_activity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:text="@string/users_recent_activity_text"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/summary_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_main_activity"
-        android:layout_margin="8dp"/>
+        android:layout_below="@+id/current_user_recent_activity_label"
+        android:layout_margin="4dp"/>
 
     <LinearLayout
         android:id="@+id/main_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/summary_fragment"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:orientation="horizontal"
+        android:paddingBottom="4dp"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+        android:paddingRight="8dp"
+        android:paddingTop="4dp">
 
         <Button
             android:id="@+id/meditation_button"
             style="@style/Widget.BetterBetter.Button.Login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button"
             android:drawableLeft="@drawable/ic_queue_music_24dp"
             android:drawableStart="@drawable/ic_queue_music_24dp"
-            android:text="meditate"
-            android:textColor="@android:color/black"/>
+            android:elevation="2dp"
+            android:text="@string/meditate"
+            android:textColor="@color/light_black"
+            />
 
         <Button
             android:id="@+id/journal_button"
             style="@style/Widget.BetterBetter.Button.Login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
             android:layout_marginLeft="2dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button"
-            android:drawableLeft="@drawable/ic_border_color_24dp"
-            android:drawableStart="@drawable/ic_border_color_24dp"
-            android:text="journal"
-            android:textColor="@android:color/black"/>
+            android:drawableLeft="@drawable/ic_journal_pencil_icon"
+            android:drawableStart="@drawable/ic_journal_pencil_icon"
+            android:elevation="2dp"
+            android:text="@string/journal"
+            android:textColor="@color/light_black"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/recent_activity_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_button_layout"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="18dp"
+        >
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_supervisor_account_black_24dp"
+            />
+
+        <TextView
+            android:id="@+id/text_recent_activity_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:text="@string/recent_activity"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
 
     </LinearLayout>
 
@@ -57,60 +119,9 @@
         android:id="@+id/summary_friends"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/main_button_layout"
+        android:layout_below="@+id/recent_activity_layout"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"/>
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/meditation_fab"
-        android:layout_width="@dimen/fab_size"
-        android:layout_height="@dimen/fab_size"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:focusable="false"
-        android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="@color/fab_main"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"/>
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/journal_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="160dp"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:src="@drawable/ic_border_color_24dp"
-        android:tint="@android:color/white"
-        android:tintMode="src_in"
-        android:visibility="invisible"
-        app:backgroundTint="@color/fab_first_open"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/single_meditation_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="90dp"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:src="@drawable/ic_queue_music_24dp"
-        android:tint="@android:color/white"
-        android:tintMode="src_in"
-        android:visibility="invisible"
-        app:backgroundTint="@color/fab_second_open"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"/>
-
 
 </RelativeLayout>
