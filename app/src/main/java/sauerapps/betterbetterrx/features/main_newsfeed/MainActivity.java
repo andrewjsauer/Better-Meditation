@@ -79,8 +79,9 @@ public class MainActivity extends BaseActivity {
                     mUsersName = user.getName().split("\\s+")[0];
                     String title = mUsersName + "'s Dashboard";
 
-                    assert getSupportActionBar() != null;
-                    getSupportActionBar().setTitle(title);
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setTitle(title);
+                    }
                 }
             }
 
