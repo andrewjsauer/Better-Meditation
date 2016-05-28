@@ -1,24 +1,19 @@
 package sauerapps.betterbetterrx.features.main_newsfeed;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import butterknife.Bind;
@@ -26,8 +21,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.features.journal.JournalActivity;
+import sauerapps.betterbetterrx.features.main_newsfeed.menu.AboutDialog;
 import sauerapps.betterbetterrx.features.main_newsfeed.menu.ChangePasswordDialog;
 import sauerapps.betterbetterrx.features.main_newsfeed.sharing.audioSharing.ShareMainActivity;
 import sauerapps.betterbetterrx.features.meditation.AudioActivity;
@@ -58,7 +53,7 @@ public class MainActivity extends BaseActivity {
     private boolean mUserLearnedDrawer;
     private int mCurrentSelectedPosition;
 
-    protected String mUsersName;
+    protected String mUserEmail;
 
     private Firebase mUserRef;
     private ValueEventListener mUserRefListener;
@@ -69,6 +64,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_newsfeed_main);
 
         ButterKnife.bind(this);
+
+        mUserEmail = mEncodedEmail;
 
         SummaryUserFragment summaryUserFragment = SummaryUserFragment.newInstance(mEncodedEmail);
         SummaryFriendsFragment summaryFriendsFragment = SummaryFriendsFragment.newInstance(mEncodedEmail);
@@ -102,13 +99,20 @@ public class MainActivity extends BaseActivity {
 
                 menuItem.setChecked(true);
                 switch (menuItem.getItemId()) {
-                    case R.id.navigation_item_1:
-                        changePassword();
-                        mCurrentSelectedPosition = 0;
+                    case R.id.navigation_item_share_with_users:
+                        Intent intent = new Intent(MainActivity.this, ShareMainActivity.class);
+                        startActivity(intent);
                         return true;
-                    case R.id.navigation_item_2:
+                    case R.id.navigation_item_change_password:
+                        changePassword();
+//                        mCurrentSelectedPosition = 0;
+                        return true;
+                    case R.id.navigation_item_about:
+                        aboutDialog();
+                        return true;
+                    case R.id.navigation_item_logout:
                         logout();
-                        mCurrentSelectedPosition = 5;
+//                        mCurrentSelectedPosition = 5;
                         return true;
                     default:
                         return true;
@@ -124,8 +128,8 @@ public class MainActivity extends BaseActivity {
 //            public void onDataChange(DataSnapshot snapshot) {
 //                User user = snapshot.getValue(User.class);
 //                if (user != null) {
-//                    mUsersName = user.getName().split("\\s+")[0];
-//                    String title = mUsersName + "'s Dashboard";
+//                    mUserEmail = user.getName().split("\\s+")[0];
+//                    String title = mUserEmail + "'s Dashboard";
 //
 //                    if (getSupportActionBar() != null) {
 //                        getSupportActionBar().setTitle(title);
@@ -142,9 +146,15 @@ public class MainActivity extends BaseActivity {
 //        });
     }
 
+    private void aboutDialog() {
+        new AboutDialog(this).show();
+    }
+
     private void changePassword() {
-        new ChangePasswordDialog(this, mEncodedEmail)
-                .show();
+        ChangePasswordDialog dialog = new ChangePasswordDialog(this);
+        dialog.setUserEmail(mUserEmail);
+        dialog.setTitle("Change Password");
+        dialog.show();
     }
 
 //    @Override
@@ -156,7 +166,7 @@ public class MainActivity extends BaseActivity {
     private void setUpToolbar() {
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
-            getSupportActionBar().setTitle("andrew's meditation");
+            getSupportActionBar().setTitle("sauer meditation");
 
         }
     }
@@ -197,7 +207,7 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.meditation_button)
     protected void onClickMeditation() {
         Intent intent = new Intent(MainActivity.this, AudioActivity.class);
-        intent.putExtra(Constants.KEY_NAME, mUsersName);
+        intent.putExtra(Constants.KEY_NAME, mUserEmail);
         startActivity(intent);
     }
 

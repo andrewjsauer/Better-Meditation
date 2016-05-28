@@ -2,14 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/navigation_item_1"
+            android:id="@+id/navigation_item_share_with_users"
+            android:checked="true"
+            android:icon="@drawable/ic_share_24dp"
+            android:title="Share With Others"/>
+        <item
+            android:id="@+id/navigation_item_change_password"
             android:checked="true"
             android:icon="@drawable/ic_change_password"
             android:title="Change Password" />
+
         <item
-            android:id="@+id/navigation_item_2"
+            android:id="@+id/navigation_item_about"
+            android:checked="true"
+            android:icon="@drawable/ic_about_icon"
+            android:title="About" />
+        <item
+            android:id="@+id/navigation_item_logout"
             android:icon="@drawable/ic_logout"
             android:title="Log out" />
+
     </group>
 
 
