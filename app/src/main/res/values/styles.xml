@@ -11,6 +11,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/bg_light</item>
         <item name="android:textColorHint">@color/primay_darkest</item>
+
     </style>
 
     <style name="MyAppDialog" parent="Theme.AppCompat.Light.Dialog">

@@ -1,29 +1,31 @@
 package sauerapps.betterbetterrx.features.main_newsfeed;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.journal.JournalActivity;
-import sauerapps.betterbetterrx.features.meditation.AudioActivity;
+import sauerapps.betterbetterrx.features.main_newsfeed.menu.AboutDialog;
+import sauerapps.betterbetterrx.features.main_newsfeed.menu.ChangePasswordDialog;
 import sauerapps.betterbetterrx.features.main_newsfeed.sharing.audioSharing.ShareMainActivity;
-import sauerapps.betterbetterrx.app.User;
+import sauerapps.betterbetterrx.features.meditation.AudioActivity;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class MainActivity extends BaseActivity {
@@ -32,13 +34,26 @@ public class MainActivity extends BaseActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    private static final String PREFERENCES_FILE = "mymaterialapp_settings";
+    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+
     @Bind(R.id.toolbar_main_activity)
     protected Toolbar mToolbar;
 
-    protected Boolean isFabOpen = false;
-    protected FloatingActionButton mMeditationFab, mSingleMeditationFab, mJournalMeditationFab;
-    protected Animation fab_open, fab_close, rotate_forward, rotate_backward;
-    protected String mUsersName;
+    @Bind(R.id.nav_drawer)
+    protected DrawerLayout mDrawerLayout;
+
+    @Bind(R.id.nav_view)
+    protected NavigationView mNavigationView;
+
+    @Bind(R.id.nav_contentframe)
+    protected LinearLayout mFrameLayout;
+
+    private boolean mUserLearnedDrawer;
+    private int mCurrentSelectedPosition;
+
+    protected String mUserEmail;
 
     private Firebase mUserRef;
     private ValueEventListener mUserRefListener;
@@ -49,6 +64,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_newsfeed_main);
 
         ButterKnife.bind(this);
+
+        mUserEmail = mEncodedEmail;
 
         SummaryUserFragment summaryUserFragment = SummaryUserFragment.newInstance(mEncodedEmail);
         SummaryFriendsFragment summaryFriendsFragment = SummaryFriendsFragment.newInstance(mEncodedEmail);
@@ -61,104 +78,143 @@ public class MainActivity extends BaseActivity {
                     .commit();
         }
 
-        initializeScreen();
+        initializeScreen(savedInstanceState);
     }
 
-    private void initializeScreen() {
+    private void initializeScreen(Bundle savedInstanceState) {
 
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar);
+        setUpToolbar();
+
+        mUserLearnedDrawer = Boolean.valueOf(readSharedSetting(this, PREF_USER_LEARNED_DRAWER, "false"));
+
+        if (savedInstanceState != null) {
+            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
         }
 
-        // fab section
-        mMeditationFab = (FloatingActionButton) findViewById(R.id.meditation_fab);
-        mSingleMeditationFab = (FloatingActionButton) findViewById(R.id.single_meditation_fab);
-        mJournalMeditationFab = (FloatingActionButton) findViewById(R.id.journal_fab);
+        setUpNavDrawer();
 
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
-
-        mMeditationFab.setOnClickListener(new View.OnClickListener() {
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                getAnimateFAB();
-            }
-        });
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-        mSingleMeditationFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AudioActivity.class);
-                intent.putExtra(Constants.KEY_NAME, mUsersName);
-                startActivity(intent);
-
-                closeMainFAB();
-            }
-        });
-
-        mJournalMeditationFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, JournalActivity.class);
-                startActivity(intent);
-
-                closeMainFAB();
-            }
-        });
-
-        mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
-
-        // getting first name for toolbar reference
-        mUserRefListener = mUserRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                if (user != null) {
-                    mUsersName = user.getName().split("\\s+")[0];
-                    String title = mUsersName + "'s Dashboard";
-
-                    assert getSupportActionBar() != null;
-                    getSupportActionBar().setTitle(title);
+                menuItem.setChecked(true);
+                switch (menuItem.getItemId()) {
+                    case R.id.navigation_item_share_with_users:
+                        Intent intent = new Intent(MainActivity.this, ShareMainActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.navigation_item_change_password:
+                        changePassword();
+//                        mCurrentSelectedPosition = 0;
+                        return true;
+                    case R.id.navigation_item_about:
+                        aboutDialog();
+                        return true;
+                    case R.id.navigation_item_logout:
+                        logout();
+//                        mCurrentSelectedPosition = 5;
+                        return true;
+                    default:
+                        return true;
                 }
             }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.e(LOG_TAG,
-                        getString(R.string.log_error_the_read_failed) +
-                                firebaseError.getMessage());
-            }
         });
+
+//        mUserRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
+//
+//        // getting first name for toolbar reference
+//        mUserRefListener = mUserRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                User user = snapshot.getValue(User.class);
+//                if (user != null) {
+//                    mUserEmail = user.getName().split("\\s+")[0];
+//                    String title = mUserEmail + "'s Dashboard";
+//
+//                    if (getSupportActionBar() != null) {
+//                        getSupportActionBar().setTitle(title);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//                Log.e(LOG_TAG,
+//                        getString(R.string.log_error_the_read_failed) +
+//                                firebaseError.getMessage());
+//            }
+//        });
+    }
+
+    private void aboutDialog() {
+        new AboutDialog(this).show();
+    }
+
+    private void changePassword() {
+        ChangePasswordDialog dialog = new ChangePasswordDialog(this);
+        dialog.setUserEmail(mUserEmail);
+        dialog.setTitle("Change Password");
+        dialog.show();
+    }
+
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        mUserRef.removeEventListener(mUserRefListener);
+//    }
+
+    private void setUpToolbar() {
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setTitle("sauer meditation");
+
+        }
+    }
+
+    private void setUpNavDrawer() {
+        if (mToolbar != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mToolbar.setNavigationIcon(R.drawable.ic_drawer);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                }
+            });
+        }
+
+        if (!mUserLearnedDrawer) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+            mUserLearnedDrawer = true;
+            saveSharedSetting(this, PREF_USER_LEARNED_DRAWER, "true");
+        }
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mUserRef.removeEventListener(mUserRefListener);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
 
-    private void getAnimateFAB() {
-        if (isFabOpen) {
-            closeMainFAB();
-        } else {
-            mMeditationFab.startAnimation(rotate_forward);
-            mSingleMeditationFab.startAnimation(fab_open);
-            mJournalMeditationFab.startAnimation(fab_open);
-            mSingleMeditationFab.setClickable(true);
-            mJournalMeditationFab.setClickable(true);
-            isFabOpen = true;
-        }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION, 0);
+        Menu menu = mNavigationView.getMenu();
+        menu.getItem(mCurrentSelectedPosition).setChecked(true);
     }
 
-    private void closeMainFAB() {
-        mMeditationFab.startAnimation(rotate_backward);
-        mSingleMeditationFab.startAnimation(fab_close);
-        mJournalMeditationFab.startAnimation(fab_close);
-        mSingleMeditationFab.setClickable(false);
-        mJournalMeditationFab.setClickable(false);
-        isFabOpen = false;
+    @OnClick(R.id.meditation_button)
+    protected void onClickMeditation() {
+        Intent intent = new Intent(MainActivity.this, AudioActivity.class);
+        intent.putExtra(Constants.KEY_NAME, mUserEmail);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.journal_button)
+    protected void onClickJournal() {
+        Intent intent = new Intent(MainActivity.this, JournalActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -183,5 +239,17 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static void saveSharedSetting(Context ctx, String settingName, String settingValue) {
+        SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(settingName, settingValue);
+        editor.apply();
+    }
+
+    public static String readSharedSetting(Context ctx, String settingName, String defaultValue) {
+        SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+        return sharedPref.getString(settingName, defaultValue);
     }
 }

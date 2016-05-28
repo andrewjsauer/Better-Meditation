@@ -5,18 +5,24 @@
              android:orientation="vertical">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/nav_header_bg"
-        android:scaleType="centerInside" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/ic_launcher_icon_large"
+        android:scaleType="centerInside"
+        android:layout_gravity="center"
+        />
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Subhead"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="16dp"
-        android:text="Your Name Here"
-        android:textColor="@android:color/white" />
+    <!--<TextView-->
+        <!--android:id="@+id/menu_header"-->
+        <!--style="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="4dp"-->
+        <!--android:paddingLeft="4dp"-->
+        <!--android:text="andrew's meditation"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:textColor="@android:color/black"-->
+
+        <!--android:layout_weight="1"/>-->
 
 </FrameLayout>

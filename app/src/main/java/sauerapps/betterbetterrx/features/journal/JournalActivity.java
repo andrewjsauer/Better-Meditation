@@ -31,7 +31,6 @@ public class JournalActivity extends BaseActivity {
 
 
     public void showAddNewJournalEntry(View view) {
-
         DialogFragment dialog = AddJournalEntryDialogFragment.newInstance(mEncodedEmail);
         dialog.show(JournalActivity.this.getFragmentManager(), "AddJournalEntryDialogFragment");
     }

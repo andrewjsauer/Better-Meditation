@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Better Meditation</string>
+    <string name="app_name">sauer meditation</string>
     <string name="menu_logout">Logout</string>
 
 
@@ -63,42 +63,6 @@
     <string name="dialog_message_are_you_sure_remove_list">Are you sure you want to remove this list?</string>
     <string name="dialog_message_are_you_sure_remove_item">Are you sure you want to remove this item?</string>
 
-    <!-- Shopping Mode -->
-    <string name="button_stop_shopping">Stop Shopping</string>
-    <string name="button_start_shopping">Start Shopping</string>
-
-    <string name="text_you_are_shopping">You are shopping</string>
-    <string name="text_you_and_other_are_shopping">You and %s are shopping</string>
-    <string name="text_you_and_number_are_shopping">You and %d others are shopping</string>
-
-    <string name="text_other_is_shopping">%s is shopping</string>
-    <string name="text_other_and_other_are_shopping">%1$s and %2$s are shopping</string>
-    <string name="text_other_and_number_are_shopping">%1$s and %2$d others are shopping</string>
-
-    <string name="bought_by">Bought by</string>
-
-    <!--
-
-     == Meal Strings ==
-
-      -->
-
-    <!-- Activity Title  -->
-    <string name="title_activity_meal_details">Meal Details</string>
-    <string name="title_activity_add_items_from_meal">Add Meal</string>
-
-    <!-- Add, Edit and Remove Meal Dialogs -->
-    <string name="hint_add_meal">Create a meal</string>
-    <string name="dialog_title_remove_meal">Remove meal</string>
-    <string name="dialog_message_are_you_sure_remove_meal">Are you sure you want to remove this meal?</string>
-    <string name="hint_enter_meal_name">Enter meal name</string>
-
-
-    <!--
-
-     == Archived List Strings ==
-
-      -->
     <!-- Activity Titles  -->
     <string name="title_activity_archived_lists">Archived Lists</string>
     <string name="title_activity_archived_list_details">Archived List Details</string>
@@ -110,6 +74,11 @@
     <string name="dialog_message_do_you_want_to_copy">Do you want to copy this list?</string>
     <string name="toast_shopping_list_was_archived">Shopping List %s was archived.</string>
 
+
+    <!-- Change Password Dialog -->
+    <string name="email_hint_text_dialog">Enter your email</string>
+    <string name="old_password_hint_text_dialog">Enter old password</string>
+    <string name="new_password_hint_text_dialog">Enter new password</string>
 
     <!-- Archived Lists in Active Lists -->
     <string name="button_footer_archived_lists">Archived Lists</string>
@@ -230,5 +199,10 @@
     <string name="hint_new_journal_entry">New journal entry</string>
     <string name="hint_text_add_fragment_dialog">I am grateful for...</string>
     <string name="audio_save_time_title">Save Session?</string>
+    <string name="journal">journal</string>
+    <string name="recent_activity">recent activity</string>
+    <string name="meditate">meditate</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="users_recent_activity_text">your recent activity</string>
 
 </resources>
