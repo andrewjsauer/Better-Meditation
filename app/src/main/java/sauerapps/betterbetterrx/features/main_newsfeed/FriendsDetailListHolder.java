@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import sauerapps.betterbetterrx.R;
 
-public class AudioListHolder extends RecyclerView.ViewHolder {
+public class FriendsDetailListHolder extends RecyclerView.ViewHolder {
 
     TextView userFriendName;
     TextView userFriendDate;
@@ -15,7 +15,7 @@ public class AudioListHolder extends RecyclerView.ViewHolder {
     TextView userFriendTrackTime;
 
 
-    public AudioListHolder(View itemView) {
+    public FriendsDetailListHolder(View itemView) {
         super(itemView);
 
         userFriendName = (TextView) itemView.findViewById(R.id.user_friend_name);

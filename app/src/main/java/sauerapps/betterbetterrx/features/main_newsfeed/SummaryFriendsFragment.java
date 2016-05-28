@@ -31,7 +31,7 @@ public class SummaryFriendsFragment extends Fragment {
 
     private Firebase mRef;
 
-    private FirebaseRecyclerViewAdapter<AudioList, AudioListHolder> mRecycleViewAdapter;
+    private FirebaseRecyclerViewAdapter<AudioList, FriendsDetailListHolder> mRecycleViewAdapter;
 
     private HashMap<String, Object> mFriendDate;
     private double mFriendAudioTime;
@@ -82,10 +82,10 @@ public class SummaryFriendsFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
 
         mRecycleViewAdapter = new FirebaseRecyclerViewAdapter<AudioList,
-                AudioListHolder>(AudioList.class, R.layout.audio_list_item,
-                AudioListHolder.class, mRef) {
+                FriendsDetailListHolder>(AudioList.class, R.layout.audio_list_item,
+                FriendsDetailListHolder.class, mRef) {
             @Override
-            protected void populateViewHolder(AudioListHolder viewHolder, AudioList model, int position) {
+            protected void populateViewHolder(FriendsDetailListHolder viewHolder, AudioList model, int position) {
                 if (model != null) {
                     mFriendDate = model.getTimestampCreated();
                     mFriendAudioTime = model.getAudioTime();
