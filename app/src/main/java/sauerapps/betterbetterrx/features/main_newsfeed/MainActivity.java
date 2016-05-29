@@ -39,7 +39,7 @@ import sauerapps.betterbetterrx.features.journal.JournalActivity;
 import sauerapps.betterbetterrx.features.main_newsfeed.menu.AboutDialog;
 import sauerapps.betterbetterrx.features.main_newsfeed.menu.ChangePasswordDialog;
 import sauerapps.betterbetterrx.features.main_newsfeed.sharing.audioSharing.ShareMainActivity;
-import sauerapps.betterbetterrx.features.meditation.AudioActivity;
+import sauerapps.betterbetterrx.features.meditation.playlists.PlaylistActivity;
 import sauerapps.betterbetterrx.features.meditation.AudioList;
 import sauerapps.betterbetterrx.utils.Constants;
 
@@ -281,8 +281,7 @@ public class MainActivity extends BaseActivity {
     private void setUpToolbar() {
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
-            getSupportActionBar().setTitle("sauer meditation");
-
+            setTitle("sauer meditation");
         }
     }
 
@@ -332,24 +331,10 @@ public class MainActivity extends BaseActivity {
                         - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours((long) mFriendAudioTime))));
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION, 0);
-        Menu menu = mNavigationView.getMenu();
-        menu.getItem(mCurrentSelectedPosition).setChecked(true);
-    }
-
     @OnClick(R.id.meditation_button)
     protected void onClickMeditation() {
-        Intent intent = new Intent(MainActivity.this, AudioActivity.class);
-        intent.putExtra(Constants.KEY_NAME, mUserEmail);
+        Intent intent = new Intent(MainActivity.this, PlaylistActivity.class);
+        intent.putExtra(Constants.KEY_USER_NAME, mUsersName);
         startActivity(intent);
     }
 
@@ -370,4 +355,19 @@ public class MainActivity extends BaseActivity {
         SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
         return sharedPref.getString(settingName, defaultValue);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION, 0);
+        Menu menu = mNavigationView.getMenu();
+        menu.getItem(mCurrentSelectedPosition).setChecked(true);
+    }
+
 }

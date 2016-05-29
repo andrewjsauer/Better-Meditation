@@ -61,6 +61,7 @@ public class Constants {
      * Constants for bundles, extras and shared preferences keys
      */
     public static final String KEY_NAME = "LIST_NAME";
+    public static final String KEY_USER_NAME = "USER_NAME";
     public static final String KEY_EMAIL_CHECK = "EMAIL_CHECK";
     public static final String KEY_LAYOUT_RESOURCE = "LAYOUT_RESOURCE";
     public static final String KEY_LIST_ID = "LIST_ID";

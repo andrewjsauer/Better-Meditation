@@ -1,18 +1,14 @@
-package sauerapps.betterbetterrx.features.meditation;
+package sauerapps.betterbetterrx.features.meditation.playlistitems;
 
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -31,20 +27,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sauerapps.betterbetterrx.R;
-import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.meditation.playlistitems.AudioClickListener;
-import sauerapps.betterbetterrx.features.meditation.playlistitems.TrackAdapter;
-import sauerapps.betterbetterrx.features.meditation.playlistitems.TrackHolder;
+import sauerapps.betterbetterrx.app.User;
+import sauerapps.betterbetterrx.features.meditation.AudioMediaFragment;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SCService;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SoundCloud;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Tracks;
-import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.utils.Constants;
 
-public class AudioListFragment extends Fragment implements AudioClickListener {
+public class PlaylistItemActivity extends AppCompatActivity implements AudioClickListener {
 
-    private static final String TAG = AudioListFragment.class.getSimpleName();
+    private static final String TAG = PlaylistItemActivity.class.getSimpleName();
 
     public static Track mTrack;
 
@@ -53,8 +46,10 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
 
     @Bind(R.id.progressBar_audio_list)
     ProgressBar mProgressBar;
+
     @Bind(R.id.recyclerviewRx)
     RecyclerView mRecyclerView;
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -62,35 +57,42 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
     HashMap<String, User> mSharedWith;
     Firebase mSharedWithRef;
 
-    private String mEncodedEmail;
-    private String mUserName;
-    private int mPlaylistPosition;
+    String mUserEncodedEmail;
+    String mUserName;
+    int mPlaylistPosition;
 
-
-    public AudioListFragment() {
+    public PlaylistItemActivity() {
         /* Required empty public constructor */
     }
 
-    public static AudioListFragment newInstance(String encodedEmail, String userName, int playlistPosition) {
-        AudioListFragment fragment = new AudioListFragment();
-        Bundle args = new Bundle();
-        args.putString(Constants.KEY_ENCODED_EMAIL, encodedEmail);
-        args.putString(Constants.KEY_NAME, userName);
-        args.putInt(Constants.KEY_PLAYLIST_POSITION, playlistPosition);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_playlist_item);
+
+        ButterKnife.bind(this);
+
+        Intent intent = this.getIntent();
+        mUserName = intent.getStringExtra(Constants.KEY_USER_NAME);
+        mPlaylistPosition = intent.getIntExtra(Constants.KEY_PLAYLIST_POSITION, 1);
+        mUserEncodedEmail = intent.getStringExtra(Constants.KEY_ENCODED_EMAIL);
+
+        initializeScreen();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
-            mUserName = getArguments().getString(Constants.KEY_NAME);
-            mPlaylistPosition = getArguments().getInt(Constants.KEY_PLAYLIST_POSITION);
+    private void initializeScreen() {
+
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        setSupportActionBar(mToolbar);
+
+        if (mToolbar != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            setTitle("Meditations");
         }
 
-        mSharedWithRef = new Firebase(Constants.FIREBASE_URL_AUDIO_DETAILS_SHARED_WITH).child(mEncodedEmail);
+        mSharedWithRef = new Firebase(Constants.FIREBASE_URL_AUDIO_DETAILS_SHARED_WITH).child(mUserEncodedEmail);
         mSharedWithListener = mSharedWithRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -108,40 +110,13 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
                                 firebaseError.getMessage());
             }
         });
-    }
-
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_audio_list, container, false);
-        ButterKnife.bind(this, v);
-
-        mProgressBar.setVisibility(View.VISIBLE);
-
-        BaseActivity activity = (BaseActivity) getActivity();
-
-        activity.setSupportActionBar(mToolbar);
-
-        if (activity.getSupportActionBar() != null) {
-            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-            activity.setTitle("Meditations");
-        }
-
-        return v;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         mListItems = new ArrayList<>();
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new TrackAdapter(mListItems, getContext(), this);
+        mAdapter = new TrackAdapter(mListItems, this, this);
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -155,7 +130,7 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
                     Log.d(TAG, "Something: " + response.body().mTracks);
                 } else {
                     int statusCode = response.code();
-                    Toast.makeText(getActivity(), "Error: " + statusCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(PlaylistItemActivity.this, "Error: " + statusCode, Toast.LENGTH_LONG).show();
                     Log.d(TAG, statusCode + "");
                 }
             }
@@ -163,10 +138,9 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
             @Override
             public void onFailure(Call<Tracks> call, Throwable t) {
                 Log.d(TAG, "Error: " + t);
-                Toast.makeText(getActivity(), "Error: Check internet connectivity. " + t, Toast.LENGTH_LONG).show();
+                Toast.makeText(PlaylistItemActivity.this, "Error: Check internet connectivity. " + t, Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     private void loadTracks(List<Track> tracks) {
@@ -180,15 +154,15 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
     public void onTrackClicked(TrackHolder holder, int position) {
         mTrack = mListItems.get(position);
 
-        AudioMediaFragment audioMediaFragment = AudioMediaFragment.newInstance(mEncodedEmail,
+        AudioMediaFragment audioMediaFragment = AudioMediaFragment.newInstance(mUserEncodedEmail,
                 mUserName, mSharedWith);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            audioMediaFragment.setSharedElementEnterTransition(new AudioMediaTransition());
-            audioMediaFragment.setEnterTransition(new Fade());
-            setExitTransition(new Fade());
-            audioMediaFragment.setSharedElementReturnTransition(new AudioMediaTransition());
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            audioMediaFragment.setSharedElementEnterTransition(new AudioMediaTransition());
+//            audioMediaFragment.setEnterTransition(new Fade());
+//            setExitTransition(new Fade());
+//            audioMediaFragment.setSharedElementReturnTransition(new AudioMediaTransition());
+//        }
 
 //        getActivity().getSupportFragmentManager()
 //                .beginTransaction()

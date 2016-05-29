@@ -24,8 +24,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".features.main_newsfeed.MainActivity"/>
         </activity>
-        <activity android:name=".app.authentication.login.LoginActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".app.authentication.login.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -42,39 +43,35 @@
                 android:value=".app.authentication.login.LoginActivity"/>
         </activity>
         <activity
-            android:name=".features.meditation.AudioActivity"
+            android:name=".features.meditation.playlists.PlaylistActivity"
             android:parentActivityName=".features.main_newsfeed.MainActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".features.journal.JournalActivity">
         </activity>
-
         <activity
             android:name=".features.journal.journalListDetails.JournalListDetailsActivity"
             android:label="@string/title_activity_list_details"
             android:parentActivityName=".features.main_newsfeed.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.main_newsfeed.MainActivity" />
+                android:value=".features.main_newsfeed.MainActivity"/>
         </activity>
-
         <activity
             android:name=".features.journal.SettingsActivity"
-            android:label="@string/action_settings" />
-
+            android:label="@string/action_settings"/>
         <activity
             android:name=".features.main_newsfeed.sharing.audioSharing.ShareMainActivity"
             android:label="@string/title_activity_share_list"
             android:parentActivityName=".features.main_newsfeed.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".features.main_newsfeed.MainActivity" />
+                android:value=".features.main_newsfeed.MainActivity"/>
         </activity>
-
         <activity
             android:name=".features.main_newsfeed.sharing.addingFriend.AddFriendActivity"
             android:label="@string/title_activity_add_friend"
@@ -83,6 +80,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".features.main_newsfeed.sharing.audioSharing.ShareMainActivity"/>
+        </activity>
+        <activity android:name=".features.meditation.playlistitems.PlaylistItemActivity"
+            android:parentActivityName=".features.meditation.playlists.PlaylistActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

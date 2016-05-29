@@ -7,34 +7,32 @@
 
     <include layout="@layout/main_toolbar"/>
 
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
         >
+
         <ProgressBar
-            android:id="@+id/progressBar_playlists"
+            android:id="@+id/progressBar_audio_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:visibility="invisible"
-            android:layout_gravity="center"/>
-
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_playlist"
+            android:id="@+id/recyclerviewRx"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
             >
         </android.support.v7.widget.RecyclerView>
 
-
     </RelativeLayout>
-
-
 
 
 </LinearLayout>

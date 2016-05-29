@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.meditation;
+package sauerapps.betterbetterrx.features.meditation.playlistitems;
 
 
 import android.support.v7.widget.CardView;
