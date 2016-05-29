@@ -40,7 +40,7 @@ import sauerapps.betterbetterrx.features.main_newsfeed.menu.AboutDialog;
 import sauerapps.betterbetterrx.features.main_newsfeed.menu.ChangePasswordDialog;
 import sauerapps.betterbetterrx.features.main_newsfeed.sharing.audioSharing.ShareMainActivity;
 import sauerapps.betterbetterrx.features.meditation.playlists.PlaylistActivity;
-import sauerapps.betterbetterrx.features.meditation.AudioList;
+import sauerapps.betterbetterrx.features.meditation.audioSection.AudioList;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class MainActivity extends BaseActivity {

@@ -21,7 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.meditation.playlistitems.PlaylistItemActivity;
+import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistDetailsActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Playlists;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SCService;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SoundCloud;
@@ -34,6 +34,7 @@ public class PlaylistActivity extends BaseActivity implements PlaylistClickListe
     int mPlaylistPosition;
 
     PlaylistsAdapter mAdapter;
+
     List<Playlists> mPlaylistsList;
 
     @Bind(R.id.recyclerview_playlist)
@@ -50,7 +51,7 @@ public class PlaylistActivity extends BaseActivity implements PlaylistClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_audio);
+        setContentView(R.layout.playlist_activity);
 
         ButterKnife.bind(this);
 
@@ -117,9 +118,7 @@ public class PlaylistActivity extends BaseActivity implements PlaylistClickListe
         Playlists playlistPosition = mPlaylistsList.get(position);
         mPlaylistPosition = playlistPosition.getID();
 
-        Log.d("PlaylistActivity", mPlaylistPosition + "");
-
-        Intent intent = new Intent(this, PlaylistItemActivity.class);
+        Intent intent = new Intent(PlaylistActivity.this, PlaylistDetailsActivity.class);
         intent.putExtra(Constants.KEY_USER_NAME, mUserName);
         intent.putExtra(Constants.KEY_PLAYLIST_POSITION, mPlaylistPosition);
         intent.putExtra(Constants.KEY_ENCODED_EMAIL, mEncodedEmail);

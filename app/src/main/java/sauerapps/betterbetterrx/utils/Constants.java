@@ -75,6 +75,8 @@ public class Constants {
     public static final String KEY_PREF_SORT_ORDER_LISTS = "PERF_SORT_ORDER_LISTS";
     public static final String KEY_SHARED_WITH_USERS = "SHARED_WITH_USERS";
     public static final String KEY_PLAYLIST_POSITION = "PLAYLIST_POSITION";
+    public static final String KEY_TRACK_POSITION = "TRACK_POSITION";
+
 
 
 

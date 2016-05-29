@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.meditation;
+package sauerapps.betterbetterrx.features.meditation.audioSection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.firebase.client.ServerValue;

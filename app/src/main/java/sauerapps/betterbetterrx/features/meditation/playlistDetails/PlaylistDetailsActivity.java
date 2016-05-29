@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.meditation.playlistitems;
+package sauerapps.betterbetterrx.features.meditation.playlistDetails;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,19 +29,20 @@ import retrofit2.Response;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.features.meditation.AudioMediaFragment;
+import sauerapps.betterbetterrx.features.meditation.audioSection.AudioActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SCService;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SoundCloud;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Tracks;
 import sauerapps.betterbetterrx.utils.Constants;
 
-public class PlaylistItemActivity extends AppCompatActivity implements AudioClickListener {
+public class PlaylistDetailsActivity extends AppCompatActivity implements PlaylistDetailsClickListener {
 
-    private static final String TAG = PlaylistItemActivity.class.getSimpleName();
+    private static final String TAG = PlaylistDetailsActivity.class.getSimpleName();
 
     public static Track mTrack;
 
-    protected TrackAdapter mAdapter;
+    protected PlaylistDetailsAdapter mAdapter;
     protected List<Track> mListItems;
 
     @Bind(R.id.progressBar_audio_list)
@@ -60,8 +61,9 @@ public class PlaylistItemActivity extends AppCompatActivity implements AudioClic
     String mUserEncodedEmail;
     String mUserName;
     int mPlaylistPosition;
+    int mTrackPosition;
 
-    public PlaylistItemActivity() {
+    public PlaylistDetailsActivity() {
         /* Required empty public constructor */
     }
 
@@ -116,7 +118,7 @@ public class PlaylistItemActivity extends AppCompatActivity implements AudioClic
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new TrackAdapter(mListItems, this, this);
+        mAdapter = new PlaylistDetailsAdapter(mListItems, this, this);
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -127,18 +129,16 @@ public class PlaylistItemActivity extends AppCompatActivity implements AudioClic
             public void onResponse(Call<Tracks> call, Response<Tracks> response) {
                 if (response.isSuccess()) {
                     loadTracks(response.body().mTracks);
-                    Log.d(TAG, "Something: " + response.body().mTracks);
                 } else {
                     int statusCode = response.code();
-                    Toast.makeText(PlaylistItemActivity.this, "Error: " + statusCode, Toast.LENGTH_LONG).show();
-                    Log.d(TAG, statusCode + "");
+                    Toast.makeText(PlaylistDetailsActivity.this, "Error: " + statusCode, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Tracks> call, Throwable t) {
                 Log.d(TAG, "Error: " + t);
-                Toast.makeText(PlaylistItemActivity.this, "Error: Check internet connectivity. " + t, Toast.LENGTH_LONG).show();
+                Toast.makeText(PlaylistDetailsActivity.this, "Error: Check internet connectivity. " + t, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -151,26 +151,17 @@ public class PlaylistItemActivity extends AppCompatActivity implements AudioClic
     }
 
     @Override
-    public void onTrackClicked(TrackHolder holder, int position) {
+    public void onTrackClicked(PlaylistDetailsHolder holder, int position) {
+        Track trackPosition = mListItems.get(position);
+        mTrackPosition = trackPosition.getID();
+
         mTrack = mListItems.get(position);
 
-        AudioMediaFragment audioMediaFragment = AudioMediaFragment.newInstance(mUserEncodedEmail,
-                mUserName, mSharedWith);
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            audioMediaFragment.setSharedElementEnterTransition(new AudioMediaTransition());
-//            audioMediaFragment.setEnterTransition(new Fade());
-//            setExitTransition(new Fade());
-//            audioMediaFragment.setSharedElementReturnTransition(new AudioMediaTransition());
-//        }
-
-//        getActivity().getSupportFragmentManager()
-//                .beginTransaction()
-//                .addSharedElement(holder.mTrackImageView, "imageView")
-//                .addSharedElement(holder.mTitleDescription, "descriptionView")
-//                .addSharedElement(holder.mTitleTextView, "titleView")
-//                .replace(R.id.container_audio, audioMediaFragment)
-//                .addToBackStack(null)
-//                .commit();
+        Intent intent = new Intent(PlaylistDetailsActivity.this, AudioActivity.class);
+        intent.putExtra(Constants.KEY_USER_NAME, mUserName);
+        intent.putExtra(Constants.KEY_ENCODED_EMAIL, mUserEncodedEmail);
+        intent.putExtra(Constants.KEY_SHARED_WITH_USERS, mSharedWith);
+//        intent.putExtra(Constants.KEY_TRACK_POSITION, mTrackPosition);
+        startActivity(intent);
     }
 }

@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.meditation;
+package sauerapps.betterbetterrx.features.meditation.audioSection;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
