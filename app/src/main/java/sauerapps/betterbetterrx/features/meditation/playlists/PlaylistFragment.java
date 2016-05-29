@@ -127,7 +127,7 @@ public class PlaylistFragment extends Fragment implements PlaylistClickListener 
             @Override
             public void onFailure(Call<List<Playlists>> call, Throwable t) {
                 Log.d(TAG, "Error: " + t);
-                Toast.makeText(getActivity(), "Error: Check internet connectivity. " + t, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext().getApplicationContext(), "Error: Check internet connectivity. " + t, Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -102,17 +102,19 @@ public class MainActivity extends BaseActivity {
                     case R.id.navigation_item_share_with_users:
                         Intent intent = new Intent(MainActivity.this, ShareMainActivity.class);
                         startActivity(intent);
+                        mCurrentSelectedPosition = 0;
                         return true;
                     case R.id.navigation_item_change_password:
                         changePassword();
-//                        mCurrentSelectedPosition = 0;
+                        mCurrentSelectedPosition = 1;
                         return true;
                     case R.id.navigation_item_about:
                         aboutDialog();
+                        mCurrentSelectedPosition = 2;
                         return true;
                     case R.id.navigation_item_logout:
                         logout();
-//                        mCurrentSelectedPosition = 5;
+                        mCurrentSelectedPosition = 3;
                         return true;
                     default:
                         return true;

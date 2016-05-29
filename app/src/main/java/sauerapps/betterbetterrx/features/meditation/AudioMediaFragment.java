@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -54,8 +53,8 @@ public class AudioMediaFragment extends Fragment {
     @Bind(R.id.track_time)
     protected TextView mTrackTime;
 
-    private Handler durationHandler = new Handler();
-    private double timeElapsed = 0;
+    private Handler mDurationHandler = new Handler();
+    private double mTimeElapsed = 0;
     private String mTrackTitle;
     private String mTrackDescription;
 
@@ -70,10 +69,10 @@ public class AudioMediaFragment extends Fragment {
     private Runnable updateDuration = new Runnable() {
         public void run() {
             //get current position
-            timeElapsed = mMusicPlayer.getCurrentAudioTime();
+            mTimeElapsed = mMusicPlayer.getCurrentAudioTime();
 
             //set time remaining
-            double timeRemaining = timeElapsed;
+            double timeRemaining = mTimeElapsed;
 
             mTrackTime.setText(String.format(Locale.ENGLISH, "%02d:%02d:%02d",
                     TimeUnit.MILLISECONDS.toHours((long) timeRemaining),
@@ -82,7 +81,7 @@ public class AudioMediaFragment extends Fragment {
                             - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining))));
 
             //repeat that again in 100 miliseconds
-            durationHandler.postDelayed(this, 100);
+            mDurationHandler.postDelayed(this, 100);
         }
     };
 
@@ -202,7 +201,7 @@ public class AudioMediaFragment extends Fragment {
         });
 
         if (mMusicPlayer.mAudioIsPlaying) {
-            durationHandler.postDelayed(updateDuration, 100);
+            mDurationHandler.postDelayed(updateDuration, 100);
         }
     }
 
@@ -210,7 +209,7 @@ public class AudioMediaFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        durationHandler.removeCallbacks(updateDuration);
+        mDurationHandler.removeCallbacks(updateDuration);
     }
 
     @Override
@@ -236,7 +235,7 @@ public class AudioMediaFragment extends Fragment {
             mProgressBar.setVisibility(View.VISIBLE);
         }
 
-        durationHandler.postDelayed(updateDuration, 100);
+        mDurationHandler.postDelayed(updateDuration, 100);
 
         mPlay.setVisibility(View.INVISIBLE);
         mPause.setVisibility(View.VISIBLE);
@@ -246,7 +245,7 @@ public class AudioMediaFragment extends Fragment {
     public void setPauseButton() {
         mMusicPlayer.pause();
 
-        durationHandler.removeCallbacks(updateDuration);
+        mDurationHandler.removeCallbacks(updateDuration);
 
         mPause.setVisibility(View.INVISIBLE);
         mPlay.setVisibility(View.VISIBLE);
@@ -276,7 +275,7 @@ public class AudioMediaFragment extends Fragment {
 
         mMusicPlayer.exitAudio();
 
-        durationHandler.removeCallbacks(updateDuration);
+        mDurationHandler.removeCallbacks(updateDuration);
 
         int backStackCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
 
@@ -290,9 +289,9 @@ public class AudioMediaFragment extends Fragment {
 
         getActivity().unregisterReceiver(headsetDisconnected);
 
-        if (timeElapsed >= 10000) {
+        if (mTimeElapsed >= 10000) {
 
-            DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, mUserName, timeElapsed,
+            DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mEncodedEmail, mUserName, mTimeElapsed,
                     mTrackDescription, mTrackTitle, mSharedWith);
             dialog.show(getActivity().getFragmentManager(), "SaveAudioTimeDialogFragment");
 
