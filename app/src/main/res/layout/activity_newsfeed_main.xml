@@ -20,8 +20,8 @@
             android:id="@+id/nav_contentframe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_below="@id/toolbar_main_activity"
+            android:orientation="vertical"
             >
 
             <LinearLayout
@@ -74,8 +74,8 @@
                 android:layout_below="@id/main_button_layout"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingTop="8dp"
-                android:paddingBottom="4dp">
+                android:paddingBottom="4dp"
+                android:paddingTop="8dp">
 
                 <ImageView
                     android:layout_width="15dp"
@@ -94,22 +94,22 @@
 
             </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/summary_fragment"
+            <include
+                android:id="@+id/summary_user_activity"
+                layout="@layout/user_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/current_user_recent_activity_label"
                 android:layout_margin="4dp"/>
 
             <LinearLayout
                 android:id="@+id/recent_activity_layout_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/summary_fragment"
+                android:layout_below="@id/summary_user_activity"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingTop="4dp"
-                android:paddingBottom="6dp">
+                android:paddingBottom="6dp"
+                android:paddingTop="4dp">
 
                 <ImageView
                     android:layout_width="15dp"
@@ -128,14 +128,16 @@
 
             </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/summary_friends"
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/friends_audio_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/recent_activity_layout_label"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="8dp"
+                />
+
 
         </LinearLayout>
 

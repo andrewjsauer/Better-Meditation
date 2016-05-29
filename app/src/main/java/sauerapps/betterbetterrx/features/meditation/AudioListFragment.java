@@ -49,11 +49,11 @@ public class AudioListFragment extends Fragment implements AudioClickListener {
     protected List<Track> mListItems;
 
     @Bind(R.id.progressBar_audio_list)
-    protected ProgressBar mProgressBar;
+    ProgressBar mProgressBar;
     @Bind(R.id.recyclerviewRx)
-    protected RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
     @Bind(R.id.toolbar)
-    protected Toolbar mToolbar;
+    Toolbar mToolbar;
 
     ValueEventListener mSharedWithListener;
     HashMap<String, User> mSharedWith;

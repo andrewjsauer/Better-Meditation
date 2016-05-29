@@ -10,10 +10,10 @@ import android.widget.TextView;
 import sauerapps.betterbetterrx.R;
 
 public class TrackHolder extends RecyclerView.ViewHolder {
-    protected ImageView mTrackImageView;
-    protected TextView mTitleTextView;
-    protected CardView mCardView;
-    protected TextView mTitleDescription;
+    ImageView mTrackImageView;
+    TextView mTitleTextView;
+    CardView mCardView;
+    TextView mTitleDescription;
 
     public TrackHolder(View itemView) {
         super(itemView);

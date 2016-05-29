@@ -151,6 +151,7 @@ public class PlaylistFragment extends Fragment implements PlaylistClickListener 
                 , mUserName, mPlaylistPosition);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right)
                 .replace(R.id.container_audio, audioListFragment)
                 .addToBackStack(null)
                 .commit();
