@@ -41,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.User;
+import sauerapps.betterbetterrx.app.events.EventAudioPaused;
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
 import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistTracksActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
@@ -292,6 +293,11 @@ public class AudioActivity extends AppCompatActivity {
     public void onEvent(EventAudioSyncFinish eventAudioSyncFinish) {
         mProgressBar.setVisibility(View.GONE);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    @Subscribe
+    public void onEvent(EventAudioPaused eventAudioPaused) {
+        setPauseButton();
     }
 
     private void exitAudioDetails() {
