@@ -23,7 +23,7 @@ import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
  */
 public class AudioMediaPlayer {
 
-    private int seekForwardTime = 5000; // 5000 milliseconds
+    private int seekForwardTime = 10000; // in milliseconds so 10 seconds
 
     private static final String TAG = AudioMediaPlayer.class.getSimpleName();
     private static AudioMediaPlayer sInstance;

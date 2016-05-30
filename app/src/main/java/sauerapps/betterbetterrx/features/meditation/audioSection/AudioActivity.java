@@ -177,8 +177,6 @@ public class AudioActivity extends AppCompatActivity {
         userAudioDetailsListRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS_LIST)
                 .child(mUserEncodedEmail).child(mUserEncodedEmail);
 
-
-
         mSharedWithListener = mSharedWithRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -210,13 +208,17 @@ public class AudioActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mDurationHandler.removeCallbacks(updateDuration);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mEventBus.isRegistered(this)) {
             mEventBus.unregister(this);
         }
-        mDurationHandler.removeCallbacks(updateDuration);
-
     }
 
     @Override
