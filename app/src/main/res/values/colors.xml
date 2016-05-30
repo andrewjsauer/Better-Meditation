@@ -26,10 +26,7 @@
     <color name="background_music_player">#A35BCC</color>
 
     <color name="tabsScrollColor">#3398B1</color>
-    <color name="bt_accent">#6A457F</color> //controls way too many items. top background color is here
-
-    <color name="accent_500">#E91E63</color>
-    <!--Pink 700-->
+    <color name="bt_accent">#6A457F</color>
 
 
 
@@ -37,23 +34,8 @@
     <color name="black">#616161</color>
     <color name="google">#C6412C</color>
     <color name="grey">#EDEEEF</color>
-    <color name="dark_green">#388E3C</color>
-
     <color name="dark_grey">#AEAEAE</color>
 
-    <color name="accent">#DF4A32</color>
-
-
-    <!--Indigo 500-->
-    <color name="primary_500">#4B315A</color>
-    <!--Indigo 700-->
-    <color name="primary_700">#4B315A</color>
-    <!--Pink 500-->
-
-    <color name="accent_700">#C2185B</color>
-    <color name="black_trans80">#14000000</color>
-
-    <!--<color name="indicator_unselected">#4D000000</color>-->
 
 
     <color name="blue_grey">#455A64</color>

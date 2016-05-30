@@ -20,5 +20,19 @@
         <item name="android:overlapAnchor">true</item>
     </style>
 
+    <style name="Base.MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/background_white</item>
+        <item name="colorPrimaryDark">@color/primay_darkest</item>
+        <item name="colorAccent">@color/primary_light</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/bg_light</item>
+        <item name="android:textColorHint">@color/primay_darkest</item>
+        <item name="android:windowContentTransitions">true</item>
+
+
+    </style>
+
 </resources>
 
