@@ -30,6 +30,11 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerViewAdapter;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -357,10 +362,14 @@ public class MainActivity extends BaseActivity {
 
         long dateTime = ((long)userLastDate);
 
-        Date date = new Date(dateTime);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd hh:mm a", Locale.ENGLISH);
-        sdf.setTimeZone(TimeZone.getTimeZone("PST"));
-        mFriendDateFormatted = sdf.format(date);
+        DateTime jodaTime = new DateTime(dateTime);
+
+        DateTimeFormatter outputFormatter = DateTimeFormat
+                .forPattern("MM/dd/yyyy hh:mm a")
+                .withLocale(Locale.US)
+                .withZone(DateTimeZone.getDefault());
+
+        mFriendDateFormatted = outputFormatter.print(jodaTime);
 
     }
 

@@ -56,6 +56,9 @@ dependencies {
     /* EventBus */
     compile 'org.greenrobot:eventbus:3.0.0'
 
+    /* Joda-time */
+    compile 'joda-time:joda-time:2.9.4'
+
     /* Dagger */
     apt 'com.google.dagger:dagger-compiler:2.2'
     compile 'com.google.dagger:dagger:2.2'
