@@ -85,10 +85,11 @@ public class UserDetailsFragmentDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.user_details_fragment_dialog, container, false);
         ButterKnife.bind(this, view);
 
-        Query queryRef = userAudioDetailsRef.limitToFirst(10);
+        Query queryRef = userAudioDetailsRef.limitToLast(10);
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        manager.setReverseLayout(false);
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
 
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(manager);
