@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -32,6 +33,7 @@ import com.firebase.ui.FirebaseRecyclerViewAdapter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
+import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.features.journal.JournalActivity;
 import sauerapps.betterbetterrx.features.main_newsfeed.menu.AboutDialog;
 import sauerapps.betterbetterrx.features.main_newsfeed.menu.ChangePasswordDialog;
@@ -93,6 +96,8 @@ public class MainActivity extends BaseActivity {
     private String mUsersName;
     private String mUserEmailCheck;
 
+    protected List<User> mUserList;
+
     private FirebaseRecyclerViewAdapter<AudioList, FriendsDetailListHolder> mRecycleViewAdapter;
 
     private HashMap<String, Object> mFriendDate;
@@ -120,8 +125,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initializeScreen(Bundle savedInstanceState) {
-
-        setupWindowAnimations();
 
         setUpToolbar();
 
@@ -179,7 +182,7 @@ public class MainActivity extends BaseActivity {
                         R.layout.friends_summary_list_item,
                 FriendsDetailListHolder.class, mRef) {
             @Override
-            protected void populateViewHolder(FriendsDetailListHolder viewHolder, AudioList model, int position) {
+            protected void populateViewHolder(FriendsDetailListHolder viewHolder, AudioList model, final int position) {
                 if (model != null) {
                     mFriendDate = model.getTimestampCreated();
                     mFriendAudioTime = model.getAudioTime();
@@ -195,29 +198,36 @@ public class MainActivity extends BaseActivity {
                     viewHolder.userFriendTrackTime.setText(mFriendAudioTimeFormatted);
                     viewHolder.userFriendTrackTitle.setText(model.getTrackTitle());
                     viewHolder.userFriendTrackDesc.setText(model.getTrackDescription());
+
+                    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String usersEmail = getItem(position).getOwner();
+                            String userName = getItem(position).getUserName();
+
+                            FragmentManager fragmentManager = getFragmentManager();
+
+                            DialogFragment dialog = UserDetailsFragmentDialog.newInstance(usersEmail, mEncodedEmail, userName);
+                            dialog.show(fragmentManager, "UserDetailsFragmentDialog");
+                        }
+                    });
                 }
             }
         };
 
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
+
         mSummaryFriendsLayout = (CardView) findViewById(R.id.user_summary_layout);
         mSummaryFriendsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getFragmentManager();
-                DialogFragment dialog = UserDetailsFragmentDialog.newInstance(mEncodedEmail);
+                DialogFragment dialog = UserDetailsFragmentDialog.newInstance(mEncodedEmail, mEncodedEmail, "");
                 dialog.show(fragmentManager, "UserDetailsFragmentDialog");
             }
         });
 
-    }
-
-    private void setupWindowAnimations() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Slide slide = (Slide) TransitionInflater.from(this).inflateTransition(R.transition.activity_slide);
-            getWindow().setExitTransition(slide);
-        }
     }
 
     @Override
@@ -366,12 +376,14 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(MainActivity.this, PlaylistActivity.class);
         intent.putExtra(Constants.KEY_USER_NAME, mUsersName);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     @OnClick(R.id.journal_button)
     protected void onClickJournal() {
         Intent intent = new Intent(MainActivity.this, JournalActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     public static void saveSharedSetting(Context ctx, String settingName, String settingValue) {
@@ -399,5 +411,4 @@ public class MainActivity extends BaseActivity {
         Menu menu = mNavigationView.getMenu();
         menu.getItem(mCurrentSelectedPosition).setChecked(true);
     }
-
 }

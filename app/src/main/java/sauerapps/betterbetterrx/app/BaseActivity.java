@@ -105,6 +105,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
         if (id == android.R.id.home) {
             super.onBackPressed();
+            overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
             return true;
         }
 

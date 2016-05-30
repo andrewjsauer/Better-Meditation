@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
 import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -63,14 +64,6 @@ public class PlaylistActivity extends BaseActivity implements PlaylistClickListe
 
         initializeScreen();
 
-        setupWindowAnimations();
-    }
-
-    private void setupWindowAnimations() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Fade fade = (Fade) TransitionInflater.from(this).inflateTransition(R.transition.activity_fade);
-            getWindow().setEnterTransition(fade);
-        }
     }
 
     private void initializeScreen() {
@@ -132,7 +125,26 @@ public class PlaylistActivity extends BaseActivity implements PlaylistClickListe
         Intent intent = new Intent(PlaylistActivity.this, PlaylistTracksActivity.class);
         intent.putExtra(Constants.KEY_USER_NAME, mUserName);
         intent.putExtra(Constants.KEY_PLAYLIST_POSITION, mPlaylistPosition);
-        intent.putExtra(Constants.KEY_ENCODED_EMAIL, mEncodedEmail);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
     }
 }

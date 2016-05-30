@@ -12,9 +12,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -28,6 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sauerapps.betterbetterrx.R;
+import sauerapps.betterbetterrx.app.BaseActivity;
 import sauerapps.betterbetterrx.features.meditation.audioSection.AudioActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SCService;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SoundCloud;
@@ -35,7 +35,7 @@ import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Tracks;
 import sauerapps.betterbetterrx.utils.Constants;
 
-public class PlaylistTracksActivity extends AppCompatActivity implements PlaylistTracksClickListener {
+public class PlaylistTracksActivity extends BaseActivity implements PlaylistTracksClickListener {
 
     private static final String TAG = PlaylistTracksActivity.class.getSimpleName();
 
@@ -69,27 +69,14 @@ public class PlaylistTracksActivity extends AppCompatActivity implements Playlis
 
         ButterKnife.bind(this);
 
+        mUserEncodedEmail = mEncodedEmail;
+
         Intent intent = this.getIntent();
         mUserName = intent.getStringExtra(Constants.KEY_USER_NAME);
         mPlaylistPosition = intent.getIntExtra(Constants.KEY_PLAYLIST_POSITION, 1);
-        mUserEncodedEmail = intent.getStringExtra(Constants.KEY_ENCODED_EMAIL);
 
         initializeScreen();
 
-        setupWindowAnimations();
-
-    }
-
-    private void setupWindowAnimations() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Fade fade = new Fade();
-            fade.setDuration(1000);
-            getWindow().setEnterTransition(fade);
-
-            Slide slide = new Slide();
-            slide.setDuration(1000);
-            getWindow().setReturnTransition(slide);
-        }
     }
 
     private void initializeScreen() {
@@ -159,11 +146,31 @@ public class PlaylistTracksActivity extends AppCompatActivity implements Playlis
         intent.putExtra(Constants.KEY_USER_NAME, mUserName);
         intent.putExtra(Constants.KEY_ENCODED_EMAIL, mUserEncodedEmail);
 
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
         ActivityOptionsCompat optionsCompat =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2, p3);
 
         ActivityCompat.startActivity(this, intent, optionsCompat.toBundle());
 
         finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
     }
 }

@@ -133,6 +133,8 @@ public class AudioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
 
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
         ButterKnife.bind(this);
 
         mTrack = PlaylistTracksActivity.mTrack;
@@ -323,13 +325,19 @@ public class AudioActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             finish();
+                            overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
                         }
                     })
                     .setIcon(android.R.drawable.ic_menu_save)
                     .show();
         } else {
             finish();
+            enterExitAnimation();
         }
+    }
+
+    private void enterExitAnimation() {
+        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
     }
 
     private void getSaveSession() {
@@ -378,7 +386,6 @@ public class AudioActivity extends AppCompatActivity {
         updateAudioListData.put("/" + Constants.FIREBASE_LOCATION_OWNER_MAPPINGS + "/" + ownerEmail,
                 mUserEncodedEmail);
 
-         /* Do the update */
         firebaseRef.updateChildren(updateAudioListData, new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {

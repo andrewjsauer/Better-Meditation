@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.Query;
 import com.firebase.ui.FirebaseRecyclerViewAdapter;
 
 import java.text.SimpleDateFormat;
@@ -33,10 +34,9 @@ import sauerapps.betterbetterrx.utils.Constants;
  */
 public class UserDetailsFragmentDialog extends DialogFragment {
 
-    protected String mEncodedEmail;
-
-    protected String mUsersName;
-    protected String mUserEmailCheck;
+    protected String mUserEmail;
+    protected String mCurrentUserEmail;
+    protected String mUserName;
 
     protected Firebase userAudioDetailsRef;
     protected FirebaseRecyclerViewAdapter<AudioList, UserDetailsFragmentDialogListHolder> mRecycleViewAdapter;
@@ -53,10 +53,12 @@ public class UserDetailsFragmentDialog extends DialogFragment {
     protected TextView mTitleDialog;
 
 
-    public static UserDetailsFragmentDialog newInstance(String encodedEmail) {
+    public static UserDetailsFragmentDialog newInstance(String userEmail, String currentUserEmail, String userName) {
         UserDetailsFragmentDialog userDetailsFragmentDialog = new UserDetailsFragmentDialog();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.KEY_ENCODED_EMAIL, encodedEmail);
+        bundle.putString(Constants.KEY_ENCODED_EMAIL, userEmail);
+        bundle.putString(Constants.KEY_USERS_EMAIL, currentUserEmail);
+        bundle.putString(Constants.KEY_NAME, userName);
         userDetailsFragmentDialog.setArguments(bundle);
         return userDetailsFragmentDialog;
     }
@@ -65,9 +67,11 @@ public class UserDetailsFragmentDialog extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mEncodedEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
+        mUserEmail = getArguments().getString(Constants.KEY_ENCODED_EMAIL);
+        mCurrentUserEmail = getArguments().getString(Constants.KEY_USERS_EMAIL);
+        mUserName = getArguments().getString(Constants.KEY_NAME);
 
-        userAudioDetailsRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS).child(mEncodedEmail);
+        userAudioDetailsRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS).child(mUserEmail);
     }
 
     @Nullable
@@ -76,6 +80,7 @@ public class UserDetailsFragmentDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.user_details_fragment_dialog, container, false);
         ButterKnife.bind(this, view);
 
+        Query queryRef = userAudioDetailsRef.limitToFirst(10);
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setReverseLayout(false);
@@ -87,14 +92,12 @@ public class UserDetailsFragmentDialog extends DialogFragment {
                 new FirebaseRecyclerViewAdapter<AudioList,
                 UserDetailsFragmentDialogListHolder>(AudioList.class,
                 R.layout.user_details_dialog_list_items,
-                UserDetailsFragmentDialogListHolder.class, userAudioDetailsRef) {
+                UserDetailsFragmentDialogListHolder.class, queryRef) {
             @Override
             protected void populateViewHolder(UserDetailsFragmentDialogListHolder viewHolder, AudioList model, int position) {
                 if (model != null) {
                     mFriendDate = model.getTimestampCreated();
                     mFriendAudioTime = model.getAudioTime();
-                    mUserEmailCheck = model.getOwner();
-                    mUsersName = model.getUserName();
 
                     getFormattedTime();
                     getFormattedDate();
@@ -132,10 +135,10 @@ public class UserDetailsFragmentDialog extends DialogFragment {
     }
 
     private void getUserName() {
-        if (mUserEmailCheck.equals(mEncodedEmail)) {
+        if (mCurrentUserEmail.equals(mUserEmail)) {
             mTitleDialog.setText(R.string.dialog_summary_title_current_user);
         } else {
-            mTitleDialog.setText(mUsersName + getString(R.string.dialog_summary_friends_title));
+            mTitleDialog.setText(mUserName + "'s" + getString(R.string.dialog_summary_friends_title));
         }
     }
 

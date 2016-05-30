@@ -14,6 +14,8 @@
         android:layout_alignParentTop="true"
         android:padding="16dp"
         android:text="recent activity"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/light_black"
         android:textStyle="bold"
