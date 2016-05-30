@@ -61,6 +61,7 @@ public class Constants {
      * Constants for bundles, extras and shared preferences keys
      */
     public static final String KEY_NAME = "LIST_NAME";
+    public static final String KEY_USER_NAME = "USER_NAME";
     public static final String KEY_EMAIL_CHECK = "EMAIL_CHECK";
     public static final String KEY_LAYOUT_RESOURCE = "LAYOUT_RESOURCE";
     public static final String KEY_LIST_ID = "LIST_ID";
@@ -69,11 +70,14 @@ public class Constants {
     public static final String KEY_LIST_ITEM_ID = "LIST_ITEM_ID";
     public static final String KEY_PROVIDER = "PROVIDER";
     public static final String KEY_ENCODED_EMAIL = "ENCODED_EMAIL";
+    public static final String KEY_USERS_EMAIL = "USERS_EMAIL";
     public static final String KEY_LIST_OWNER = "LIST_OWNER";
     public static final String KEY_GOOGLE_EMAIL = "GOOGLE_EMAIL";
     public static final String KEY_PREF_SORT_ORDER_LISTS = "PERF_SORT_ORDER_LISTS";
     public static final String KEY_SHARED_WITH_USERS = "SHARED_WITH_USERS";
     public static final String KEY_PLAYLIST_POSITION = "PLAYLIST_POSITION";
+    public static final String KEY_TRACK_POSITION = "TRACK_POSITION";
+
 
 
 

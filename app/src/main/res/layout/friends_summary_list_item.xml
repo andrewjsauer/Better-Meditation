@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    android:id="@+id/cv"
+    android:id="@+id/summary_friends_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +8,6 @@
     android:layout_height="wrap_content"
     card_view:cardBackgroundColor="@android:color/white"
     card_view:cardCornerRadius="10dp"
-    card_view:cardElevation="0dp"
     card_view:cardUseCompatPadding="true"
     >
 
@@ -24,6 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textStyle="bold"
             tools:text="Andrew"/>
 
@@ -52,6 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
             tools:text="15 Minute Meditation"/>
 
         <TextView
@@ -61,6 +64,8 @@
             android:layout_below="@+id/user_friend_track_title"
             android:paddingTop="1dp"
             android:textSize="12sp"
+            android:ellipsize="end"
+            android:maxLines="1"
             tools:text="20 min meditation on the poor with Pamela Thomas."
             android:layout_alignParentLeft="true"
             />

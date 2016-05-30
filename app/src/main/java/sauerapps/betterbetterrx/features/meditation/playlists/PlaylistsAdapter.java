@@ -19,6 +19,7 @@ import sauerapps.betterbetterrx.features.meditation.soundcloud.Playlists;
  * Created by andrewsauer on 4/14/16.
  */
 public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsHolder> {
+
     private final PlaylistClickListener mListener;
     private Context mContext;
     private List<Playlists> mPlaylists;

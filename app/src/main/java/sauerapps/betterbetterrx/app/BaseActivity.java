@@ -95,7 +95,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /* Inflate the menu; this adds items to the action bar if it is present. */
         getMenuInflater().inflate(R.menu.menu_base, menu);
         return true;
     }
@@ -106,11 +105,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
         if (id == android.R.id.home) {
             super.onBackPressed();
-            return true;
-        }
-
-        if (id == R.id.action_logout) {
-            logout();
+            overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
             return true;
         }
 

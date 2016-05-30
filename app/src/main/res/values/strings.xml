@@ -204,5 +204,7 @@
     <string name="meditate">meditate</string>
     <string name="create_an_account">Create an Account</string>
     <string name="users_recent_activity_text">your recent activity</string>
+    <string name="dialog_summary_title_current_user">your recent activity</string>
+    <string name="dialog_summary_friends_title">" recent activity"</string>
 
 </resources>

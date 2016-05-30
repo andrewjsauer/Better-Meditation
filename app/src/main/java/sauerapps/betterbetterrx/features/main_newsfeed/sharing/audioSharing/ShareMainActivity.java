@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.meditation.AudioList;
+import sauerapps.betterbetterrx.features.meditation.audioSection.AudioList;
 import sauerapps.betterbetterrx.features.main_newsfeed.sharing.addingFriend.AddFriendActivity;
 import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.utils.Constants;

@@ -9,7 +9,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
 
-import sauerapps.betterbetterrx.features.meditation.AudioList;
+import sauerapps.betterbetterrx.features.meditation.audioSection.AudioList;
 import sauerapps.betterbetterrx.app.User;
 
 /**

@@ -1,4 +1,4 @@
-package sauerapps.betterbetterrx.features.meditation;
+package sauerapps.betterbetterrx.features.meditation.audioSection;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +14,7 @@ import java.io.IOException;
 
 
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
+import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistTracksActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Config;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 
@@ -22,7 +23,7 @@ import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
  */
 public class AudioMediaPlayer {
 
-    private int seekForwardTime = 5000; // 5000 milliseconds
+    private int seekForwardTime = 10000; // in milliseconds so 10 seconds
 
     private static final String TAG = AudioMediaPlayer.class.getSimpleName();
     private static AudioMediaPlayer sInstance;
@@ -125,7 +126,7 @@ public class AudioMediaPlayer {
 
     public void setAudioIsPlaying() {
 
-        mTrack = AudioListFragment.mTrack;
+        mTrack = PlaylistTracksActivity.mTrack;
 
         if (!mAudioIsPlaying) {
             if (mPlayer == null) {
@@ -173,7 +174,6 @@ public class AudioMediaPlayer {
     }
 
     public void pause() {
-        // 1. Suspend play back
         if (mAudioFocusGranted && mAudioIsPlaying) {
             mPlayer.pause();
             mAudioIsPlaying = false;
