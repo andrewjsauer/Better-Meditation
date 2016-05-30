@@ -1,21 +1,30 @@
 package sauerapps.betterbetterrx.features.meditation.audioSection;
 
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ServerValue;
+import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,17 +32,23 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
+import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistDetailsActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
+import sauerapps.betterbetterrx.utils.AudioListUtil;
 import sauerapps.betterbetterrx.utils.Constants;
 
 public class AudioActivity extends AppCompatActivity {
+
+    private static final String TAG = AudioActivity.class.getSimpleName();
 
     static AudioMediaPlayer mMusicPlayer;
 
@@ -53,6 +68,7 @@ public class AudioActivity extends AppCompatActivity {
 
     private Handler mDurationHandler = new Handler();
     private double mTimeElapsed = 0;
+
     private String mTrackTitle;
     private String mTrackDescription;
 
@@ -60,8 +76,13 @@ public class AudioActivity extends AppCompatActivity {
 
     String mUserEncodedEmail;
     String mUserName;
+
+    protected String mTime;
+
+    ValueEventListener mSharedWithListener;
     HashMap<String, User> mSharedWith;
-    int mTrackPositionDetails;
+
+    Firebase userAudioRef, userAudioDetailsRef, userAudioDetailsListRef, mSharedWithRef;
 
     EventBus mEventBus = EventBus.getDefault();
 
@@ -111,16 +132,23 @@ public class AudioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
 
+        ButterKnife.bind(this);
+
+        mTrack = PlaylistDetailsActivity.mTrack;
+
+        if (mMusicPlayer == null) {
+            mMusicPlayer = AudioMediaPlayer.getInstance(this);
+        }
+
         Intent intent = this.getIntent();
         mUserName = intent.getStringExtra(Constants.KEY_USER_NAME);
         mUserEncodedEmail = intent.getStringExtra(Constants.KEY_ENCODED_EMAIL);
-        mSharedWith = (HashMap<String, User>) intent.getSerializableExtra(Constants.KEY_SHARED_WITH_USERS);
-//        mTrackPositionDetails = intent.getIntExtra(Constants.KEY_TRACK_POSITION, 1);
 
         initializeScreen();
     }
 
     private void initializeScreen() {
+
         mMusicPlayer.setAudioIsPlaying();
         setPlayButton();
 
@@ -141,42 +169,44 @@ public class AudioActivity extends AppCompatActivity {
                 .error(R.drawable.ic_default_art)
                 .placeholder(R.drawable.ic_default_art)
                 .into(track_image);
+
+
+        mSharedWithRef = new Firebase(Constants.FIREBASE_URL_AUDIO_DETAILS_SHARED_WITH).child(mUserEncodedEmail);
+        userAudioRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO).child(mUserEncodedEmail);
+        userAudioDetailsRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS).child(mUserEncodedEmail);
+        userAudioDetailsListRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS_LIST)
+                .child(mUserEncodedEmail).child(mUserEncodedEmail);
+
+
+
+        mSharedWithListener = mSharedWithRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mSharedWith = new HashMap<>();
+
+                for (DataSnapshot currentUser : dataSnapshot.getChildren()) {
+                    mSharedWith.put(currentUser.getKey(), currentUser.getValue(User.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(TAG,
+                        getString(R.string.log_error_the_read_failed) +
+                                firebaseError.getMessage());
+            }
+        });
     }
 
     @Override
     public void onResume() {
         registerReceiver(headsetDisconnected, new IntentFilter(
                 Intent.ACTION_HEADSET_PLUG));
-
         super.onResume();
-
-//        setFocusableInTouchMode(true);
-//        requestFocus();
-//        setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//
-//                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-//
-//                    exitAudioDetails();
-//
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
 
         if (mMusicPlayer.mAudioIsPlaying) {
             mDurationHandler.postDelayed(updateDuration, 100);
         }
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        mDurationHandler.removeCallbacks(updateDuration);
     }
 
     @Override
@@ -185,6 +215,25 @@ public class AudioActivity extends AppCompatActivity {
         if (mEventBus.isRegistered(this)) {
             mEventBus.unregister(this);
         }
+        mDurationHandler.removeCallbacks(updateDuration);
+
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        exitAudioDetails();
     }
 
     @OnClick(R.id.play)
@@ -243,24 +292,97 @@ public class AudioActivity extends AppCompatActivity {
 
         mDurationHandler.removeCallbacks(updateDuration);
 
-        int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
-
-        for (int i = 0; i < backStackCount; i++) {
-
-            int backStackId = getSupportFragmentManager().getBackStackEntryAt(i).getId();
-
-            getSupportFragmentManager().popBackStack(backStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        }
-
         unregisterReceiver(headsetDisconnected);
 
         if (mTimeElapsed >= 10000) {
 
-            DialogFragment dialog = SaveAudioTimeDialogFragment.newInstance(mUserEncodedEmail, mUserName, mTimeElapsed,
-                    mTrackDescription, mTrackTitle, mSharedWith);
-            dialog.show(getFragmentManager(), "SaveAudioTimeDialogFragment");
+            double time = mTimeElapsed;
 
+            mTime = String.format(Locale.ENGLISH, "%01d hr %02d min",
+                    TimeUnit.MILLISECONDS.toHours((long) time),
+                    TimeUnit.MILLISECONDS.toMinutes((long) time)
+                            - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours((long) time)));
+
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.audio_save_time_title))
+                    .setMessage("Save: " + mTime + "?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getSaveSession();
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_menu_save)
+                    .show();
+        } else {
+            finish();
         }
+    }
+
+    private void getSaveSession() {
+
+        userAudioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+                    double lastAudioTime = (double) dataSnapshot.getValue();
+
+                    double newTime = lastAudioTime + mTimeElapsed;
+                    userAudioRef.setValue(newTime);
+
+                } else {
+                    userAudioRef.setValue(mTimeElapsed);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(TAG,
+                        getString(R.string.log_error_the_read_failed) +
+                                firebaseError.getMessage());
+            }
+        });
+
+        final String ownerEmail = mUserEncodedEmail;
+
+        final Firebase firebaseRef = new Firebase(Constants.FIREBASE_URL);
+
+        HashMap<String, Object> updateAudioListData = new HashMap<>();
+
+        HashMap<String, Object> timestampCreated = new HashMap<>();
+        timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
+
+        AudioList audioList = new AudioList(mUserEncodedEmail, mUserName, mTimeElapsed, mTrackTitle,
+                mTrackDescription, timestampCreated);
+
+        HashMap<String, Object> audioListMap = (HashMap<String, Object>)
+                new ObjectMapper().convertValue(audioList, Map.class);
+
+        AudioListUtil.updateMapForAllWithValue(mSharedWith, ownerEmail, mUserEncodedEmail,
+                updateAudioListData, "", audioListMap);
+
+        updateAudioListData.put("/" + Constants.FIREBASE_LOCATION_OWNER_MAPPINGS + "/" + ownerEmail,
+                mUserEncodedEmail);
+
+         /* Do the update */
+        firebaseRef.updateChildren(updateAudioListData, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                AudioListUtil.updateTimestampReversed(firebaseError, "AddList", ownerEmail,
+                        null, mUserEncodedEmail);
+            }
+        });
+
+        userAudioDetailsRef.push().setValue(audioList);
+
+        Toast.makeText(AudioActivity.this, "Session saved.", Toast.LENGTH_SHORT).show();
     }
 }

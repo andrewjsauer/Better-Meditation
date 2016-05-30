@@ -85,13 +85,11 @@ public class SaveAudioTimeDialogFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         getSaveSession();
-                        /* Dismiss the dialog */
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        /* Dismiss the dialog */
                         dialog.dismiss();
                     }
                 })

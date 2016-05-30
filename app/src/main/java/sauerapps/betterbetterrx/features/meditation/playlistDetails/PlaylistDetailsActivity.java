@@ -28,7 +28,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.User;
-import sauerapps.betterbetterrx.features.meditation.AudioMediaFragment;
 import sauerapps.betterbetterrx.features.meditation.audioSection.AudioActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SCService;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SoundCloud;
@@ -53,10 +52,6 @@ public class PlaylistDetailsActivity extends AppCompatActivity implements Playli
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-
-    ValueEventListener mSharedWithListener;
-    HashMap<String, User> mSharedWith;
-    Firebase mSharedWithRef;
 
     String mUserEncodedEmail;
     String mUserName;
@@ -93,25 +88,6 @@ public class PlaylistDetailsActivity extends AppCompatActivity implements Playli
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             setTitle("Meditations");
         }
-
-        mSharedWithRef = new Firebase(Constants.FIREBASE_URL_AUDIO_DETAILS_SHARED_WITH).child(mUserEncodedEmail);
-        mSharedWithListener = mSharedWithRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mSharedWith = new HashMap<>();
-
-                for (DataSnapshot currentUser : dataSnapshot.getChildren()) {
-                    mSharedWith.put(currentUser.getKey(), currentUser.getValue(User.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.e(TAG,
-                        getString(R.string.log_error_the_read_failed) +
-                                firebaseError.getMessage());
-            }
-        });
 
         mListItems = new ArrayList<>();
 
@@ -160,8 +136,8 @@ public class PlaylistDetailsActivity extends AppCompatActivity implements Playli
         Intent intent = new Intent(PlaylistDetailsActivity.this, AudioActivity.class);
         intent.putExtra(Constants.KEY_USER_NAME, mUserName);
         intent.putExtra(Constants.KEY_ENCODED_EMAIL, mUserEncodedEmail);
-        intent.putExtra(Constants.KEY_SHARED_WITH_USERS, mSharedWith);
-//        intent.putExtra(Constants.KEY_TRACK_POSITION, mTrackPosition);
         startActivity(intent);
+
+        finish();
     }
 }
