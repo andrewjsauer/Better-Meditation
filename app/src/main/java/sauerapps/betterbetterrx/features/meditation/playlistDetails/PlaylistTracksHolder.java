@@ -9,17 +9,17 @@ import android.widget.TextView;
 
 import sauerapps.betterbetterrx.R;
 
-public class PlaylistDetailsHolder extends RecyclerView.ViewHolder {
+public class PlaylistTracksHolder extends RecyclerView.ViewHolder {
     ImageView mTrackImageView;
     TextView mTitleTextView;
     CardView mCardView;
     TextView mTitleDescription;
 
-    public PlaylistDetailsHolder(View itemView) {
+    public PlaylistTracksHolder(View itemView) {
         super(itemView);
-        mTrackImageView = (ImageView) itemView.findViewById(R.id.track_image);
-        mTitleTextView = (TextView) itemView.findViewById(R.id.track_title);
-        mTitleDescription = (TextView) itemView.findViewById(R.id.track_description);
+        mTrackImageView = (ImageView) itemView.findViewById(R.id.playlist_track_image);
+        mTitleTextView = (TextView) itemView.findViewById(R.id.playlist_track_title);
+        mTitleDescription = (TextView) itemView.findViewById(R.id.playlist_track_description);
         mCardView = (CardView) itemView.findViewById(R.id.cv);
     }
 }

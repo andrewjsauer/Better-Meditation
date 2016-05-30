@@ -1,6 +1,5 @@
 package sauerapps.betterbetterrx.features.meditation.audioSection;
 
-import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -41,7 +42,7 @@ import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
-import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistDetailsActivity;
+import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistTracksActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 import sauerapps.betterbetterrx.utils.AudioListUtil;
 import sauerapps.betterbetterrx.utils.Constants;
@@ -134,7 +135,7 @@ public class AudioActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        mTrack = PlaylistDetailsActivity.mTrack;
+        mTrack = PlaylistTracksActivity.mTrack;
 
         if (mMusicPlayer == null) {
             mMusicPlayer = AudioMediaPlayer.getInstance(this);
@@ -250,6 +251,8 @@ public class AudioActivity extends AppCompatActivity {
 
         if (mMusicPlayer.mIsLoadingAudioStream) {
             mProgressBar.setVisibility(View.VISIBLE);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
 
         mDurationHandler.postDelayed(updateDuration, 100);
@@ -286,6 +289,7 @@ public class AudioActivity extends AppCompatActivity {
     @Subscribe
     public void onEvent(EventAudioSyncFinish eventAudioSyncFinish) {
         mProgressBar.setVisibility(View.GONE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     private void exitAudioDetails() {

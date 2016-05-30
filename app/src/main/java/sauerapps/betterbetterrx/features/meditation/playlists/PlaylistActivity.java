@@ -1,11 +1,14 @@
 package sauerapps.betterbetterrx.features.meditation.playlists;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -21,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistDetailsActivity;
+import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistTracksActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Playlists;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SCService;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.SoundCloud;
@@ -60,6 +63,14 @@ public class PlaylistActivity extends BaseActivity implements PlaylistClickListe
 
         initializeScreen();
 
+        setupWindowAnimations();
+    }
+
+    private void setupWindowAnimations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade fade = (Fade) TransitionInflater.from(this).inflateTransition(R.transition.activity_fade);
+            getWindow().setEnterTransition(fade);
+        }
     }
 
     private void initializeScreen() {
@@ -118,7 +129,7 @@ public class PlaylistActivity extends BaseActivity implements PlaylistClickListe
         Playlists playlistPosition = mPlaylistsList.get(position);
         mPlaylistPosition = playlistPosition.getID();
 
-        Intent intent = new Intent(PlaylistActivity.this, PlaylistDetailsActivity.class);
+        Intent intent = new Intent(PlaylistActivity.this, PlaylistTracksActivity.class);
         intent.putExtra(Constants.KEY_USER_NAME, mUserName);
         intent.putExtra(Constants.KEY_PLAYLIST_POSITION, mPlaylistPosition);
         intent.putExtra(Constants.KEY_ENCODED_EMAIL, mEncodedEmail);

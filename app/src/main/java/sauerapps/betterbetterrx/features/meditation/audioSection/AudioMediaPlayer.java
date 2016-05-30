@@ -14,7 +14,7 @@ import java.io.IOException;
 
 
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
-import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistDetailsActivity;
+import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistTracksActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Config;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 
@@ -126,7 +126,7 @@ public class AudioMediaPlayer {
 
     public void setAudioIsPlaying() {
 
-        mTrack = PlaylistDetailsActivity.mTrack;
+        mTrack = PlaylistTracksActivity.mTrack;
 
         if (!mAudioIsPlaying) {
             if (mPlayer == null) {
@@ -174,7 +174,6 @@ public class AudioMediaPlayer {
     }
 
     public void pause() {
-        // 1. Suspend play back
         if (mAudioFocusGranted && mAudioIsPlaying) {
             mPlayer.pause();
             mAudioIsPlaying = false;

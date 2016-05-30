@@ -14,28 +14,28 @@ import java.util.List;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Track;
 
-public class PlaylistDetailsAdapter extends RecyclerView.Adapter<PlaylistDetailsHolder> {
+public class PlaylistTracksAdapter extends RecyclerView.Adapter<PlaylistTracksHolder> {
 
-    private final PlaylistDetailsClickListener mListener;
+    private final PlaylistTracksClickListener mListener;
     private Context mContext;
     private List<Track> mTracks;
 
-    public PlaylistDetailsAdapter(List<Track> mTracks, Context context, PlaylistDetailsClickListener listener) {
+    public PlaylistTracksAdapter(List<Track> mTracks, Context context, PlaylistTracksClickListener listener) {
         this.mTracks = mTracks;
         this.mContext = context;
         mListener = listener;
     }
 
     @Override
-    public PlaylistDetailsHolder onCreateViewHolder(ViewGroup container, int position) {
+    public PlaylistTracksHolder onCreateViewHolder(ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
-        View view = inflater.inflate(R.layout.track_list_row, container, false);
+        View view = inflater.inflate(R.layout.playlist_tracks_row, container, false);
 
-        return new PlaylistDetailsHolder(view);
+        return new PlaylistTracksHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final PlaylistDetailsHolder holder, final int position) {
+    public void onBindViewHolder(final PlaylistTracksHolder holder, final int position) {
         Track track = mTracks.get(position);
         holder.mTitleTextView.setText(track.getTitle());
         holder.mTitleDescription.setText(track.getDescription());

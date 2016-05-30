@@ -1,15 +1,21 @@
 package sauerapps.betterbetterrx.features.main_newsfeed;
 
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,6 +62,9 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.toolbar_main_activity)
     protected Toolbar mToolbar;
 
+    @Bind(R.id.friends_audio_list)
+    protected RecyclerView mRecyclerView;
+
     @Bind(R.id.nav_drawer)
     protected DrawerLayout mDrawerLayout;
 
@@ -92,6 +101,7 @@ public class MainActivity extends BaseActivity {
     private String mFriendDateFormatted;
     private String mFriendAudioTimeFormatted;
 
+    private CardView mSummaryFriendsLayout;
 
     public MainActivity() {
         /* Required empty public constructor */
@@ -110,6 +120,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initializeScreen(Bundle savedInstanceState) {
+
+        setupWindowAnimations();
 
         setUpToolbar();
 
@@ -155,16 +167,16 @@ public class MainActivity extends BaseActivity {
         mUserAudioTimeTotalRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO).child(mUserEmail);
         mUserEntriesTotalRef = new Firebase(Constants.FIREBASE_URL_USER_LISTS).child(mUserEmail);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.friends_audio_list);
-
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setReverseLayout(false);
 
-        recyclerView.setHasFixedSize(false);
-        recyclerView.setLayoutManager(manager);
+        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setLayoutManager(manager);
 
-        mRecycleViewAdapter = new FirebaseRecyclerViewAdapter<AudioList,
-                FriendsDetailListHolder>(AudioList.class, R.layout.audio_list_item,
+        mRecycleViewAdapter =
+                new FirebaseRecyclerViewAdapter<AudioList,
+                FriendsDetailListHolder>(AudioList.class,
+                        R.layout.friends_summary_list_item,
                 FriendsDetailListHolder.class, mRef) {
             @Override
             protected void populateViewHolder(FriendsDetailListHolder viewHolder, AudioList model, int position) {
@@ -175,7 +187,7 @@ public class MainActivity extends BaseActivity {
                     mUsersName = model.getUserName();
 
                     getLastMeditationTime();
-                    getLastMinuteDate();
+                    getFormattedDate();
                     getUserName();
 
                     viewHolder.userFriendName.setText(mUsersName);
@@ -187,7 +199,25 @@ public class MainActivity extends BaseActivity {
             }
         };
 
-        recyclerView.setAdapter(mRecycleViewAdapter);
+        mRecyclerView.setAdapter(mRecycleViewAdapter);
+
+        mSummaryFriendsLayout = (CardView) findViewById(R.id.user_summary_layout);
+        mSummaryFriendsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                DialogFragment dialog = UserDetailsFragmentDialog.newInstance(mEncodedEmail);
+                dialog.show(fragmentManager, "UserDetailsFragmentDialog");
+            }
+        });
+
+    }
+
+    private void setupWindowAnimations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Slide slide = (Slide) TransitionInflater.from(this).inflateTransition(R.transition.activity_slide);
+            getWindow().setExitTransition(slide);
+        }
     }
 
     @Override
@@ -312,7 +342,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void getLastMinuteDate() {
+    private void getFormattedDate() {
         Object userLastDate = mFriendDate.get(Constants.FIREBASE_PROPERTY_TIMESTAMP);
 
         long dateTime = ((long)userLastDate);

@@ -129,14 +129,11 @@
             </LinearLayout>
 
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/friends_audio_list"
+            <include
+                android:id="@+id/summary_friends"
+                layout="@layout/newsfeed_summary_friends"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                />
+                android:layout_height="wrap_content"/>
 
 
         </LinearLayout>

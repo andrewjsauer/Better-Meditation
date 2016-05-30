@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/primary_dark"
+                android:background="@color/primay_darkest"
                 android:orientation="vertical">
 
     <ImageButton
@@ -12,41 +12,41 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:background="@color/primay_darkest"
         android:padding="16dp"
         android:src="@drawable/ic_clear_24dp"
-        android:tint="@android:color/white"
-        android:background="@color/primary_dark"/>
+        android:tint="@android:color/white"/>
 
 
     <TextView
         android:id="@+id/track_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="80dp"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:transitionName="titleView"
-        tools:text="15 Minute Meditation"
-        android:layout_centerInParent="true"
-        android:layout_alignParentTop="true"
         android:textStyle="bold"
-        android:textAlignment="center"/>
+        android:transitionName="trackTitle"
+        tools:text="15 Minute Meditation"/>
 
     <TextView
         android:id="@+id/track_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="false"
-        android:layout_centerInParent="true"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:transitionName="descriptionView"
-        tools:text="This is a test, a test, a test, a test."
         android:layout_below="@+id/track_title"
-        android:layout_marginTop="15dp"
+        android:layout_centerInParent="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:textAlignment="center"/>
+        android:layout_marginTop="15dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:transitionName="trackDescription"
+        tools:text="This is a test, a test, a test, a test."/>
 
 
     <ImageView
@@ -58,14 +58,15 @@
         android:layout_marginTop="30dp"
         android:contentDescription="@string/track_image_description"
         android:scaleType="centerCrop"
-        android:transitionName="imageView"/>
+        android:transitionName="trackImage"
+        />
 
     <ProgressBar
         android:id="@+id/audioProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/track_time"
@@ -78,8 +79,6 @@
         android:textColor="@android:color/white"
         android:textSize="15sp"
         tools:text="16:02"/>
-
-
 
 
     <LinearLayout
@@ -95,11 +94,11 @@
             android:layout_width="@dimen/playback_controls_albumart_size"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/primay_darkest"
             android:contentDescription="@string/reset_button_description"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_replay_10_black_24dp"
+            android:src="@drawable/ic_reset_button"
             android:tint="@android:color/white"
-            android:background="@color/primary_dark"
             />
 
         <FrameLayout
@@ -116,23 +115,22 @@
                 android:id="@+id/play"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
+                android:background="@color/primay_darkest"
                 android:contentDescription="@string/play_pause"
                 android:scaleType="centerCrop"
-                android:src="@drawable/play"
-                android:tint="@android:color/white"
-                android:background="@color/primary_dark"/>
+                android:src="@drawable/ic_play_button"
+                android:tint="@android:color/white"/>
 
             <ImageButton
                 android:id="@+id/pause"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
+                android:background="@color/primay_darkest"
                 android:contentDescription="@string/play_pause"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_pause_24dp"
+                android:src="@drawable/ic_pause_button"
                 android:tint="@android:color/white"
-                android:visibility="invisible"
-                android:background="@color/primary_dark"/>
-
+                android:visibility="invisible"/>
 
 
         </FrameLayout>
@@ -142,11 +140,11 @@
             android:layout_width="@dimen/playback_controls_albumart_size"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/primay_darkest"
             android:contentDescription="@string/fast_forward_button_description"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_fast_forward_24dp"
-            android:tint="@android:color/white"
-            android:background="@color/primary_dark"/>
+            android:src="@drawable/ic_forward_10_black_24dp"
+            android:tint="@android:color/white"/>
 
     </LinearLayout>
 

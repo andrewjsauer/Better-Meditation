@@ -82,7 +82,7 @@
                 android:value=".features.main_newsfeed.sharing.audioSharing.ShareMainActivity"/>
         </activity>
         <activity
-            android:name=".features.meditation.playlistDetails.PlaylistDetailsActivity"
+            android:name=".features.meditation.playlistDetails.PlaylistTracksActivity"
             android:parentActivityName=".features.meditation.playlists.PlaylistActivity"
             android:screenOrientation="portrait">
         </activity>
