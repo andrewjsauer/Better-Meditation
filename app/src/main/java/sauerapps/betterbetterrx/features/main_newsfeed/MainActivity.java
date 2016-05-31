@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,19 +13,17 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerViewAdapter;
 
@@ -35,12 +32,9 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
@@ -91,7 +85,7 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.summary_total_journal_text_view)
     protected TextView mTotalJournals;
 
-    private Firebase mRef, mUserAudioTimeTotalRef, mUserEntriesTotalRef, mUserAudioDetailsRef;
+    private Firebase mUserAudioDetailsListRef, mUserAudioTimeTotalRef, mUserEntriesTotalRef, mUserAudioDetailsRef;
     private ValueEventListener mUserAudioTimeTotalListener, mUserEntriesTotalListener, mUserAudioDetailsListener;
 
     private boolean mUserLearnedDrawer;
@@ -170,13 +164,17 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        mRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS_LIST).child(mEncodedEmail);
+        mUserAudioDetailsListRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS_LIST).child(mEncodedEmail);
         mUserAudioDetailsRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS).child(mUserEmail);
         mUserAudioTimeTotalRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO).child(mUserEmail);
         mUserEntriesTotalRef = new Firebase(Constants.FIREBASE_URL_USER_LISTS).child(mUserEmail);
 
+        Query queryAudioDetailsList = mUserAudioDetailsListRef.orderByKey();
+
+
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        manager.setReverseLayout(false);
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
 
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(manager);
@@ -185,7 +183,7 @@ public class MainActivity extends BaseActivity {
                 new FirebaseRecyclerViewAdapter<AudioList,
                 FriendsDetailListHolder>(AudioList.class,
                         R.layout.friends_summary_list_item,
-                FriendsDetailListHolder.class, mRef) {
+                FriendsDetailListHolder.class, queryAudioDetailsList) {
             @Override
             protected void populateViewHolder(FriendsDetailListHolder viewHolder, AudioList model, final int position) {
                 if (model != null) {
@@ -221,7 +219,6 @@ public class MainActivity extends BaseActivity {
         };
 
         mRecyclerView.setAdapter(mRecycleViewAdapter);
-
 
         mSummaryFriendsLayout = (CardView) findViewById(R.id.user_summary_layout);
         mSummaryFriendsLayout.setOnClickListener(new View.OnClickListener() {
@@ -303,12 +300,27 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         mUserAudioDetailsRef.removeEventListener(mUserAudioDetailsListener);
         mUserAudioTimeTotalRef.removeEventListener(mUserAudioTimeTotalListener);
         mUserEntriesTotalRef.removeEventListener(mUserEntriesTotalListener);
         mRecycleViewAdapter.cleanup();
+    }
+
+    @OnClick(R.id.meditation_button)
+    protected void onClickMeditation() {
+        Intent intent = new Intent(MainActivity.this, PlaylistActivity.class);
+        intent.putExtra(Constants.KEY_USER_NAME, mUsersName);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+    }
+
+    @OnClick(R.id.journal_button)
+    protected void onClickJournal() {
+        Intent intent = new Intent(MainActivity.this, JournalActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
 
@@ -378,21 +390,6 @@ public class MainActivity extends BaseActivity {
                 TimeUnit.MILLISECONDS.toHours((long) mFriendAudioTime),
                 TimeUnit.MILLISECONDS.toMinutes((long) mFriendAudioTime)
                         - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours((long) mFriendAudioTime))));
-    }
-
-    @OnClick(R.id.meditation_button)
-    protected void onClickMeditation() {
-        Intent intent = new Intent(MainActivity.this, PlaylistActivity.class);
-        intent.putExtra(Constants.KEY_USER_NAME, mUsersName);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-    }
-
-    @OnClick(R.id.journal_button)
-    protected void onClickJournal() {
-        Intent intent = new Intent(MainActivity.this, JournalActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     public static void saveSharedSetting(Context ctx, String settingName, String settingValue) {
