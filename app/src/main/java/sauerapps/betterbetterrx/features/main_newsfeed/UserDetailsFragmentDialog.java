@@ -15,6 +15,11 @@ import com.firebase.client.Firebase;
 import com.firebase.client.Query;
 import com.firebase.ui.FirebaseRecyclerViewAdapter;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -80,10 +85,11 @@ public class UserDetailsFragmentDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.user_details_fragment_dialog, container, false);
         ButterKnife.bind(this, view);
 
-        Query queryRef = userAudioDetailsRef.limitToFirst(10);
+        Query queryRef = userAudioDetailsRef.limitToLast(10);
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        manager.setReverseLayout(false);
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
 
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(manager);
@@ -127,10 +133,14 @@ public class UserDetailsFragmentDialog extends DialogFragment {
 
         long dateTime = ((long)userLastDate);
 
-        Date date = new Date(dateTime);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd hh:mm a", Locale.ENGLISH);
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("PST"));
-        mFriendDateFormatted = simpleDateFormat.format(date);
+        DateTime jodaTime = new DateTime(dateTime);
+
+        DateTimeFormatter outputFormatter = DateTimeFormat
+                .forPattern("MM/dd/yyyy hh:mm a")
+                .withLocale(Locale.US)
+                .withZone(DateTimeZone.getDefault());
+
+        mFriendDateFormatted = outputFormatter.print(jodaTime);
 
     }
 

@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 
 
+import sauerapps.betterbetterrx.app.events.EventAudioPaused;
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
 import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistTracksActivity;
 import sauerapps.betterbetterrx.features.meditation.soundcloud.Config;
@@ -77,30 +78,29 @@ public class AudioMediaPlayer {
                 switch (focusChange) {
                     case AudioManager.AUDIOFOCUS_GAIN:
                         Log.i(TAG, "AUDIOFOCUS_GAIN");
-                        play();
                         break;
                     case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT:
                         Log.i(TAG, "AUDIOFOCUS_GAIN_TRANSIENT");
                         break;
                     case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK:
                         Log.i(TAG, "AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK");
-                        pause();
+                        pauseAudioLoss();
                         break;
                     case AudioManager.AUDIOFOCUS_LOSS:
                         Log.e(TAG, "AUDIOFOCUS_LOSS");
-                        exitAudio();
+                        pauseAudioLoss();
                         break;
                     case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                         Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
-                        pause();
+                        pauseAudioLoss();
                         break;
                     case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                         Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
-                        pause();
+                        pauseAudioLoss();
                         break;
                     case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                         Log.e(TAG, "AUDIOFOCUS_REQUEST_FAILED");
-                        pause();
+                        pauseAudioLoss();
                         break;
                     default:
                         break;
@@ -180,8 +180,11 @@ public class AudioMediaPlayer {
         }
     }
 
+    private void pauseAudioLoss() {
+        EventBus.getDefault().post(new EventAudioPaused());
+    }
+
     public void exitAudio() {
-        if (mPlayer != null) {
             if (mAudioFocusGranted && mAudioIsPlaying) {
                 mPlayer.stop();
                 mPlayer.release();
@@ -195,7 +198,6 @@ public class AudioMediaPlayer {
                 mContext.unregisterReceiver(mIntentReceiver);
                 mReceiverRegistered = false;
             }
-        }
     }
 
     public void setResetRecordingButton() {
