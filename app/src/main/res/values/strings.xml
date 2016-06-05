@@ -207,6 +207,6 @@
     <string name="dialog_summary_title_current_user">your recent activity</string>
     <string name="dialog_summary_friends_title">" recent activity"</string>
 
-    <string name="about_body">sauer meditation started with the idea of having access to the thousands of meditation recordings out in the world. I know I would love to meditate to all of them, and share my stats with friends as I do so. Hence the reason for this app. If you have any suggestions or ideas on meditations, please feel free to send me an email.</string>
+    <string name="about_body">sauer meditation is an experiment to get quality meditation recordings in one place. I know I would love to meditate to all of them, and share my stats with friends as I do so. Hence, the reason for this app. If you have any suggestions or ideas for meditations, please feel free to send me an email.</string>
 
 </resources>

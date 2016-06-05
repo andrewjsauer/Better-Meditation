@@ -7,6 +7,7 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:paddingTop="15dp"
         android:background="@drawable/ic_launcher_icon_large"
         android:scaleType="centerInside"
         android:layout_gravity="center"

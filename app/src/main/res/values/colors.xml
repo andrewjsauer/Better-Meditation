@@ -2,25 +2,20 @@
 <resources>
 
     // new colors
-    <color name="primary_button_color">#38457E</color>
-    <color name="colorPrimary">#373367</color>
+    <color name="primary_button_color">#2B5D75</color>
+    <color name="colorPrimary">#5AC2F5</color>
     <color name="text_color">#333</color>
 
-    <color name="primary_dark">#686680</color>
-    <color name="primary_light">#6059B3</color>
-    <color name="primay_darkest">#1C1A34</color>
-    <color name="primary_light_dark">#1C1A34</color>
-    <color name="primary">#373367</color>
+    <color name="primary_dark">#142B36</color>
+    <color name="primary_light">#51AEDB</color>
+    <color name="primay_darkest">#142B36</color>
+    <color name="primary_light_dark">#2D80A8</color>
+    <color name="primary">#4390B5</color>
 
     <color name="background_white">#fff</color>
 
 
     // end new colors
-
-
-    <color name="fab_main">#6860C0</color>
-    <color name="fab_first_open">#454080</color>
-    <color name="fab_second_open">#232041</color>
 
     <color name="background_meditation">#A4FFCF</color>
     <color name="background_music_player">#A35BCC</color>
