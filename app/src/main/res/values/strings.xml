@@ -199,9 +199,12 @@
     <string name="hint_new_journal_entry">New journal entry</string>
     <string name="hint_text_add_fragment_dialog">I am grateful for...</string>
     <string name="audio_save_time_title">Save Session?</string>
-    <string name="journal">journal</string>
+    <string name="journal_label">journal</string>
     <string name="recent_activity">recent activity</string>
-    <string name="meditate">meditate</string>
+    <string name="guided_meditation_label">guided</string>
+    <string name="custom_meditation_label">custom</string>
+    <string name="group_meditation_label">group</string>
+
     <string name="create_an_account">Create an Account</string>
     <string name="users_recent_activity_text">your recent activity</string>
     <string name="dialog_summary_title_current_user">your recent activity</string>

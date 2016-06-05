@@ -2,7 +2,7 @@
 <resources>
 
     // new colors
-    <color name="primary_button_color">#2B5D75</color>
+    <color name="primary_button_color">#3E85A8</color>
     <color name="colorPrimary">#5AC2F5</color>
     <color name="text_color">#333</color>
 
@@ -17,10 +17,6 @@
 
     // end new colors
 
-    <color name="background_meditation">#A4FFCF</color>
-    <color name="background_music_player">#A35BCC</color>
-
-    <color name="tabsScrollColor">#3398B1</color>
     <color name="bt_accent">#6A457F</color>
 
 

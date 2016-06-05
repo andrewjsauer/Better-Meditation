@@ -19,10 +19,9 @@
         <LinearLayout
             android:id="@+id/nav_contentframe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/toolbar_main_activity"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/main_button_layout"
@@ -33,38 +32,81 @@
                 android:paddingBottom="4dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingTop="4dp">
+                android:paddingTop="2dp">
 
-                <Button
-                    android:id="@+id/meditation_button"
-                    style="@style/Widget.BetterBetter.Button.Login"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="2dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rounded_button"
-                    android:drawableLeft="@drawable/ic_queue_music_24dp"
-                    android:drawableStart="@drawable/ic_queue_music_24dp"
-                    android:elevation="2dp"
-                    android:text="@string/meditate"
-                    android:textColor="@color/light_black"
-                    />
+                    android:orientation="vertical"
+                    android:layout_weight="1">
 
-                <Button
-                    android:id="@+id/journal_button"
-                    style="@style/Widget.BetterBetter.Button.Login"
+                    <Button
+                        android:id="@+id/meditation_button"
+                        style="@style/Widget.BetterBetter.Button.Login"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_button"
+                        android:drawableLeft="@drawable/ic_queue_music_24dp"
+                        android:drawableStart="@drawable/ic_queue_music_24dp"
+                        android:elevation="2dp"
+                        android:text="@string/guided_meditation_label"
+                        android:textColor="@color/light_black"/>
+
+                    <Button
+                        android:id="@+id/custom_meditation_button"
+                        style="@style/Widget.BetterBetter.Button.Login"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_button"
+                        android:drawableLeft="@drawable/ic_custom_meditation"
+                        android:drawableStart="@drawable/ic_custom_meditation"
+                        android:layout_marginBottom="4dp"
+                        android:elevation="2dp"
+                        android:text="@string/custom_meditation_label"
+                        android:textColor="@color/light_black"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rounded_button"
-                    android:drawableLeft="@drawable/ic_journal_pencil_icon"
-                    android:drawableStart="@drawable/ic_journal_pencil_icon"
-                    android:elevation="2dp"
-                    android:text="@string/journal"
-                    android:textColor="@color/light_black"/>
+                    android:orientation="vertical"
+                    android:layout_weight="1">
 
+                    <Button
+                        android:id="@+id/group_meditation_button"
+                        style="@style/Widget.BetterBetter.Button.Login"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_button"
+                        android:drawableLeft="@drawable/ic_group_meditation"
+                        android:drawableStart="@drawable/ic_group_meditation"
+                        android:elevation="2dp"
+                        android:text="@string/group_meditation_label"
+                        android:textColor="@color/light_black"/>
+
+                    <Button
+                        android:id="@+id/journal_button"
+                        style="@style/Widget.BetterBetter.Button.Login"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@drawable/rounded_button"
+                        android:drawableLeft="@drawable/ic_journal_pencil_icon"
+                        android:drawableStart="@drawable/ic_journal_pencil_icon"
+                        android:elevation="2dp"
+                        android:text="@string/journal_label"
+                        android:textColor="@color/light_black"/>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -98,8 +140,7 @@
                 android:id="@+id/summary_user_activity"
                 layout="@layout/user_summary"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"/>
+                android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:id="@+id/recent_activity_layout_label"
@@ -114,7 +155,7 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_marginBottom="6dp"
+                    android:layout_marginBottom="4dp"
                     android:src="@drawable/ic_supervisor_account_black_24dp"
                     />
 
@@ -122,8 +163,8 @@
                     android:id="@+id/text_recent_activity_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:layout_marginLeft="6dp"
-                    android:layout_marginBottom="6dp"
                     android:text="@string/recent_activity"
                     android:textSize="15sp"
                     android:textStyle="bold"/>
