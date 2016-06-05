@@ -408,6 +408,6 @@ public class AudioActivity extends AppCompatActivity {
 
         userAudioDetailsRef.push().setValue(audioList);
 
-        Toast.makeText(AudioActivity.this, "Session saved.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(AudioActivity.this, "Session saved", Toast.LENGTH_SHORT).show();
     }
 }

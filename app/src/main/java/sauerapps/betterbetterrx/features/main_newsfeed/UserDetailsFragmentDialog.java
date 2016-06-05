@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -77,6 +78,7 @@ public class UserDetailsFragmentDialog extends DialogFragment {
         mUserName = getArguments().getString(Constants.KEY_NAME);
 
         userAudioDetailsRef = new Firebase(Constants.FIREBASE_URL_USER_AUDIO_DETAILS).child(mUserEmail);
+
     }
 
     @Nullable
@@ -118,6 +120,8 @@ public class UserDetailsFragmentDialog extends DialogFragment {
         };
 
         mRecyclerView.setAdapter(mRecycleViewAdapter);
+
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         return view;
     }
