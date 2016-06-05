@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -94,8 +95,6 @@ public class MainActivity extends BaseActivity {
     protected String mUserEmail;
     private String mUsersName;
     private String mUserEmailCheck;
-
-    protected List<User> mUserList;
 
     private FirebaseRecyclerViewAdapter<AudioList, FriendsDetailListHolder> mRecycleViewAdapter;
 
@@ -325,13 +324,13 @@ public class MainActivity extends BaseActivity {
 
 
     private void aboutDialog() {
-        new AboutDialog(this).show();
+        AboutDialog aboutDialog = new AboutDialog(this);
+        aboutDialog.show();
     }
 
     private void changePassword() {
         ChangePasswordDialog dialog = new ChangePasswordDialog(this);
         dialog.setUserEmail(mUserEmail);
-        dialog.setTitle("Change Password");
         dialog.show();
     }
 

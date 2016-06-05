@@ -20,6 +20,8 @@ public class AboutDialog extends Dialog {
 
         ButterKnife.bind(this);
 
+        setTitle("About");
+
     }
 
     @OnClick (R.id.about_got_it)

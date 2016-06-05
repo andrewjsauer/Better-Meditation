@@ -5,7 +5,7 @@
             android:id="@+id/navigation_item_share_with_users"
             android:checked="true"
             android:icon="@drawable/ic_share_24dp"
-            android:title="Share With Others"/>
+            android:title="Share your stats"/>
         <item
             android:id="@+id/navigation_item_change_password"
             android:checked="true"

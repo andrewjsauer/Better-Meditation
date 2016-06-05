@@ -41,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.User;
+import sauerapps.betterbetterrx.app.events.EventAudioOnComplete;
 import sauerapps.betterbetterrx.app.events.EventAudioPaused;
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
 import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistTracksActivity;
@@ -300,6 +301,11 @@ public class AudioActivity extends AppCompatActivity {
         setPauseButton();
     }
 
+    @Subscribe
+    public void onEvent(EventAudioOnComplete eventAudioOnComplete) {
+        exitAudioDetails();
+    }
+
     private void exitAudioDetails() {
 
         mMusicPlayer.exitAudio();
@@ -402,6 +408,6 @@ public class AudioActivity extends AppCompatActivity {
 
         userAudioDetailsRef.push().setValue(audioList);
 
-        Toast.makeText(AudioActivity.this, "Session saved.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(AudioActivity.this, "Session saved", Toast.LENGTH_SHORT).show();
     }
 }

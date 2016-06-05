@@ -7,12 +7,14 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
 
+import sauerapps.betterbetterrx.app.events.EventAudioOnComplete;
 import sauerapps.betterbetterrx.app.events.EventAudioPaused;
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
 import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistTracksActivity;
@@ -167,7 +169,7 @@ public class AudioMediaPlayer {
             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    pause();
+                    EventBus.getDefault().post(new EventAudioOnComplete());
                 }
             });
         }
