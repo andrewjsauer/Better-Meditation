@@ -41,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.User;
+import sauerapps.betterbetterrx.app.events.EventAudioOnComplete;
 import sauerapps.betterbetterrx.app.events.EventAudioPaused;
 import sauerapps.betterbetterrx.app.events.EventAudioSyncFinish;
 import sauerapps.betterbetterrx.features.meditation.playlistDetails.PlaylistTracksActivity;
@@ -298,6 +299,11 @@ public class AudioActivity extends AppCompatActivity {
     @Subscribe
     public void onEvent(EventAudioPaused eventAudioPaused) {
         setPauseButton();
+    }
+
+    @Subscribe
+    public void onEvent(EventAudioOnComplete eventAudioOnComplete) {
+        exitAudioDetails();
     }
 
     private void exitAudioDetails() {
