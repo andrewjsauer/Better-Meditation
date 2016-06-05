@@ -13,13 +13,14 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -34,7 +35,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +43,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sauerapps.betterbetterrx.R;
 import sauerapps.betterbetterrx.app.BaseActivity;
-import sauerapps.betterbetterrx.app.User;
 import sauerapps.betterbetterrx.features.journal.JournalActivity;
 import sauerapps.betterbetterrx.features.main_newsfeed.menu.AboutDialog;
 import sauerapps.betterbetterrx.features.main_newsfeed.menu.ChangePasswordDialog;
@@ -96,6 +95,8 @@ public class MainActivity extends BaseActivity {
     private String mUsersName;
     private String mUserEmailCheck;
 
+    private String mTimeSession;
+
     private FirebaseRecyclerViewAdapter<AudioList, FriendsDetailListHolder> mRecycleViewAdapter;
 
     private HashMap<String, Object> mFriendDate;
@@ -104,7 +105,7 @@ public class MainActivity extends BaseActivity {
     private String mFriendDateFormatted;
     private String mFriendAudioTimeFormatted;
 
-    private CardView mSummaryFriendsLayout;
+    private CardView mSummaryUserLayout;
 
     public MainActivity() {
         /* Required empty public constructor */
@@ -219,13 +220,18 @@ public class MainActivity extends BaseActivity {
 
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
-        mSummaryFriendsLayout = (CardView) findViewById(R.id.user_summary_layout);
-        mSummaryFriendsLayout.setOnClickListener(new View.OnClickListener() {
+        mSummaryUserLayout = (CardView) findViewById(R.id.user_summary_layout);
+        mSummaryUserLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                DialogFragment dialog = UserDetailsFragmentDialog.newInstance(mEncodedEmail, mEncodedEmail, "");
-                dialog.show(fragmentManager, "UserDetailsFragmentDialog");
+
+                if (!TextUtils.isEmpty(mTimeSession)) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    DialogFragment dialog = UserDetailsFragmentDialog.newInstance(mEncodedEmail, mEncodedEmail, "");
+                    dialog.show(fragmentManager, "UserDetailsFragmentDialog");
+                } else {
+                    Toast.makeText(MainActivity.this, "No recent activity", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -242,12 +248,12 @@ public class MainActivity extends BaseActivity {
                 if (dataSnapshot.exists()) {
                     double totalTime = (Double) dataSnapshot.getValue();
 
-                    String time = String.format(Locale.ENGLISH, "%01d hr %02d min",
+                    mTimeSession = String.format(Locale.ENGLISH, "%01d hr %02d min",
                             TimeUnit.MILLISECONDS.toHours((long) totalTime),
                             TimeUnit.MILLISECONDS.toMinutes((long) totalTime)
                                     - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours((long) totalTime)));
 
-                    mTotalTime.setText(time);
+                    mTotalTime.setText(mTimeSession);
                 }
             }
 
@@ -267,7 +273,6 @@ public class MainActivity extends BaseActivity {
                     long totalMeditations = dataSnapshot.getChildrenCount();
                     String sessionTotal = Long.toString(totalMeditations);
                     mTotalSessions.setText(sessionTotal);
-
                 }
             }
 
