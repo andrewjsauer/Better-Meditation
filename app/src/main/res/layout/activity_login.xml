@@ -25,7 +25,7 @@
             android:layout_marginTop="25dp"
             android:text="sauer meditation"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
+            android:textColor="@color/text_color"
             android:textSize="22sp"/>
 
         <ImageView

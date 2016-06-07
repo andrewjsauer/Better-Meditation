@@ -199,14 +199,17 @@
     <string name="hint_new_journal_entry">New journal entry</string>
     <string name="hint_text_add_fragment_dialog">I am grateful for...</string>
     <string name="audio_save_time_title">Save Session?</string>
-    <string name="journal">journal</string>
+    <string name="journal_label">journal</string>
     <string name="recent_activity">recent activity</string>
-    <string name="meditate">meditate</string>
+    <string name="guided_meditation_label">guided</string>
+    <string name="custom_meditation_label">custom</string>
+    <string name="group_meditation_label">group</string>
+
     <string name="create_an_account">Create an Account</string>
     <string name="users_recent_activity_text">your recent activity</string>
     <string name="dialog_summary_title_current_user">your recent activity</string>
     <string name="dialog_summary_friends_title">" recent activity"</string>
 
-    <string name="about_body">sauer meditation started with the idea of having access to the thousands of meditation recordings out in the world. I know I would love to meditate to all of them, and share my stats with friends as I do so. Hence the reason for this app. If you have any suggestions or ideas on meditations, please feel free to send me an email.</string>
+    <string name="about_body">sauer meditation is an experiment to get quality meditation recordings in one place. I know I would love to meditate to all of them, and share my stats with friends as I do so. Hence, the reason for this app. If you have any suggestions or ideas for meditations, please feel free to send me an email.</string>
 
 </resources>
