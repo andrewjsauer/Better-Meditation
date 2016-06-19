@@ -262,8 +262,7 @@ public class CreateAccountActivity extends BaseActivity {
         boolean isGoodEmail =
                 (email != null && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches());
         if (!isGoodEmail) {
-            mEditTextEmailCreate.setError(String.format(getString(R.string.error_invalid_email_not_valid),
-                    email));
+            showErrorToast("Something went wrong!");
             return false;
         }
         return isGoodEmail;
@@ -271,7 +270,7 @@ public class CreateAccountActivity extends BaseActivity {
 
     private boolean isUserNameValid(String userName) {
         if (userName.equals("")) {
-            mEditTextUsernameCreate.setError(getResources().getString(R.string.error_cannot_be_empty));
+            showErrorToast("Something went wrong!");
             return false;
         }
         return true;
@@ -285,6 +284,6 @@ public class CreateAccountActivity extends BaseActivity {
      * Show error toast to users
      */
     private void showErrorToast(String message) {
-        Toast.makeText(CreateAccountActivity.this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(CreateAccountActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }

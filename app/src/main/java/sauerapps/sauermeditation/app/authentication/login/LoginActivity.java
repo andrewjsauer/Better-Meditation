@@ -164,12 +164,12 @@ public class LoginActivity extends BaseActivity {
         String password = mEditTextPasswordInput.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
-            mEditTextEmailInput.setError(getString(R.string.error_cannot_be_empty));
+            showErrorToast("Something went wrong!");
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            mEditTextPasswordInput.setError(getString(R.string.error_cannot_be_empty));
+            showErrorToast("Something went wrong!");
             return;
         }
         mAuthProgressDialog.show();
