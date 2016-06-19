@@ -149,7 +149,7 @@ public class MainActivity extends BaseActivity {
 
                         Bundle shareBundle = new Bundle();
                         shareBundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Share with others clicked");
-                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, shareBundle);
+                        mFirebaseAnalytics.logEvent("ShareMainActivity", shareBundle);
 
                         mCurrentSelectedPosition = 0;
                         return true;
@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity {
 
                         Bundle changePasswordBundle = new Bundle();
                         changePasswordBundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Change password clicked");
-                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, changePasswordBundle);
+                        mFirebaseAnalytics.logEvent("ChangePassword", changePasswordBundle);
 
                         mCurrentSelectedPosition = 1;
                         return true;
@@ -167,7 +167,7 @@ public class MainActivity extends BaseActivity {
 
                         Bundle aboutBundle = new Bundle();
                         aboutBundle.putString(FirebaseAnalytics.Param.ITEM_ID, "About section clicked");
-                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, aboutBundle);
+                        mFirebaseAnalytics.logEvent("About", aboutBundle);
 
                         mCurrentSelectedPosition = 2;
                         return true;
@@ -176,7 +176,7 @@ public class MainActivity extends BaseActivity {
 
                         Bundle logoutBundle = new Bundle();
                         logoutBundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Logout clicked");
-                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, logoutBundle);
+                        mFirebaseAnalytics.logEvent("Logout", logoutBundle);
 
                         mCurrentSelectedPosition = 3;
                         return true;
@@ -237,7 +237,7 @@ public class MainActivity extends BaseActivity {
 
                             Bundle friendBundle = new Bundle();
                             friendBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Friends Summary clicked");
-                            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, friendBundle);
+                            mFirebaseAnalytics.logEvent("FriendsSummary", friendBundle);
 
                         }
                     });
@@ -259,7 +259,7 @@ public class MainActivity extends BaseActivity {
 
                     Bundle userBundle = new Bundle();
                     userBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Users Summary clicked");
-                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, userBundle);
+                    mFirebaseAnalytics.logEvent("UserSummary", userBundle);
 
                 } else {
                     Toast.makeText(MainActivity.this, "No recent activity", Toast.LENGTH_SHORT).show();
@@ -353,7 +353,7 @@ public class MainActivity extends BaseActivity {
 
         Bundle meditationBundle = new Bundle();
         meditationBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Meditation button clicked");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, meditationBundle);
+        mFirebaseAnalytics.logEvent("onClickMeditation", meditationBundle);
 
     }
 
@@ -365,7 +365,7 @@ public class MainActivity extends BaseActivity {
 
         Bundle journalBundle = new Bundle();
         journalBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Journal button clicked");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, journalBundle);
+        mFirebaseAnalytics.logEvent("onClickJournal", journalBundle);
     }
 
     @OnClick(R.id.group_meditation_button)
@@ -374,7 +374,7 @@ public class MainActivity extends BaseActivity {
 
         Bundle groupBundle = new Bundle();
         groupBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Group meditation button clicked");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, groupBundle);
+        mFirebaseAnalytics.logEvent("onClickGroup", groupBundle);
     }
 
     @OnClick(R.id.custom_meditation_button)
@@ -383,7 +383,7 @@ public class MainActivity extends BaseActivity {
 
         Bundle customBundle = new Bundle();
         customBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Custom meditation button clicked");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, customBundle);
+        mFirebaseAnalytics.logEvent("onClickCustom", customBundle);
     }
 
 
